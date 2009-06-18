@@ -1,0 +1,55 @@
+dpkg-ruby - Ruby interface modules for dpkg
+
+/usr/bin/dpkg.rb   - dpkg like program (under development)
+/usr/bin/dpkg-ruby - dpkg-awk clone
+/usr/bin/dpkg-checkdeps.rb - check deb dependency problem
+
+See also /usr/share/doc/dpkg-ruby/examples/
+
+This program provides the following modules/class.
+(old, to be rewritten)
+
+ Debian::Dpkg module
+  Dpkg.compare_versions(a,rel,b)
+  Dpkg.architecture
+  Dpkg.gnu_build_architecture
+  Dpkg.installation_architecture
+
+ Debian::DpkgDeb module
+  DpkgDeb.deb?(file)
+  DpkgDeb.control(file)
+  DpkgDeb.data(file)
+  DpkgDeb.load(file)
+
+ Debian::Deb class - for *.deb 
+  .package -> aString
+  .source  -> aString
+  .version -> aString
+  .provides -> array of aString
+
+  [field]  -> aString
+
+  .unmet(aDebian::Packages) -> array of Debian::Dep::Unmet
+
+ Debian::Dsc class - for *.dsc 
+  .package -> aString
+  .version -> aString
+  .binary -> array of aString
+  [field]  -> aString
+
+ Debian::Archives class - parser of Packages,Sources
+  + (aDebianArchives) -> aDebian::Archives
+  .each {|pkgname, d| block }
+  .each_key {|pkgname| block }
+
+ Debian::Sources < Debian::Archives - parser of Sources
+ Debian::Packages < Debian::Archives - parser of Packages
+  [pkgname]  -> aDebianDeb
+  .provides(pkgname) -> array of aDebian::Deb
+ Debian::Status < Debian::Archives - parser of dpkg status
+
+
+THANKS
+ akira yamada <akira@debian.org> - ruby coding style suggestions
+
+$Id: README,v 1.7 2001/04/27 21:42:12 ukai Exp $  

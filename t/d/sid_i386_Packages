@@ -1,0 +1,456 @@
+Package: auto-apt
+Priority: optional
+Section: admin
+Installed-Size: 124
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Architecture: i386
+Version: 0.3.11
+Depends: libc6 (>= 2.2.1), apt, sudo, perl5
+Recommends: wget, dpkg-dev
+Suggests: x-terminal-emulator, libgtk-perl, build-essential
+Filename: pool/main/a/auto-apt/auto-apt_0.3.11_i386.deb
+Size: 41898
+MD5sum: 9b37b749e3e32aff70ded4e7d34027da
+Description: on demand package installation tool
+ auto-apt checks the file access of programs running within its
+ environments, and if a program tries to access a file known to
+ belong in an uninstalled package, auto-apt will install that
+ package using apt-get.
+ .
+ It also provides simple database to search which package contains
+ a requesting file.
+
+Package: donkey
+Priority: extra
+Section: net
+Installed-Size: 47
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Architecture: i386
+Version: 0.5-12
+Depends: libc6 (>= 2.1.2)
+Filename: pool/main/d/donkey/donkey_0.5-12_i386.deb
+Size: 19704
+MD5sum: e97055bf00353ded957948e01568e3a1
+Description: One Time Password calculator.
+ Donkey is an alternative for S/KEY's "key" command.
+ This means that donkey is also an alternative for "keyinit".
+ Since the entry is printed to stdout (not to /etc/skeykeys),
+ you can easily sent it to remote operator by e-mail (with PGP
+ signature or something). So, it possible to initiate S/KEY without
+ login from the console of the host.
+
+Package: fml
+Priority: extra
+Section: mail
+Installed-Size: 10900
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Architecture: all
+Version: 4.0-4
+Depends: perl, libjcode-perl
+Recommends: mail-transport-agent, libmd5-perl, sharutils
+Suggests: postfix | sendmail-wide, postfix | smtpfeed, lha, zip, pgp
+Filename: pool/main/f/fml/fml_4.0-4_all.deb
+Size: 2444040
+MD5sum: 1a1bb9db1054c8f946ea719cbec8d7e5
+Description: Mailing List Server Package
+ FML is a package of mailing list server and utility programs. It
+ consists of perl scripts. It has been developed, tested and advanced
+ in Japan from 1993 to 1999. FML contains
+ .
+  distributer (filter program which passes articles to MTA to deliver)
+  command server for users
+       command interface for general user
+       command interface for remote administration
+       listserv/majordomo style interface (emulation)
+  digest server
+  CUI installer and configuration program
+  other utility programs
+ .
+ FML design policy is based on the degree of freedom, so that I respect
+ "each environment for each man/women".
+
+Package: hex
+Priority: extra
+Section: utils
+Installed-Size: 66
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Architecture: i386
+Version: 204-9
+Depends: libc6 (>= 2.2.1-2)
+Filename: pool/main/h/hex/hex_204-9_i386.deb
+Size: 27772
+MD5sum: 8c88bbd8448e5a340b38f6b53d975767
+Description: hexadecimal dumping tool for Japanese
+ hexdump program that distinguish Japanese 2bytes code character.
+
+Package: hotplug
+Priority: optional
+Section: admin
+Installed-Size: 180
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Architecture: all
+Version: 0.0.20010228-3
+Replaces: usbmgr
+Depends: modutils (>= 2.4.2), debconf (>= 0.2.26)
+Recommends: ifupdown, usbutils, pciutils
+Conflicts: usbmgr
+Filename: pool/main/h/hotplug/hotplug_0.0.20010228-3_all.deb
+Size: 23728
+MD5sum: 631f2824b547b607238b693ee8253ca9
+Description: Linux Hotplug Scripts
+ This package contains the scripts necessary for hotplug Linux support,
+ and lets you plug in new devices and use them immediately.
+ Initially, it includes support for USB and PCI (Cardbus) devices,
+ and can automatically configure network interfaces.
+
+Package: libiso2mb-dev
+Priority: optional
+Section: devel
+Installed-Size: 1791
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Architecture: i386
+Source: libiso2mb
+Version: 0.8.5-1
+Depends: libiso2mb0.8 (= 0.8.5-1), libc6-dev
+Filename: dists/woody/main/binary-i386/devel/libiso2mb-dev_0.8.5-1.deb
+Size: 968706
+MD5sum: d474ac25c97a6da2d4c6cdba6a343b0d
+Description: library to handle multiple octets character strings (devel files)
+ libiso2mb is a collection of routines to handle sequence of characters
+ consisting of multiple octets.  The main functionalities are to convert
+ the encoding of a character from ISO 2022 to "fake" UTF-8, and vice versa.
+ .
+ This development package contains include files for the interface.
+ It includes also a static lib for particular cases.
+
+Package: libiso2mb0.8
+Priority: optional
+Section: libs
+Installed-Size: 1716
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Architecture: i386
+Source: libiso2mb
+Version: 0.8.5-1
+Depends: libc6 (>= 2.1.2)
+Filename: dists/woody/main/binary-i386/libs/libiso2mb0.8_0.8.5-1.deb
+Size: 945216
+MD5sum: d486f333a16304a6d80b95d99af09c2a
+Description: library to handle multiple octets character strings
+ libiso2mb is a collection of routines to handle sequence of characters
+ consisting of multiple octets.  The main functionalities are to convert
+ the encoding of a character from ISO 2022 to "fake" UTF-8, and vice versa.
+
+Package: liblingua-romkan-perl
+Priority: optional
+Section: interpreters
+Installed-Size: 76
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Architecture: all
+Source: migemo
+Version: 0.21-3
+Depends: perl
+Filename: pool/main/m/migemo/liblingua-romkan-perl_0.21-3_all.deb
+Size: 8072
+MD5sum: 408961d10e1a8c047189a7778fd27b52
+Description: Romaji Kana convertion for perl
+ It provides Lingua::Romkan perl module to make it possible to
+ convert Roman and Kana vice versa in perl script.
+
+Package: libmoe-dev
+Priority: optional
+Section: devel
+Installed-Size: 1868
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Architecture: i386
+Source: libmoe
+Version: 1.3.2-2
+Replaces: libiso2mb-dev
+Depends: libmoe1.3 (= 1.3.2-2), libc6-dev
+Conflicts: libiso2mb-dev
+Filename: pool/main/libm/libmoe/libmoe-dev_1.3.2-2_i386.deb
+Size: 728366
+MD5sum: 33a295b2371d04abb8896202edb25770
+Description: library to handle multiple octets character encoding scheme (devel files)
+ libmoe is a collection of routines to handle sequence of characters
+ consisting of multiple octets.  The main functionalities are to convert
+ the encoding of a character from ISO 2022 to "fake" UTF-8, and vice versa.
+ .
+ This development package contains include files for the interface.
+ It includes also a static lib for particular cases.
+
+Package: libmoe1.3
+Priority: optional
+Section: libs
+Installed-Size: 1640
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Architecture: i386
+Source: libmoe
+Version: 1.3.2-2
+Depends: libc6 (>= 2.2.1-2)
+Filename: pool/main/libm/libmoe/libmoe1.3_1.3.2-2_i386.deb
+Size: 678200
+MD5sum: 5aad7dcfcab74b243d6cada342eaa1dc
+Description: library to handle multiple octets character encoding scheme
+ libmoe is a collection of routines to handle sequence of characters
+ consisting of multiple octets.  The main functionalities are to convert
+ the encoding of a character from ISO 2022 to "fake" UTF-8, and vice versa.
+
+Package: mgp
+Priority: optional
+Section: x11
+Installed-Size: 1186
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Architecture: i386
+Version: 1.07a.20010212-3
+Depends: freetype2 (>= 1.3.1), imlib1 (>= 1.9.8-4), libc6 (>= 2.2.1), libpng2, libungif3g (>= 3.0-2) | giflib3g (>= 3.0-5.2), vflib2 (>= 2.25.1-1), xlibs (>= 4.0.1-11), perl | perl5
+Recommends: libjpeg-progs, pnmtopng, netpbm, sharutils
+Suggests: emacsen-common, gs, tetex-bin, vflib2-misc, watanabe-vfont, asiya24-vfont, gsfonts-x11
+Filename: pool/main/m/mgp/mgp_1.07a.20010212-3_i386.deb
+Size: 722428
+MD5sum: d1e2689a822c974ac92d39817a8d1e4c
+Description: MagicPoint- an X11 based presentation tool
+ MagicPoint is an X11 based presentation tool.  It is designed to make
+ simple presentations easy while to make complicated presentations
+ possible.  Its presentation file (whose suffix is typically .mgp) is
+ just text so that you can create presentation files quickly with your
+ favorite editor (e.g. Emacs).
+
+Package: mhc
+Priority: optional
+Section: misc
+Installed-Size: 441
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Architecture: i386
+Version: 0.25-9
+Depends: libc6 (>= 2.2.1-2), libpisock3, libruby (>= 1.6.2-6), ruby, libnkf-ruby, emacsen, wl (>= 2.4) | wl-beta (>= 2.3) | wanderlust2 (>= 2.2.10) | mew (>= 1:1.94) | gnus
+Recommends: libgnome-ruby
+Suggests: ssh
+Filename: pool/main/m/mhc/mhc_0.25-9_i386.deb
+Size: 128234
+MD5sum: fdb4f911cfbcaca618736a5c172981fc
+Description: Message Harmonized Calendaring system
+ MHC is designed to help those who receive most appointments via email.
+ Using MHC, you can easily import schedule articles from emails, and
+ convert these appointments from/to PlamOS.
+ .
+ MHC stores schedule articles in the same form of MH; you can manipulate
+ these messages not only by above tools but also by many other MUAs,
+ editors, UNIX commandline tools or your own scripts.
+ .
+ For mhc-mode, you should select mailer-package by mhc-select-mailer-package.
+ .
+ All ruby scripts in mhc requires kconv (in libnkf-ruby).  To use
+ /usr/bin/gemcal, you must install libgnome-ruby too.
+ .
+ For more information, you can find at http://www.quickhack.net/mhc/
+
+Package: migemo
+Priority: optional
+Section: utils
+Installed-Size: 3056
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Architecture: all
+Version: 0.21-3
+Depends: emacs20 | emacsen, apel, liblingua-romkan-perl
+Filename: pool/main/m/migemo/migemo_0.21-3_all.deb
+Size: 1273442
+MD5sum: 9effb588600d40f98e70cfae70eafeee
+Description: Japanese incremental search with Romaji on Emacsen
+ migemo is a tool that supports Japanese incremental search with Romaji.
+ It release you from heavy tasks of Kana Kanji conversion in order to
+ search.  This is Emacsen interface, that is wrapper for isearch.
+ http://migemo.namazu.org/
+
+Package: sendmail-wide
+Priority: extra
+Section: mail
+Installed-Size: 1007
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Architecture: i386
+Version: 8.11.1+3.4W-5.1
+Depends: libc6 (>= 2.1.97), libdb2, libldap2 (>= 2.0.2-2), libsasl7, libwrap0, sendmail
+Suggests: smtpfeed
+Conflicts: sendmail (<< 8.11.1), sendmail (>> 8.11.2)
+Filename: pool/main/s/sendmail-wide/sendmail-wide_8.11.1+3.4W-5.1_i386.deb
+Size: 765202
+MD5sum: 06c6face98bbd203e290c060c6d06cda
+Description: WIDE patch applied /usr/sbin/sendmail
+  This package replaces /usr/sbin/sendmail with WIDE patch version,
+  which provides some enhancement for the sendmail. This patch is
+  required to use "smtpfeed", which is an external SMTP mailer.
+  In other words, *you don't need this package for normal use of sendmail*.
+  WIDE patch includes followings patches:
+   QUICK_RESPONSE       - bounce mail not queued
+   MULTI_MAILER         - multiple mailer dispath in rulesetlikke:
+         R$*<@dom>$*     $#smtp$@dom$:$1<@dom>$2 $#uucp$@dom$:$1<@dom>$2
+   CF_ALIASING          - alias in ruleset 5 like:
+         R foo-a       $# local $@ alias $: foo-a, foo-b
+   _FFR_DYNAMIC_TOBUF	- dynamic allocation to relax tobuf size limitation
+   MAILER_PREF          - mailer preferences
+   CLIENT_SMTP_CONFIG   - 3 parameters of client-side SMTP connection
+         FQDN: FQDN used as a hostname with SMTP HELO
+         SrcIPaddr: source IP address for client-side SMTP (12.34.56.78)
+         SrcPort: source port number for client-side SMTP
+   CTE8CHECK             - Option CTE8BitChec=[corrent|reject]
+   OO_NULLSENDER         - Set NULL sender envelope address for "owner-owner"
+   MF_SEPARATE		 - address will not be unified for mailer flag '^'
+   MASKED_ADDR           - matching by masked IP address
+   SPR_CON_CACHE         - connection-caching control par mailer basis.
+   FORWARDPROGCTL        - privilege control on execution of programs
+                         via ~/.forward
+   MAILER_TIMEOUTS       - control message timeout per mailer basis.
+   CHECK_WARNING         - control whether a queue-warning should be sent or not
+  For more information, see /usr/share/doc/sendmail-wide/00READ_ME.WIDE.gz
+  .
+  Note that original sendmail is diverted to /usr/sbin/sendmail-nowide.
+  .
+  WIDE is project name and stands for `Widely Integrated Distribution
+  Environment'. Research goal of WIDE project is "to establish
+  large-scale distributed computing environment".  WIDE Project
+  is working for providing the wide area communication infrastructure
+  with our telecommunication technology and operating system technology,
+  and trying hard to contribute to the people. http://www.wide.ad.jp/
+
+Package: skkinput
+Priority: optional
+Section: x11
+Installed-Size: 317
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Architecture: i386
+Version: 1:2.03-7
+Depends: libc6 (>= 2.2.1), xlibs (>= 4.0.1-11)
+Recommends: xfonts-cjk
+Suggests: skkserv, skkdic
+Filename: pool/main/s/skkinput/skkinput_2.03-7_i386.deb
+Size: 176430
+MD5sum: 99cbe98b241debd724316c0d46d2cd4c
+Description: X input method for Japanese for SKK method.
+ skkinput is application to input Japanese for X application using
+ protocols such as kinput2/XIM/Ximp protocol.
+ skkinput communicates with skkserv using Berkeley Socket.
+ Without skkserv, local dictionary files is used.
+
+Package: smtpfeed
+Priority: extra
+Section: mail
+Installed-Size: 179
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Architecture: i386
+Version: 1.11-1
+Depends: libc6 (>= 2.2.1)
+Recommends: sendmail-wide (>= 8.9.3+3.2W), logrotate
+Filename: pool/main/s/smtpfeed/smtpfeed_1.11-1_i386.deb
+Size: 80332
+MD5sum: a2501f76c93ab1803d4c534f66c227a2
+Description: SMTP feed -- SMTP Fast Exploding External Deliver for Sendmail
+ Smtpfeed is a SMTP delivery agent which is called by sendmail, and it
+ improves required time to complete delivery of copies of a message to
+ recipients of huge number.
+ .
+ Note that smtpfeed still in ALPHA testing release.
+
+Package: w3m
+Priority: optional
+Section: text
+Installed-Size: 1300
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Architecture: i386
+Version: 0.2.1-2
+Provides: www-browser
+Depends: libc6 (>= 2.2.2-2), libgc5, libgpmg1 (>= 1.14-16), libncurses5 (>= 5.2.20010310-1)
+Suggests: w3m-ssl (>= 0.2.1-2), mime-support, menu (>> 1.5), w3m-el
+Filename: pool/main/w/w3m/w3m_0.2.1-2_i386.deb
+Size: 493792
+MD5sum: 0c96e7d6bed644918f3e147ecb188fcb
+Description: WWW browsable pager with excellent tables/frames support
+ w3m is a text-based World Wide Web browser with IPv6 support.
+ It features excellent support for tables and frames. It can be used
+ as a standalone file pager, too.
+ .
+  * You can follow links and/or view images in HTML.
+  * Internet message prewview mode, you can browse HTML mail.
+  * You can follow links in plain text if it includes URL forms.
+ .
+ For more information,
+ see http://ei5nazha.yz.yamagata-u.ac.jp/~aito/w3m/eng/index.html
+
+Package: w3m-el
+Priority: optional
+Section: web
+Installed-Size: 532
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Architecture: all
+Version: 0.2.150-2
+Depends: xemacs21|emacs20|emacs21|mule2, xemacs21-supportbase|emacs20|emacs21|apel, xemacs21|emacs20|emacs21|apel, xemacs21-basesupport|emacs20|emacs21|mule2, w3m (>= 0.2.1-2) | w3m-ssl (>= 0.2.1-2)
+Suggests: flim, mew
+Filename: pool/main/w/w3m-el/w3m-el_0.2.150-2_all.deb
+Size: 91478
+MD5sum: 60c90422f9f655da429ca521a17fb556
+Description: a simple Emacs interface of w3m
+ This package contains a interface program of w3m, which is a pager
+ with WWW capability.  It can be used as lightweight WWW browser on emacsen.
+ This is also known as emacs-w3m. http://namazu.org/~tsuchiya/emacs-w3m/
+
+Package: w3mmee
+Priority: optional
+Section: web
+Installed-Size: 924
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Architecture: i386
+Version: 0.2.1.p18.5-1
+Provides: www-browser
+Depends: libc6 (>= 2.2.2-2), libgc5, libgpmg1 (>= 1.14-16), libmoe1.3, libncurses5 (>= 5.2.20010310-1)
+Suggests: w3mmee-ssl (>= 0.2.1.p18.5-1), mime-support, menu (>> 1.5)
+Filename: pool/main/w/w3mmee/w3mmee_0.2.1.p18.5-1_i386.deb
+Size: 366898
+MD5sum: 6bc1750a22d3b94d8dfa02475986500d
+Description: WWW browsable pager with excellent tables/frames, MB extension
+ w3mmee is w3m with multibyte encoding extension.
+ .
+ For more information,
+ see http://ei5nazha.yz.yamagata-u.ac.jp/~aito/w3m/eng/index.html
+ and http://pub.ks-and-ks.ne.jp/prog/w3mmee/
+
+Package: xfonts-a12k12
+Priority: optional
+Section: x11
+Installed-Size: 192
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Architecture: all
+Version: 1-4
+Replaces: a12k12
+Depends: xutils
+Suggests: xfs | xserver
+Conflicts: a12k12, xbase-clients (<< 4.0)
+Filename: pool/main/x/xfonts-a12k12/xfonts-a12k12_1-4_all.deb
+Size: 142872
+MD5sum: d31cf1c06e545c5aa3941882ea950058
+Description: 12 dot Kanji & ASCII fonts for X
+ This package provides 12dot fonts for Japanese (ASCII and Kana/Kanji)
+ It provides
+ - a12: 12dot ASCII fonts
+ - k12: 12dot Kanji fonts
+
+Package: xfonts-marumoji
+Priority: optional
+Section: x11
+Installed-Size: 673
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Architecture: all
+Version: 0.2-4
+Replaces: xmarufont
+Depends: xutils
+Suggests: xfs | xserver
+Conflicts: xmarufont, xbase-clients (<< 4.0)
+Filename: pool/main/x/xfonts-marumoji/xfonts-marumoji_0.2-4_all.deb
+Size: 577232
+MD5sum: 989a65da79d751faebfd431af41e59f5
+Description: Roundish fonts (marumoji fonts) for X
+ Japanese and ASCII roundish fonts (marumoji in Japanese) for
+ X servers.
+ It provides:
+  maru14: JIS X0208.1983 Roundish Characters (14 dots)
+  maru16: JIS X0208.1983 Roundish Characters (16 dots)
+  7x14rkmr: JIS X0201.1976 Roman Roundish Characters (14 dots)
+  7x14maru: ISO8859-1 Roundish Characters (14 dots)
+

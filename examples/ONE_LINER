@@ -1,0 +1,39 @@
+# 1 liner collections
+# Copyright (c) 2001 Fumitoshi UKAI
+# GPL2
+# $Id: ONE_LINER,v 1.8 2001/05/02 15:10:38 ukai Exp $
+# 
+
+
+# get depends
+
+ ruby -r debian -e 'puts Debian::Dpkg.field("w3m_0.1.10+0.1.11pre+kokb23-3_i386.deb")["depends"]'
+
+# get package providing virtual package in question
+
+ ruby -r debian -e 'puts Debian::Dpkg.avail.provides["www-browser"]'
+
+
+# get hold packages
+
+ ruby -r debian -e 'puts Debian::Dpkg.status.packages.find_all {|pkg| pkg.hold? }'
+
+
+# search package containing IPv6 in description from Packages
+
+ ruby -r debian -e 'puts Debian::Dpkg.avail.packages.find_all {|pkg| /IPv6/ =~ pkg["description"]}'
+
+
+# search binary packages from source package in question
+
+ ruby -r debian -e 'puts Debian::Dpkg.avail.packages.find_all {|pkg| pkg.source == "migemo" }'
+
+
+# search source package providing the binary in question
+
+ ruby -r debian -e 'Debian::Sources.new("/org/ftp.jp.debian.org/ftp/debian/dists/stable/main/source/Sources.gz").each_package {|dsc| puts "#{dsc}" if dsc.binary.find {|b| b == "xserver-svga" }}'
+
+
+# count number of package by maintainer
+
+  ruby -r debian -e 'np = Hash.new(0); nth = 1; Debian::Dpkg.avail.each_package {|deb| np[deb.maintainer] += 1 }; np.sort {|a,b| b[1] <=> a[1]}.each {|n| puts "#{nth}) #{n[0]}: #{n[1]}"; nth += 1 }'

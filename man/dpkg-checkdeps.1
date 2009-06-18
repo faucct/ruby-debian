@@ -1,0 +1,102 @@
+.TH DPKG-CHECKDEPS.RB 1 "Debian Utilities" "DEBIAN" \" -*- nroff -*-
+.SH NAME
+dpkg-checkdeps.rb \- Utility to check deb dependency
+.SH SYNOPSIS
+\fBdpkg-checkdeps.rb\fP [\fIopts\fP] \fIdebfile\fP ...
+.br
+\fBdpkg-checkdeps.rb\fP [\fIopts\fP] \fB--from\fP \fIpackages\fP \fIpkgname\fP...
+.br
+\fBdpkg-checkdeps.rb\fP [\fIopts\fP] \fB--from\fP \fB--all\fP
+.br
+\fBdpkg-checkdeps.rb\rP [\fIopts\fP] \fB--check\fP \fIpkgname\fP... 
+.br
+\fIopts\fP: \fB--to\fP \fIpackages\fP
+       \fB--arch\fP \fIarch\fP
+       \fB--verbose\fP
+       \fB-q\fP
+.br
+.SH DESCRIPTION
+.I dpkg-checkdeps.rb
+checks deb dependency problems when specified deb packages are
+installed in the target packages list.
+.SH OPTIONS
+.TP
+.PD 0
+.BI -t " packages-file"
+.TP
+.BI --to " packages-file"
+.PD
+Specify target \fIpackages-file\fP.  If this option is used multiple times,
+packages lists are appended.  If no \fB-t\fP option specified,
+default is current installed packages list, that is, /var/lib/dpkg/status.
+.TP
+.PD 0
+.BI -f " packages-file"
+.TP
+.BI --from " packages-file"
+.PD
+Specify source \fIpackages-file\fP.  If this option is used multiple times,
+packages lists are appended.  If you use this option, you can select packages
+by \fIpackage-name\fP, or all of them by \fB--all\fP option.
+.TP
+.PD 0
+.B -A
+.TP
+.B --all
+.PD
+Select all packages in source \fIpackages-file\fP.  You must use this option
+with \fB--from\fP option.
+.TP
+.PD 0
+.BI -a " arch"
+.TP
+.BI --arch " arch"
+.PD
+Specify acceptable \fIarch\fP in \fIpackages-file\fP.  Default is 
+installation_architecture of dpkg.
+.TP
+.PD 0
+.B -c
+.TP
+.B --check
+.PD
+Check selected packages are satisfied by all packages in target
+\fIpackages\fP.
+.TP
+.PD 0
+.B -v
+.TP
+.B --verbose
+.PD
+Verbose mode
+.TP
+.PD 0
+.BI -h
+.TP
+.BI --help
+.PD
+Display some help.
+.SH EXAMPLES
+
+  % dpkg-checkdeps.rb --arch alpha \
+	--to '*/binary-$ARCH/Packages' \
+	--from ../proposed-updates/Packages' --all
+
+  % dpkg-checkdeps.rb --to '*/binary-$ARCH/Packages' --check libc6
+
+.SH BUGS
+
+There are probably tons of bugs in this program.
+
+This checks only depends, recommends and suggests, doesn't check 
+pre-depends and conflicts, yet.
+
+This program comes with no warranties.  If running this program
+causes fire and brimstone to rain down upon the earth, you will be
+on our own.
+
+.SH AUTHOR
+Fumitoshi UKAI <ukai@debian.or.jp>.
+
+
+

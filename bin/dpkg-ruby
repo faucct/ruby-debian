@@ -1,0 +1,148 @@
+#!/usr/bin/ruby
+# 
+# dpkg-ruby - ruby script to parse status,available and Packages,Sources
+#             dpkg-awk clone
+# Copyright (c) 2001 Fumitoshi UKAI <ukai@debian.or.jp>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+# $Id: dpkg-ruby,v 1.6 2001/04/20 19:07:00 ukai Exp $
+#
+
+require 'debian'
+require 'getoptlong'
+
+filename = Debian::Dpkg::STATUS_FILE
+$debug = 0
+sortfield = []
+numfield = []
+$rec_sep = ""
+
+def usage
+  $stderr.puts "#{$0} [opts] 'field:regexp' .. -- 'output_field' .."
+  $stderr.puts " opts: [-f file] [-d nn] [-s sf] [-n nf] [-rs rs]"
+end
+
+opts = GetoptLong.new(
+		      ["--file", "-f",  GetoptLong::REQUIRED_ARGUMENT],
+		      ["--debug", "-d", GetoptLong::OPTIONAL_ARGUMENT],
+		      ["--sort", "-s",  GetoptLong::REQUIRED_ARGUMENT],
+		      ["--numeric_field", "-n", GetoptLong::REQUIRED_ARGUMENT],
+		      ["--rec_sep", "--rs", GetoptLong::REQUIRED_ARGUMENT],
+		      ["--help", "-h",  GetoptLong::NO_ARGUMENT])
+opts.ordering = GetoptLong::REQUIRE_ORDER
+
+begin
+  opts.each {|opt, arg|
+    case opt
+    when "--file" then filename = arg
+    when "--debug" then 
+      if arg
+	$debug = arg
+      else
+	$debug += 1
+      end
+    when "--sort" then 
+      sortfield += arg.split(" ").collect{|a| a.split(",")}
+      sortfield.flatten!
+    when "--numeric_field" then
+      numfield += arg.split(" ").collect{|a| a.split(",")}
+      numfield.flatten!
+    when "--rec_sep" then
+      $rec_sep = arg
+    when "--help" then 
+      usage; exit 0
+    else
+      opts.terminate
+    end
+  }
+rescue GetoptLong::InvalidOption
+  usage; exit 1
+end
+
+field = {}
+$outputfield = []
+while arg = ARGV.shift
+  break if arg == "--"
+  unless /^([^:]+):(.*)/ =~ arg
+    $stderr.puts "E: invalid argument #{arg}"
+    exit 1
+  end
+  field[$1] = Regexp.new($2)
+end
+$outputfield = ARGV
+
+da = Debian::Archives.load(filename)
+
+def output(deb)
+  if $outputfield.empty?
+    deb.fields {|f|
+      puts "#{f.capitalize}: #{deb[f]}"
+    }
+    puts $rec_sep
+  elsif $outputfield[0] == '^'
+    deb.fields {|f|
+      unless $outputfield.find {|of| of.capitalize == f.capitalize }
+	puts "#{f.capitalize}: #{deb[f]}"
+      end
+    }
+    puts $rec_sep
+  else
+    $outputfield.each {|f| 
+      puts "#{f.capitalize}: #{deb[f]}"
+    }
+    if $rec_sep != "" || $outputfield.length > 1
+      puts $rec_sep
+    end
+  end
+end
+
+mp = []
+da.each_package {|d|
+  match = true
+  field.each {|f,re|
+    unless re =~ d[f]
+      match = false
+      break
+    end
+  }
+  if match
+    if sortfield.empty?
+      output(d)
+    else
+      mp.push(d)
+    end
+  end
+} 
+
+unless sortfield.empty?
+  mp.sort{|a,b|
+    d = 0
+    sortfield.each{|sf|
+      if numfield.include?(sf)
+	d = a[sf].to_i <=> b[sf].to_i
+      else
+	d = a[sf] <=> b[sf]
+      end
+      if d != 0
+	break
+      end
+    }
+    d
+  }.each {|d|
+    output(d)
+  }
+end
+

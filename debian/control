@@ -1,0 +1,23 @@
+Source: dpkg-ruby
+Section: devel
+Priority: optional
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Build-Depends: debhelper (>> 4.0.0)
+Build-Depends-Indep: ruby1.8, ruby1.8-dev
+Standards-Version: 3.7.2
+
+Package: dpkg-ruby
+Architecture: all
+Depends: ruby1.8, libdpkg-ruby1.8
+Description: ruby interface for dpkg
+ It provides dpkg-ruby (a dpkg-awk clone) and dpkg-checkdeps
+ (check utility of deb dependency problem).
+
+Package: libdpkg-ruby1.8
+Architecture: all
+Depends: libruby1.8
+Description: modules/classes for dpkg on ruby 1.8
+ It provides Debian::Dpkg and Debian::DpkgDeb modules and
+ Debian::Deb, Debian::Dsc, Debian::Archives, Debian::Sources,
+ Debian::Packages and Debian::Status classes on ruby 1.8.
+

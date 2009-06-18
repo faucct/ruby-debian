@@ -1,0 +1,32 @@
+Package: w3m-ssl
+Binary: w3m-ssl
+Version: 0.2.1-2
+Priority: optional
+Section: non-US
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Build-Depends: libgc5-dev, libncurses5-dev, libgpmg1-dev, libssl-dev, debhelper, gawk | awk
+Architecture: any
+Standards-Version: 3.1.1
+Format: 1.0
+Directory: pool/non-US/main/w/w3m-ssl
+Files:
+ fa016adcf912ba888e31aaea4a4aea21 662 w3m-ssl_0.2.1-2.dsc
+ 76748994920f0f553e240d37cd9498b5 834552 w3m-ssl_0.2.1.orig.tar.gz
+ 5423fdf58a02bc0cbbeab04965db51ed 31725 w3m-ssl_0.2.1-2.diff.gz
+
+Package: w3mmee-ssl
+Binary: w3mmee-ssl
+Version: 0.2.1.p18.5-1
+Priority: optional
+Section: non-US
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Build-Depends: libgc5-dev, libncurses5-dev, libgpmg1-dev, debhelper, gawk | awk, libssl-dev, libmoe-dev (>= 1.3.2), gettext
+Architecture: any
+Standards-Version: 3.2.1
+Format: 1.0
+Directory: pool/non-US/main/w/w3mmee-ssl
+Files:
+ 5151f6497ab7aea9cfe98594f37f5a81 724 w3mmee-ssl_0.2.1.p18.5-1.dsc
+ 74085a24f99fa3f7e4d3a87301b2b102 1033056 w3mmee-ssl_0.2.1.p18.5.orig.tar.gz
+ ecfcfe2008b8f0d9093e7cdd4dae9c40 8482 w3mmee-ssl_0.2.1.p18.5-1.diff.gz
+

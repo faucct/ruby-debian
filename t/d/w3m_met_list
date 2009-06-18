@@ -1,0 +1,83 @@
+Package: w3m
+Priority: optional
+Section: text
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Version: 0.2.1-2
+Provides: www-browser
+Depends: libc6 (>= 2.2.2-2), libgc5, libgpmg1 (>= 1.14-16), libncurses5 (>= 5.2.20010310-1)
+Suggests: w3m-ssl (>= 0.2.1-2), mime-support, menu (>> 1.5), w3m-el
+Description: test
+ test
+
+Package: libc6
+Version: 2.2.2-4
+Section: base
+Priority: required
+Architecture: i386
+Maintainer: foo bar <foo@bar>
+Description: dependency test
+ dependency test
+
+Package: libgc5
+Version: 1:5.3-2
+Section: libs
+Priority: optional
+Architecture: i386
+Maintainer: foo bar <foo@bar>
+Description: dependency test
+ dependency test
+
+Package: libgpmg1
+Version: 1.19.3-6
+Priority: optional
+Section: libs
+Maintainer: foo bar <foo@bar>
+Description: dependency test
+ dependency test
+
+Package: libncurses5
+Version: 5.2.20010318-1
+Priority: required
+Section: base
+Source: ncurses
+Maintainer: foo bar <foo@bar>
+Description: dependency test
+ dependency test
+
+Package: w3m-ssl
+Version: 0.2.1-2
+Priority: optional
+Section: non-US/main
+Provides: www-browser
+Maintainer: foo bar <foo@bar>
+Description: suggested
+ suggested
+
+Package: mime-support
+Priority: standard
+Section: net
+Maintainer: foo bar <foo@bar>
+Version: 3.10-1
+Conffiles:
+ /etc/mime.types 413ba91dc187d2343949b12a3122da3b
+ /etc/mailcap 57a603451802f5bd47e89b2f426077fa
+ /etc/mailcap.order ba07e08a7fe3741d0b8339127963190e
+Description: suggested
+ suggested
+
+Package: menu
+Priority: optional
+Section: admin
+Version: 2.1.5-7
+Maintainer: foo bar <foo@bar>
+Description: suggested
+ suggested
+
+Package: w3m-el
+Priority: optional
+Section: web
+Installed-Size: 532
+Version: 0.2.150-2
+Maintainer: foo bar <foo@bar>
+Description: suggested
+ suggested

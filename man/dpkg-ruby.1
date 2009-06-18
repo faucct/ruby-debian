@@ -1,0 +1,99 @@
+.TH DPKG-RUBY 1 "Debian Utilities" "DEBIAN" \" -*- nroff -*-
+.SH NAME
+dpkg-ruby \- Utility to read a dpkg style db file, dpkg-awk clone
+.SH SYNOPSIS
+\fBdpkg-ruby\fP [\fB(-f|--file) \fIfilename\fP] [\fB(-d|--debug) \fI##\fP] [\fB(-s|--sort) \fIlist\fP] [\fB(-n|--numeric) \fIlist\fP] [\fB(-rs|--rec_sep) \fI??\fP] '\fI<fieldname>:<regex>\fP' ... -- \fI<out_fieldname>\fP ..
+.br
+.SH DESCRIPTION
+.I dpkg-ruby
+Parses a dpkg status file(or other similarly formated file) and
+outputs the resulting records.  It can use regex on the field
+values to limit the returned records, and it can also be told
+which fields to output.  As another option, it can sort the
+matched fields.
+.SH OPTIONS
+
+.TP
+.PD 0
+.BI -f " filename"
+.TP
+.BI --file " filename"
+.PD
+The file to parse.  The default is /var/lib/dpkg/status.
+.TP
+.PD 0
+.BI -d " [#]"
+.TP
+.BI --debug " [#]"
+.PD
+Each time this is specified, it increased the debug level.
+.TP
+.PD 0
+.BI -s " field(s)"
+.TP
+.BI --sort " field(s)"
+.PD
+A space or comma separated list of fields to sort on.
+.TP
+.PD 0
+.BI -n " field(s)"
+.TP
+.BI --numeric " field(s)"
+.PD
+A space or comma separated list of fields that should be
+interpreted as numeric in value.
+.TP
+.PD 0
+.BI -rs " ??"
+.TP
+.BI --rec_sep " ??"
+.PD
+Output this string at the end of each output paragraph.
+.\" .TP
+.\" .PD 0
+.\" .I -of ??
+.\" .TP
+.\" .I --outform ??
+.\" .PD
+.\" Specify the outform that dpkg-ruby should use.  Current
+.\" formats are normal(the old, tried and true style), and
+.\" xml.
+.TP
+.PD 0
+.B -h
+.TP
+.B --help
+.PD
+Display some help.
+.TP
+.I fieldname
+The fields from the file, that are matched with the regex given.
+The \fIfieldname\fPs are case insensitive.
+.TP
+.I out_fieldname
+The fields from the file, that are outputted for each record.
+If the first field listed is begins with
+.IR ^ ,
+then the list that follows are fields
+.I NOT
+to be outputted.
+.SH BUGS
+
+Be warned that the author has only a shallow understanding of the 
+dpkg packaging system, so there are probably tons of bugs in this
+program.
+
+This program comes with no warranties.  If running this program
+causes fire and brimstone to rain down upon the earth, you will be
+on our own.
+
+This program accesses the dpkg database directly in places, querying 
+for data that cannot be gotten via dpkg.
+
+.SH AUTHOR
+Fumitoshi UKAI <ukai@debian.or.jp>.
+This manual page are based on (or almost copy from :) dpkg-awk(1) manual
+written by Adam Heath <doogie@debian.org>
+
+
+

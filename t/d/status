@@ -1,0 +1,324 @@
+Package: dpkg-ruby
+Status: install ok installed
+Priority: optional
+Section: devel
+Installed-Size: 112
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Version: 0.0.1
+Depends: ruby
+Description: ruby interface for dpkg
+ Contains ruby modules/classes for dpkg, the Debian package management
+ system.
+
+Package: liblingua-romkan-perl
+Status: install ok installed
+Priority: optional
+Section: utils
+Installed-Size: 76
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Source: migemo
+Version: 0.21-3
+Depends: perl
+Description: Romaji Kana convertion for perl
+ It provides Lingua::Romkan perl module to make it possible to
+ convert Roman and Kana vice versa in perl script.
+
+Package: w3m
+Status: install ok installed
+Priority: optional
+Section: text
+Installed-Size: 1300
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Version: 0.2.1-2
+Provides: www-browser
+Depends: libc6 (>= 2.2.2-2), libgc5, libgpmg1 (>= 1.14-16), libncurses5 (>= 5.2.20010310-1)
+Suggests: w3m-ssl (>= 0.2.1-2), mime-support, menu (>> 1.5), w3m-el
+Description: WWW browsable pager with excellent tables/frames support
+ w3m is a text-based World Wide Web browser with IPv6 support.
+ It features excellent support for tables and frames. It can be used
+ as a standalone file pager, too.
+ .
+  * You can follow links and/or view images in HTML.
+  * Internet message prewview mode, you can browse HTML mail.
+  * You can follow links in plain text if it includes URL forms.
+ .
+ For more information,
+ see http://ei5nazha.yz.yamagata-u.ac.jp/~aito/w3m/eng/index.html
+
+Package: mhc
+Status: install ok installed
+Priority: optional
+Section: misc
+Installed-Size: 441
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Version: 0.25-9
+Depends: libc6 (>= 2.2.1-2), libpisock3, libruby (>= 1.6.2-6), ruby, libnkf-ruby, emacsen, wl (>= 2.4) | wl-beta (>= 2.3) | wanderlust2 (>= 2.2.10) | mew (>= 1:1.94) | gnus
+Recommends: libgnome-ruby
+Suggests: ssh
+Description: Message Harmonized Calendaring system
+ MHC is designed to help those who receive most appointments via email.
+ Using MHC, you can easily import schedule articles from emails, and
+ convert these appointments from/to PlamOS.
+ .
+ MHC stores schedule articles in the same form of MH; you can manipulate
+ these messages not only by above tools but also by many other MUAs,
+ editors, UNIX commandline tools or your own scripts.
+ .
+ For mhc-mode, you should select mailer-package by mhc-select-mailer-package.
+ .
+ All ruby scripts in mhc requires kconv (in libnkf-ruby).  To use
+ /usr/bin/gemcal, you must install libgnome-ruby too.
+ .
+ For more information, you can find at http://www.quickhack.net/mhc/
+
+Package: libmoe1.2
+Status: install ok installed
+Priority: optional
+Section: libs
+Installed-Size: 1451
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Source: libmoe
+Version: 1.2.2-1
+Depends: libc6 (>= 2.2.1)
+Description: library to handle multiple octets character encoding scheme
+ libmoe is a collection of routines to handle sequence of characters
+ consisting of multiple octets.  The main functionalities are to convert
+ the encoding of a character from ISO 2022 to "fake" UTF-8, and vice versa.
+
+Package: libmoe1.3
+Status: install ok installed
+Priority: optional
+Section: libs
+Installed-Size: 1640
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Source: libmoe
+Version: 1.3.2-2
+Depends: libc6 (>= 2.2.1-2)
+Description: library to handle multiple octets character encoding scheme
+ libmoe is a collection of routines to handle sequence of characters
+ consisting of multiple octets.  The main functionalities are to convert
+ the encoding of a character from ISO 2022 to "fake" UTF-8, and vice versa.
+
+Package: mgp
+Status: install ok installed
+Priority: optional
+Section: x11
+Installed-Size: 1404
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Version: 1.07a.20010326-1
+Depends: freetype2 (>= 1.3.1), imlib1 (>= 1.9.8.1-2), libc6 (>= 2.2.2-2), libpng2, libungif3g (>= 3.0-2) | giflib3g (>= 3.0-5.2), vflib2 (>= 2.25.1-1), xlibs (>= 4.0.1-11), perl | perl5
+Recommends: libjpeg-progs, pnmtopng, netpbm, sharutils
+Suggests: emacsen-common, gs, tetex-bin, vflib2-misc, watanabe-vfont, asiya24-vfont, gsfonts-x11, ttf-xtt-wadalab-gothic, ttf-xtt-watanabe-mincho, msttcorefonts
+Description: MagicPoint- an X11 based presentation tool
+ MagicPoint is an X11 based presentation tool.  It is designed to make
+ simple presentations easy while to make complicated presentations
+ possible.  Its presentation file (whose suffix is typically .mgp) is
+ just text so that you can create presentation files quickly with your
+ favorite editor (e.g. Emacs).
+
+Package: w3mmee-ssl
+Status: install ok installed
+Priority: optional
+Section: non-US/main
+Installed-Size: 420
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Version: 0.2.1.p18.5-1
+Provides: www-browser
+Depends: libc6 (>= 2.2.2-2), libgc5, libgpmg1 (>= 1.14-16), libmoe1.3, libncurses5 (>= 5.2.20010310-1), libssl0.9.6, w3mmee
+Recommends: w3mmee (= 0.2.1.p18.5-1)
+Suggests: mime-support, menu (>> 1.5)
+Description: WWW browsable pager with SSL support, MB extension
+ w3mmee is w3m with multibyte encoding extension.
+ This package is built with SSL support.
+ .
+ For more information,
+ see http://ei5nazha.yz.yamagata-u.ac.jp/~aito/w3m/eng/index.html
+ and http://pub.ks-and-ks.ne.jp/prog/w3mmee/
+
+Package: migemo
+Status: install ok installed
+Priority: optional
+Section: utils
+Installed-Size: 3056
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Version: 0.21-3
+Depends: emacs20 | emacsen, apel, liblingua-romkan-perl
+Description: Japanese incremental search with Romaji on Emacsen
+ migemo is a tool that supports Japanese incremental search with Romaji.
+ It release you from heavy tasks of Kana Kanji conversion in order to
+ search.  This is Emacsen interface, that is wrapper for isearch.
+ http://migemo.namazu.org/
+
+Package: w3m-el
+Status: install ok installed
+Priority: optional
+Section: web
+Installed-Size: 532
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Version: 0.2.150-2
+Depends: xemacs21 | emacs20 | emacs21 | mule2, xemacs21-supportbase | emacs20 | emacs21 | apel, xemacs21 | emacs20 | emacs21 | apel, xemacs21-basesupport | emacs20 | emacs21 | mule2, w3m (>= 0.2.1-2) | w3m-ssl (>= 0.2.1-2)
+Suggests: flim, mew
+Description: a simple Emacs interface of w3m
+ This package contains a interface program of w3m, which is a pager
+ with WWW capability.  It can be used as lightweight WWW browser on emacsen.
+ This is also known as emacs-w3m. http://namazu.org/~tsuchiya/emacs-w3m/
+
+Package: libmoe-dev
+Status: install ok installed
+Priority: optional
+Section: devel
+Installed-Size: 1868
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Source: libmoe
+Version: 1.3.2-2
+Replaces: libiso2mb-dev
+Depends: libmoe1.3 (= 1.3.2-2), libc6-dev
+Conflicts: libiso2mb-dev
+Description: library to handle multiple octets character encoding scheme (devel files)
+ libmoe is a collection of routines to handle sequence of characters
+ consisting of multiple octets.  The main functionalities are to convert
+ the encoding of a character from ISO 2022 to "fake" UTF-8, and vice versa.
+ .
+ This development package contains include files for the interface.
+ It includes also a static lib for particular cases.
+
+Package: w3m-ssl
+Status: install ok installed
+Priority: optional
+Section: non-US/main
+Installed-Size: 844
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Version: 0.2.1-2
+Provides: www-browser
+Depends: libc6 (>= 2.2.2-2), libgc5, libgpmg1 (>= 1.14-16), libncurses5 (>= 5.2.20010310-1), libssl0.9.6, w3m
+Recommends: w3m (= 0.2.1-2)
+Suggests: mime-support, menu (>> 1.5)
+Description: WWW browsable pager with SSL support
+ w3m is a text-based World Wide Web browser with IPv6 support.
+ It features excellent support for tables and frames. It can be used
+ as a standalone file pager, too.
+ .
+  * You can follow links and/or view images in HTML.
+  * Internet message prewview mode, you can browse HTML mail.
+  * You can follow links in plain text if it includes URL forms.
+ .
+ This package is built with SSL support.
+ .
+ For more information,
+ see http://ei5nazha.yz.yamagata-u.ac.jp/~aito/w3m/eng/index.html
+
+Package: auto-apt
+Status: install ok installed
+Priority: optional
+Section: admin
+Installed-Size: 124
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Version: 0.3.11
+Depends: libc6 (>= 2.2.1), apt, sudo, perl5
+Recommends: wget, dpkg-dev
+Suggests: x-terminal-emulator, libgtk-perl, build-essential
+Conffiles:
+ /etc/auto-apt/paths.list f2d4e8ad4c274982b444832d14805b16
+Description: on demand package installation tool
+ auto-apt checks the file access of programs running within its
+ environments, and if a program tries to access a file known to
+ belong in an uninstalled package, auto-apt will install that
+ package using apt-get.
+ .
+ It also provides simple database to search which package contains
+ a requesting file.
+
+Package: hotplug
+Status: install ok installed
+Priority: optional
+Section: admin
+Installed-Size: 180
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Version: 0.0.20010228-3
+Replaces: usbmgr
+Depends: modutils (>= 2.4.2), debconf (>= 0.2.26)
+Recommends: ifupdown, usbutils, pciutils
+Conflicts: usbmgr
+Conffiles:
+ /etc/hotplug/usb.distmap 1a55651bfb3f39d9c5fecd94088b41a9
+ /etc/hotplug/usb.handmap 366ada9fe4cd5d95f21c3703830b59f6
+ /etc/hotplug/usb.usermap a58f71e28d8b5ddb1f81a36c53c02106
+ /etc/hotplug/hotplug.functions 36a51e6ea9d63b8ff2d418fa65f7039d
+ /etc/hotplug/net.agent 6fa917baef47bf32f3800046d8fcc1e6
+ /etc/hotplug/pci.agent 07cdd30fbb34482c8ebcf35b7ef638b1
+ /etc/hotplug/usb.agent 289340696d988eb8a1584209356bbbf9
+ /etc/hotplug/usb.rc 7fd79955187c5690033861e9894fe6e2
+ /etc/init.d/hotplug e5f04c793845b9e21b39e227b3f35e51
+Description: Linux Hotplug Scripts
+ This package contains the scripts necessary for hotplug Linux support,
+ and lets you plug in new devices and use them immediately.
+ Initially, it includes support for USB and PCI (Cardbus) devices,
+ and can automatically configure network interfaces.
+
+Package: xfonts-a12k12
+Status: install ok installed
+Priority: optional
+Section: x11
+Installed-Size: 192
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Version: 1-4
+Replaces: a12k12
+Depends: xutils
+Suggests: xfs | xserver
+Conflicts: a12k12, xbase-clients (<< 4.0)
+Conffiles:
+ /etc/X11/fonts/misc/xfonts-a12k12.alias 5568cadd509afe50469df69fd731e479
+Description: 12 dot Kanji & ASCII fonts for X
+ This package provides 12dot fonts for Japanese (ASCII and Kana/Kanji)
+ It provides
+ - a12: 12dot ASCII fonts
+ - k12: 12dot Kanji fonts
+
+Package: skkinput
+Status: install ok installed
+Priority: optional
+Section: x11
+Installed-Size: 317
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Version: 1:2.03-7
+Depends: libc6 (>= 2.2.1), xlibs (>= 4.0.1-11)
+Recommends: xfonts-cjk
+Suggests: skkserv, skkdic
+Description: X input method for Japanese for SKK method.
+ skkinput is application to input Japanese for X application using
+ protocols such as kinput2/XIM/Ximp protocol.
+ skkinput communicates with skkserv using Berkeley Socket.
+ Without skkserv, local dictionary files is used.
+
+Package: w3mmee
+Status: install ok installed
+Priority: optional
+Section: web
+Installed-Size: 924
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Version: 0.2.1.p18.5-1
+Provides: www-browser
+Depends: libc6 (>= 2.2.2-2), libgc5, libgpmg1 (>= 1.14-16), libmoe1.3, libncurses5 (>= 5.2.20010310-1)
+Suggests: w3mmee-ssl (>= 0.2.1.p18.5-1), mime-support, menu (>> 1.5)
+Description: WWW browsable pager with excellent tables/frames, MB extension
+ w3mmee is w3m with multibyte encoding extension.
+ .
+ For more information,
+ see http://ei5nazha.yz.yamagata-u.ac.jp/~aito/w3m/eng/index.html
+ and http://pub.ks-and-ks.ne.jp/prog/w3mmee/
+
+Package: debian-jp-keyring
+Status: install ok installed
+Priority: optional
+Section: contrib/misc
+Installed-Size: 179
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Version: 2001.03.09
+Recommends: gnupg
+Suggests: gpg-rsa | gpg-rsaref, pgp
+Description: PGP and GnuPG keys of Debian JP Developers
+ The Debian JP project wants developers to digitally sign the
+ announcements of their packages with PGP or GnuPG, to protect against
+ forgeries.  This is a PGP and GnuPG keyring with keys of
+ Debian JP developers.
+

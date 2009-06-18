@@ -1,0 +1,287 @@
+Package: auto-apt
+Binary: auto-apt
+Version: 0.3.11
+Priority: optional
+Section: admin
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Build-Depends: binutils, cpio, debhelper, devscripts, libc6-dev
+Architecture: any
+Standards-Version: 3.0.1
+Format: 1.0
+Directory: pool/main/a/auto-apt
+Files:
+ cd35e8874ff090fcce230ddc7cb4202f 568 auto-apt_0.3.11.dsc
+ 38f4d7bcce9942dcd468969e3be6a15a 515185 auto-apt_0.3.11.tar.gz
+
+Package: donkey
+Binary: donkey
+Version: 0.5-12
+Priority: extra
+Section: net
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Build-Depends: debhelper
+Architecture: any
+Standards-Version: 3.2.1
+Format: 1.0
+Directory: pool/main/d/donkey
+Files:
+ ef2fa8314ebb27c15d08568ca52773f1 585 donkey_0.5-12.dsc
+ dd3ebca4504edbcecdde63896d60b7b6 39723 donkey_0.5.orig.tar.gz
+ a256bc75dd84ce2c881aa2b1ec65885d 3674 donkey_0.5-12.diff.gz
+
+Package: fml
+Binary: fml
+Version: 4.0-4
+Priority: extra
+Section: mail
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Build-Depends: debhelper
+Architecture: all
+Standards-Version: 3.0.0
+Format: 1.0
+Directory: pool/main/f/fml
+Files:
+ 7ceed4a6a6bf4bda30c5816492630687 574 fml_4.0-4.dsc
+ 7bcae3c4bc4dcce3eff02e16e740b426 2185990 fml_4.0.orig.tar.gz
+ 92828920d332fc20df9ca9e8801de699 13839 fml_4.0-4.diff.gz
+
+Package: hex
+Binary: hex
+Version: 204-9
+Priority: extra
+Section: utils
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Build-Depends: debhelper, xutils, xlibs-dev
+Architecture: any
+Standards-Version: 3.2.1
+Format: 1.0
+Directory: pool/main/h/hex
+Files:
+ a218aa10311860286739feafe6617764 591 hex_204-9.dsc
+ 70f6e6048b31abb99159745a82b6931e 11140 hex_204.orig.tar.gz
+ 59a0cc84b9d3b8ef92c87c910f4d3a7d 12606 hex_204-9.diff.gz
+
+Package: hotplug
+Binary: hotplug
+Version: 0.0.20010228-3
+Priority: optional
+Section: admin
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Build-Depends: debhelper
+Architecture: all
+Standards-Version: 3.2.1
+Format: 1.0
+Directory: pool/main/h/hotplug
+Files:
+ 569ba18c8d3954b55cef174d006b9ce0 614 hotplug_0.0.20010228-3.dsc
+ 57ba91d4210fadb40a53eeb7de22a652 17746 hotplug_0.0.20010228.orig.tar.gz
+ 295ffb9116e50d56cf7dada0e4041716 6206 hotplug_0.0.20010228-3.diff.gz
+
+Package: libiso2mb
+Binary: libiso2mb-dev, libiso2mb0.8
+Version: 0.8.5-1
+Priority: optional
+Section: libs
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Build-Depends: debhelper, perl-5.005
+Architecture: any
+Standards-Version: 3.0.1
+Format: 1.0
+Directory: dists/woody/main/source/libs
+Files:
+ fb235dbdf1854687b2f1ce74de028a93 633 libiso2mb_0.8.5-1.dsc
+ ef466ae02f51452bc7d484a352fe5bd2 1265600 libiso2mb_0.8.5.orig.tar.gz
+ a96db44aba47d0b430bfdcde657b3412 6608 libiso2mb_0.8.5-1.diff.gz
+
+Package: libmoe
+Binary: libmoe1.3, libmoe-dev
+Version: 1.3.2-2
+Priority: optional
+Section: libs
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Build-Depends: debhelper, perl
+Architecture: any
+Standards-Version: 3.2.1
+Format: 1.0
+Directory: pool/main/libm/libmoe
+Files:
+ 195b647b761c34b688576204424f2413 612 libmoe_1.3.2-2.dsc
+ fda84c91fdfef270643a82c67e7e9f25 1278344 libmoe_1.3.2.orig.tar.gz
+ d968bbb93a900f37f7e07a0dd64afce8 2632 libmoe_1.3.2-2.diff.gz
+
+Package: mgp
+Binary: mgp
+Version: 1.07a.20010212-3
+Priority: optional
+Section: x11
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Build-Depends: debhelper, devscripts, xutils, flex, bison, freetype2-dev, vflib2-dev, libpng2-dev, xlibs-dev, awk, sharutils, zlib1g-dev, libungif3g-dev, imlib-dev
+Architecture: any
+Standards-Version: 3.1.0
+Format: 1.0
+Directory: pool/main/m/mgp
+Files:
+ 18e65f0bd4e810719417ec9ddbca8750 745 mgp_1.07a.20010212-3.dsc
+ 092d205d3096e44dcc04e6b45b1a8f22 813142 mgp_1.07a.20010212.orig.tar.gz
+ 546ba29434a8d882570b0f0a975db6c7 10577 mgp_1.07a.20010212-3.diff.gz
+
+Package: mhc
+Binary: mhc
+Version: 0.25-9
+Priority: optional
+Section: misc
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Build-Depends: ruby, ruby-dev, libpisock-dev, debhelper
+Architecture: any
+Standards-Version: 3.0.1
+Format: 1.0
+Directory: pool/main/m/mhc
+Files:
+ 42506e6db4cfd646ca74e04c78fbd79a 606 mhc_0.25-9.dsc
+ 2e318e3805fd5642915d8d5c2345808a 115520 mhc_0.25.orig.tar.gz
+ 0cee3cee8c22e0920901474a0af89762 8633 mhc_0.25-9.diff.gz
+
+Package: migemo
+Binary: liblingua-romkan-perl, migemo
+Version: 0.21-3
+Priority: optional
+Section: utils
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Build-Depends: debhelper (>> 2.0.0), perl, skkdic, textutils
+Architecture: all
+Standards-Version: 3.2.1
+Format: 1.0
+Directory: pool/main/m/migemo
+Files:
+ 16b4058791c38e761aa93de4b100ba2d 648 migemo_0.21-3.dsc
+ 2cf7c9f06243da4a8b58ecac12849913 143477 migemo_0.21.orig.tar.gz
+ 57b7f9c5935810feada40a8dbcd0ded7 150449 migemo_0.21-3.diff.gz
+
+Package: sendmail-wide
+Binary: sendmail-wide
+Version: 8.11.1+3.4W-5.1
+Priority: extra
+Section: mail
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Build-Depends: debhelper (>= 1.1.17), libwrap0-dev, m4, libdb2-dev, libldap2-dev, sfio-dev, libsasl-dev
+Architecture: any
+Standards-Version: 3.2.1.0
+Format: 1.0
+Directory: pool/main/s/sendmail-wide
+Files:
+ a9fc8b108168208055917ee55aa3e10a 724 sendmail-wide_8.11.1+3.4W-5.1.dsc
+ dc391f6cff86da8076b11a53152240c5 1338017 sendmail-wide_8.11.1+3.4W.orig.tar.gz
+ f761d0ecd65f929f0214afeb397aa489 175618 sendmail-wide_8.11.1+3.4W-5.1.diff.gz
+
+Package: skkinput
+Binary: skkinput
+Version: 1:2.03-7
+Priority: optional
+Section: x11
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Build-Depends: debhelper, devscripts, xlibs-dev, xutils
+Architecture: any
+Standards-Version: 3.0.1
+Format: 1.0
+Directory: pool/main/s/skkinput
+Files:
+ 1f3fde442e9b4c0842da142de15ab618 628 skkinput_2.03-7.dsc
+ 74c08620e8e916a3d56f3bb3e85a5d62 398821 skkinput_2.03.orig.tar.gz
+ 8e249e93628dd5b91c4156c87a51a7b9 9122 skkinput_2.03-7.diff.gz
+
+Package: smtpfeed
+Binary: smtpfeed
+Version: 1.11-1
+Priority: extra
+Section: mail
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Build-Depends: debhelper
+Architecture: any
+Standards-Version: 3.2.1
+Format: 1.0
+Directory: pool/main/s/smtpfeed
+Files:
+ 209164c3363b25a6f3b16c17fe8a4acf 595 smtpfeed_1.11-1.dsc
+ 8a56b84c9a74583ae606caf298c543c3 140005 smtpfeed_1.11.orig.tar.gz
+ d2b5ffaad8df4dc6ee6a9b921dfbd5ea 9788 smtpfeed_1.11-1.diff.gz
+
+Package: w3m
+Binary: w3m
+Version: 0.2.1-2
+Priority: optional
+Section: text
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Build-Depends: libgc5-dev, libncurses5-dev, libgpmg1-dev, debhelper, gawk | awk
+Architecture: any
+Standards-Version: 3.1.1
+Format: 1.0
+Directory: pool/main/w/w3m
+Files:
+ 49c115c0dc7bb5aebeb14969d69962d3 634 w3m_0.2.1-2.dsc
+ 76748994920f0f553e240d37cd9498b5 834552 w3m_0.2.1.orig.tar.gz
+ 9a4a98cb70ea772a3838f328c22c2037 31739 w3m_0.2.1-2.diff.gz
+
+Package: w3m-el
+Binary: w3m-el
+Version: 0.2.150-2
+Priority: optional
+Section: web
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Build-Depends: debhelper (>> 2.0.0)
+Architecture: all
+Standards-Version: 3.2.1
+Format: 1.0
+Directory: pool/main/w/w3m-el
+Files:
+ b032e63432086823a7c94943aae26eef 607 w3m-el_0.2.150-2.dsc
+ ea1ecc0aef0bcb992813a70066ccc8b5 107956 w3m-el_0.2.150.orig.tar.gz
+ b9693ecdac2858aca1992b1ef62348bb 4356 w3m-el_0.2.150-2.diff.gz
+
+Package: w3mmee
+Binary: w3mmee
+Version: 0.2.1.p18.5-1
+Priority: optional
+Section: web
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Build-Depends: libgc5-dev, libncurses5-dev, libgpmg1-dev, debhelper, gawk | awk, libmoe-dev (>= 1.3.2) , gettext
+Architecture: any
+Standards-Version: 3.2.1
+Format: 1.0
+Directory: pool/main/w/w3mmee
+Files:
+ 0ba3745e53ae57cadb7b1bd50352b2aa 697 w3mmee_0.2.1.p18.5-1.dsc
+ 74085a24f99fa3f7e4d3a87301b2b102 1033056 w3mmee_0.2.1.p18.5.orig.tar.gz
+ 867c8391daf9a1100311cbbb0001919e 8525 w3mmee_0.2.1.p18.5-1.diff.gz
+
+Package: xfonts-a12k12
+Binary: xfonts-a12k12
+Version: 1-4
+Priority: optional
+Section: x11
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Build-Depends: xutils | xbase-clients, debhelper
+Architecture: all
+Standards-Version: 3.2.1
+Format: 1.0
+Directory: pool/main/x/xfonts-a12k12
+Files:
+ 92401a07d27e3076bdb3f7efc5465651 630 xfonts-a12k12_1-4.dsc
+ 4d912d9b872e9776010eab9f8a7583a8 166916 xfonts-a12k12_1.orig.tar.gz
+ 81fa36f78c2d0a0894bf6143f9bfd8b2 3878 xfonts-a12k12_1-4.diff.gz
+
+Package: xfonts-marumoji
+Binary: xfonts-marumoji
+Version: 0.2-4
+Priority: optional
+Section: x11
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Build-Depends: xutils | xbase-clients, debhelper
+Architecture: all
+Standards-Version: 3.2.1
+Format: 1.0
+Directory: pool/main/x/xfonts-marumoji
+Files:
+ d6ec82736a1a33e32307bbf5466f0990 644 xfonts-marumoji_0.2-4.dsc
+ fcbcaf20ad0f04784c55c156694a4882 655083 xfonts-marumoji_0.2.orig.tar.gz
+ 8ba60d389904cca7347d63bc5aa9e982 3517 xfonts-marumoji_0.2-4.diff.gz
+

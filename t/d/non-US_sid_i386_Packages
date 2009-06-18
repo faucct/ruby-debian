@@ -1,0 +1,50 @@
+Package: w3m-ssl
+Priority: optional
+Section: non-US
+Installed-Size: 844
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Architecture: i386
+Version: 0.2.1-2
+Provides: www-browser
+Depends: libc6 (>= 2.2.2-2), libgc5, libgpmg1 (>= 1.14-16), libncurses5 (>= 5.2.20010310-1), libssl0.9.6, w3m
+Recommends: w3m (= 0.2.1-2)
+Suggests: mime-support, menu (>> 1.5)
+Filename: pool/non-US/main/w/w3m-ssl/w3m-ssl_0.2.1-2_i386.deb
+Size: 347316
+MD5sum: e97e0a7f84f7a98c12476004c41bba8c
+Description: WWW browsable pager with SSL support
+ w3m is a text-based World Wide Web browser with IPv6 support.
+ It features excellent support for tables and frames. It can be used
+ as a standalone file pager, too.
+ .
+  * You can follow links and/or view images in HTML.
+  * Internet message prewview mode, you can browse HTML mail.
+  * You can follow links in plain text if it includes URL forms.
+ .
+ This package is built with SSL support.
+ .
+ For more information,
+ see http://ei5nazha.yz.yamagata-u.ac.jp/~aito/w3m/eng/index.html
+
+Package: w3mmee-ssl
+Priority: optional
+Section: non-US
+Installed-Size: 420
+Maintainer: Fumitoshi UKAI <ukai@debian.or.jp>
+Architecture: i386
+Version: 0.2.1.p18.5-1
+Provides: www-browser
+Depends: libc6 (>= 2.2.2-2), libgc5, libgpmg1 (>= 1.14-16), libmoe1.3, libncurses5 (>= 5.2.20010310-1), libssl0.9.6, w3mmee
+Recommends: w3mmee (= 0.2.1.p18.5-1)
+Suggests: mime-support, menu (>> 1.5)
+Filename: pool/non-US/main/w/w3mmee-ssl/w3mmee-ssl_0.2.1.p18.5-1_i386.deb
+Size: 202458
+MD5sum: 809c71653d864904ad721fa9b35de1c3
+Description: WWW browsable pager with SSL support, MB extension
+ w3mmee is w3m with multibyte encoding extension.
+ This package is built with SSL support.
+ .
+ For more information,
+ see http://ei5nazha.yz.yamagata-u.ac.jp/~aito/w3m/eng/index.html
+ and http://pub.ks-and-ks.ne.jp/prog/w3mmee/
+

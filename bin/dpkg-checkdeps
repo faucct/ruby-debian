@@ -1,0 +1,163 @@
+#!/usr/bin/ruby
+# 
+# dpkg-checkdeps - utilities to check deb dependency
+# Copyright (c) 2001 Fumitoshi UKAI <ukai@debian.or.jp>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+# $Id: dpkg-checkdeps.rb,v 1.6 2001/05/15 18:16:26 ukai Exp $
+#
+
+require 'debian'
+require 'getoptlong'
+include Debian
+
+opts = GetoptLong.new(["--to", "-t", GetoptLong::REQUIRED_ARGUMENT],
+		      ["--check", "-c", GetoptLong::NO_ARGUMENT],
+		      ["--from", "-f", GetoptLong::REQUIRED_ARGUMENT],
+		      ["--arch", "-a", GetoptLong::REQUIRED_ARGUMENT],
+		      ["--all", "-A", GetoptLong::NO_ARGUMENT],
+		      ["--verbose", "-v", GetoptLong::NO_ARGUMENT],
+		      ["--quiet", "-q", GetoptLong::NO_ARGUMENT],
+		      ["--help", "-h", GetoptLong::NO_ARGUMENT])
+
+$quiet = false
+$verbose = false
+arch = Dpkg.installation_architecture
+def usage
+  puts "Usage: #{$0} [opts] [{packagename|package}...]"
+  puts "  #{$0} [--to <Packages>] --from <Packages> <packagename> ..."
+  puts "  #{$0} [--to <Packages>] --from <Packages> -A"
+  puts "  #{$0} [--to <Packages>] <packagefile>..."
+  puts "  #{$0} [--to <Packages>] --check <packagename>"
+end
+
+$stdout.sync = true
+to_packages = nil
+from_packages = nil
+check_inset = false
+
+begin
+  opts.each {|opt, arg|
+    case opt
+    when "--to" then
+      if to_packages == nil
+	to_packages = Packages.new
+      end
+      arg.gsub!(/\$ARCH/,arch)
+      Dir[arg].each {|p|
+	print "* Loading target #{p}..." if $verbose
+	to_packages += Packages.new(p)
+	print "done\n" if $verbose
+      }
+    when "--from" then 
+      if from_packages == nil
+	from_packages = Packages.new
+      end
+      arg.gsub!(/\$ARCH/,arch)
+      Dir[arg].each {|p|
+	print "* Loading source #{p}..." if $verbose
+	from_packages += Packages.new(p)
+	print "done\n" if $verbose
+      }
+    when "--arch" then
+      arch = arg
+      print "* Architecture: #{arch}\n" if $verbose
+    when "--all" then
+      if from_packages == nil
+	$stderr.puts "#{$0}: --all requires --from option"
+	raise GetoptLong::InvalidOption
+      end
+      from_packages.pkgnames {|p|
+	ARGV.push(p)
+      }
+    when "--check" then 
+      check_inset = true
+    when "--verbose" then $verbose = true
+    when "--quiet" then $quiet = true
+    when "--help" then usage; exit 0
+    else raise GetoptLong::InvalidOption
+    end
+  }
+rescue GetoptLong::InvalidOption
+  usage; exit 1
+end
+
+if to_packages == nil
+  print "* Loading target (dpkg status)..." if $verbose
+  to_packages = Status.new
+  print "done\n" if $verbose
+end
+if check_inset && from_packages == nil
+  from_packages = to_packages
+end
+
+check_packages = to_packages
+check_debs = []
+while arg = ARGV.shift
+  if from_packages == nil
+    deb = DpkgDeb.load(arg)
+  else
+    deb = from_packages[arg]
+  end
+  if deb == nil
+    $stderr.puts "E: Package: #{arg} not found"
+    exit 1
+  end
+  if deb['architecture'] != arch && deb['architecture'] != 'all'
+    next
+  end
+  check_debs.push(deb)
+  check_packages[deb.package] = deb
+end
+
+unmets = 0
+mets = 0
+num = 0
+if check_inset
+  to_packages.each_package {|deb|
+    print "* Checking #{deb}\n" if $verbose
+    num += 1
+    safe = true
+    deb.deps('depends').each {|dep|
+      check_debs.each {|cdeb|
+	if dep.include?(cdeb) && ! dep.satisfy?(cdeb)
+	  puts "E: #{deb} does not satisfy #{dep} against #{cdeb}"
+	  unmets += 1
+	  safe = false
+	end
+      }
+    }
+    if safe
+      mets += 1
+    end
+  }
+else
+  check_debs.each {|deb|
+    print "* Checking #{deb}\n" if $verbose
+    num += 1
+    safe = true
+    deb.unmet(check_packages).each {|u|
+      puts u
+      unmets += 1
+      safe = false
+    }
+    if safe
+      mets += 1
+    end
+  }
+end
+puts "#{num} packages: #{unmets} unmet in #{num - mets} packages / #{mets} packages ok" unless $quiet
+exit (unmets == 0 ? 0 : 1)

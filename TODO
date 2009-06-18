@@ -1,0 +1,29 @@
+TODO
+
+ official release
+ performance tuning
+   slow!
+ more/better APIs
+   dpkg-deb APIs
+   conflicts checks
+ cleanup APIs
+   debian.rb -> debian/dpkg.rb ?
+ documentation
+   manual? info? RD?
+ useful samples
+   grep-dctrl.rb ?
+
+ remove /usr/bin/dpkg dependency
+   compare_versions
+   *architecture
+
+ remove ar,tar,gunzip dependency
+   gunzip -> libzlib-ruby 
+   tar -> ??
+   
+ test/test suites
+   -> more test
+
+ support old deb format?
+
+$Id: TODO,v 1.11 2001/04/27 21:42:12 ukai Exp $

@@ -1,0 +1,4 @@
+examples/ONE_LINER
+examples/list_packages.rb
+examples/unmet_packages.rb
+bin/dpkg.rb
