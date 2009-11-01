@@ -3,7 +3,7 @@ Section: devel
 Priority: optional
 Maintainer: Ryan Niebur <ryan@debian.org>
 Build-Depends: debhelper (>= 7.0.50~)
-Build-Depends-Indep: ruby1.8, ruby1.8-dev, libapt-pkg-dev
+Build-Depends-Indep: ruby1.8, ruby1.8-dev, libapt-pkg-dev, ruby1.9, ruby1.9-dev
 Vcs-Git: git://git.ryan52.info/git/dpkg-ruby
 Vcs-Browser: http://git.ryan52.info/?p=dpkg-ruby;a=summary
 Standards-Version: 3.8.3
@@ -23,4 +23,13 @@ Description: modules/classes for dpkg on ruby 1.8
  It provides Debian::Dpkg and Debian::DpkgDeb modules and
  Debian::Deb, Debian::Dsc, Debian::Archives, Debian::Sources,
  Debian::Packages and Debian::Status classes on ruby 1.8.
+
+Package: libdpkg-ruby1.9
+Section: ruby
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: modules/classes for dpkg on ruby 1.9
+ It provides Debian::Dpkg and Debian::DpkgDeb modules and
+ Debian::Deb, Debian::Dsc, Debian::Archives, Debian::Sources,
+ Debian::Packages and Debian::Status classes on ruby 1.9.
 

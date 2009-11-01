@@ -11,8 +11,9 @@ dpkg-ruby (0.3.3) UNRELEASED; urgency=low
   * fix README path and move it to libdpkg-ruby1.8 (Closes: 389273)
   * set Standards-Version to 3.8.3
   * clean up a bit, use dh7, etc
+  * add a ruby1.9 package (Closes: #528471)
 
- -- Ryan Niebur <ryan@debian.org>  Sun, 01 Nov 2009 14:07:55 -0800
+ -- Ryan Niebur <ryan@debian.org>  Sun, 01 Nov 2009 14:20:41 -0800
 
 dpkg-ruby (0.3.2) unstable; urgency=low
 

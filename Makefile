@@ -3,6 +3,7 @@
 #
 SHELL = /bin/sh
 RUBY = ruby
+FRUBY = ruby
 RM = rm
 #### Start of system configuration section. ####
 prefix = $(DESTDIR)/usr
@@ -21,24 +22,24 @@ distclean:	clean
 realclean:	distclean
 
 install:
-	@$(RUBY) -r ftools -e 'File::makedirs(*ARGV)' $(bindir)
-	@$(RUBY) -r ftools -e 'File::makedirs(*ARGV)' $(libdir)
+	@$(FRUBY) -r ftools -e 'File::makedirs(*ARGV)' $(bindir)
+	@$(FRUBY) -r ftools -e 'File::makedirs(*ARGV)' $(libdir)
 	@for b in $(bins); do \
-	 $(RUBY) -r ftools -e 'File::install(ARGV[0], ARGV[1], 0755, true)' \
+	 $(FRUBY) -r ftools -e 'File::install(ARGV[0], ARGV[1], 0755, true)' \
 		$$b $(bindir); \
 	done
 	@for rb in $(libs); do \
-	 $(RUBY) -r ftools -e 'File::install(ARGV[0], ARGV[1], 0644, true)'\
+	 $(FRUBY) -r ftools -e 'File::install(ARGV[0], ARGV[1], 0644, true)'\
 		 $$rb $(libdir); \
 	done
 	@mkdir $(libdir)/debian/
 	@for rb in $(libs_debian); do \
-	 $(RUBY) -r ftools -e 'File::install(ARGV[0], ARGV[1], 0644, true)'\
+	 $(FRUBY) -r ftools -e 'File::install(ARGV[0], ARGV[1], 0644, true)'\
 		 $$rb $(libdir)/debian; \
 	done
 	@mkdir -p $(mandir)/man1
 	@for m in $(man1); do \
-	 $(RUBY) -r ftools -e 'File::install(ARGV[0], ARGV[1], 0644, true)' \
+	 $(FRUBY) -r ftools -e 'File::install(ARGV[0], ARGV[1], 0644, true)' \
 		$$m $(mandir)/man1; \
 	done
 
