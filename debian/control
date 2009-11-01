@@ -15,6 +15,18 @@ Description: ruby interface for dpkg
  It provides dpkg-ruby (a dpkg-awk clone) and dpkg-checkdeps
  (check utility of deb dependency problem).
 
+Package: libdpkg-ruby
+Section: ruby
+Architecture: all
+Depends: ${misc:Depends}, libdpkg-ruby1.8 (>= 0.3.3)
+Description: metapackage for libdpkg-ruby
+ It provides Debian::Dpkg and Debian::DpkgDeb modules and
+ Debian::Deb, Debian::Dsc, Debian::Archives, Debian::Sources,
+ Debian::Packages and Debian::Status classes on ruby 1.8.
+ .
+ This package depends on the version of libdpkg-ruby built for the
+ default version of ruby.
+
 Package: libdpkg-ruby1.8
 Section: ruby
 Architecture: any
