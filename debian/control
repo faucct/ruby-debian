@@ -3,7 +3,7 @@ Section: devel
 Priority: optional
 Maintainer: Ryan Niebur <ryan@debian.org>
 Build-Depends: debhelper (>= 7.0.50~)
-Build-Depends-Indep: ruby1.8, ruby1.8-dev, libapt-pkg-dev, ruby1.9, ruby1.9-dev
+Build-Depends-Indep: ruby1.8, ruby1.8-dev, libapt-pkg-dev, ruby1.9, ruby1.9-dev, ruby
 Vcs-Git: git://git.ryan52.info/git/dpkg-ruby
 Vcs-Browser: http://git.ryan52.info/?p=dpkg-ruby;a=summary
 Standards-Version: 3.8.3
