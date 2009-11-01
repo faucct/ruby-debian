@@ -6,6 +6,7 @@
 #export DH_VERBOSE=1
 
 RUBY := /usr/bin/ruby1.8
+EXAMPLES=debian/libdpkg-ruby1.8.examples
 
 %:
 	dh $@
@@ -18,8 +19,8 @@ override_dh_auto_build:
 	make -C ext
 
 override_dh_auto_clean:
-	-$(MAKE) clean RUBY=$(RUBY)
-	-rm -f debian/examples
+	$(MAKE) clean RUBY=$(RUBY)
+	rm -f $(EXAMPLES)
 	-cd ext; make distclean
 
 DESTDIR=$(CURDIR)/debian/tmp
@@ -33,8 +34,8 @@ override_dh_auto_install:
 	-rm -f $(CURDIR)/debian/tmp/usr/bin/dpkg.rb
 	-rm -f $(CURDIR)/debian/tmp/usr/share/man/man1/dpkg.rb.1*
 	make -C ext install DESTDIR=$(DESTDIR) sitelibdir=$(DESTDIR)$(shell ruby1.8 -rrbconfig -e 'puts Config::CONFIG["rubylibdir"]')
-	ls -1d examples/* | grep -v CVS > debian/libdpkg-ruby1.8.examples
-	echo bin/dpkg.rb >> debian/libdpkg-ruby1.8.examples
+	ls -1d examples/* | grep -v CVS > $(EXAMPLES)
+	echo bin/dpkg.rb >> $(EXAMPLES)
 
 override_dh_install:
 	dh_install --sourcedir=$(CURDIR)/debian/tmp
