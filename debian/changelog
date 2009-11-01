@@ -1,3 +1,9 @@
+dpkg-ruby (0.3.3) UNRELEASED; urgency=low
+
+  * adopt package (Closes: #532927)
+
+ -- Ryan Niebur <ryan@debian.org>  Sun, 01 Nov 2009 02:58:57 -0800
+
 dpkg-ruby (0.3.2) unstable; urgency=low
 
   * man/dpkg-checkdeps. fix typo 'packges'
