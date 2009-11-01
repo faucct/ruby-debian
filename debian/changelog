@@ -2,8 +2,9 @@ dpkg-ruby (0.3.3) UNRELEASED; urgency=low
 
   * adopt package (Closes: #532927)
   * add Vcs-* fields
+  * fix parsing .deb files, thanks to Junichi Uekawa (Closes: #390262)
 
- -- Ryan Niebur <ryan@debian.org>  Sun, 01 Nov 2009 03:02:26 -0800
+ -- Ryan Niebur <ryan@debian.org>  Sun, 01 Nov 2009 03:08:15 -0800
 
 dpkg-ruby (0.3.2) unstable; urgency=low
 

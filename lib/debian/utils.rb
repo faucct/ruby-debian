@@ -72,7 +72,7 @@ module Debian
       }
     end
     def tar(io,op,*pat)
-      progs = [TAR, op, '-f', '-']
+      progs = [TAR, op, '--wildcards', '-f', '-']
       if pat[0]
 	progs += ['--to-stdout', *pat]
       end
