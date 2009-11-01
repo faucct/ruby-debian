@@ -4,7 +4,7 @@ dpkg-ruby - Ruby interface modules for dpkg
 /usr/bin/dpkg-ruby - dpkg-awk clone
 /usr/bin/dpkg-checkdeps.rb - check deb dependency problem
 
-See also /usr/share/doc/dpkg-ruby/examples/
+See also /usr/share/doc/libdpkg-ruby1.8/examples/
 
 This program provides the following modules/class.
 (old, to be rewritten)
