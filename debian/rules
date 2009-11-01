@@ -11,14 +11,15 @@ EXAMPLES=debian/libdpkg-ruby1.8.examples
 %:
 	dh $@
 
-19VERSION=$(shell ruby1.9 -rrbconfig -e 'puts Config::CONFIG["ruby_version"]')
+VERSION_1.9=1.9
+19VERSION=$(shell ruby$(VERSION_1.9) -rrbconfig -e 'puts Config::CONFIG["ruby_version"]')
 
 override_dh_auto_build:
 	# Add here commands to compile the package.
 	$(MAKE) RUBY=$(RUBY)
 	#/usr/bin/docbook-to-man debian/dpkg-ruby.sgml > dpkg-ruby.1
 	mkdir -p ext/ruby1.9 ext/ruby1.8
-	ruby1.9 -C ext/ruby1.9 ../debian_version/extconf.rb
+	ruby$(VERSION_1.9) -C ext/ruby1.9 ../debian_version/extconf.rb
 	ruby1.8 -C ext/ruby1.8 ../debian_version/extconf.rb
 	make -C ext/ruby1.9
 	make -C ext/ruby1.8
@@ -35,14 +36,14 @@ DESTDIR=$(CURDIR)/debian/tmp
 override_dh_auto_install:
 	# mkdir -p `pwd`/debian/dpkg-ruby/`ruby -r mkmf -e 'puts $$libdir'`
 	# Add here commands to install the package into debian/dpkg-ruby.
-	$(MAKE) install DESTDIR=$(CURDIR)/debian/tmp RUBY=ruby1.9
+	$(MAKE) install DESTDIR=$(CURDIR)/debian/tmp RUBY=ruby$(VERSION_1.9)
 	$(MAKE) install DESTDIR=$(CURDIR)/debian/tmp RUBY=ruby1.8
 	sh ./debian/fixshbang.sh debian/tmp $(RUBY)
 	# dpkg.rb as example only
 	-rm -f $(CURDIR)/debian/tmp/usr/bin/dpkg.rb
 	-rm -f $(CURDIR)/debian/tmp/usr/share/man/man1/dpkg.rb.1*
 	make -C ext/ruby1.8 install DESTDIR=$(DESTDIR) sitelibdir=$(DESTDIR)$(shell ruby1.8 -rrbconfig -e 'puts Config::CONFIG["rubylibdir"]')
-	make -C ext/ruby1.9 install DESTDIR=$(DESTDIR) sitelibdir=$(DESTDIR)$(shell ruby1.9 -rrbconfig -e 'puts Config::CONFIG["rubylibdir"]')
+	make -C ext/ruby1.9 install DESTDIR=$(DESTDIR) sitelibdir=$(DESTDIR)$(shell ruby$(VERSION_1.9) -rrbconfig -e 'puts Config::CONFIG["rubylibdir"]')
 	ls -1d examples/* | grep -v CVS > $(EXAMPLES)
 	echo bin/dpkg.rb >> $(EXAMPLES)
 
