@@ -16,8 +16,8 @@ Description: ruby interface for dpkg
  (check utility of deb dependency problem).
 
 Package: libdpkg-ruby1.8
-Architecture: all
-Depends: libruby1.8
+Architecture: any
+Depends: libruby1.8, ${shlib:Depends}
 Description: modules/classes for dpkg on ruby 1.8
  It provides Debian::Dpkg and Debian::DpkgDeb modules and
  Debian::Deb, Debian::Dsc, Debian::Archives, Debian::Sources,

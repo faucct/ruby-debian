@@ -21,6 +21,7 @@
 
 require 'debian/ar'
 require 'debian/utils'
+require 'debian_version'
 
 # ruby1.6 does not have Hash.values_at, but ruby1.8 prefers it
 unless Hash.new.respond_to? :values_at
@@ -74,7 +75,7 @@ module Debian
     end
 
     def compare_versions(a, rel, b)
-      return system(DPKG, '--compare-versions', a, rel, b)
+      return Debian::Version.cmp_version(a, rel, b)
     end
 
     def field(debfile, fld=[])

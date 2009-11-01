@@ -19,6 +19,7 @@ build-stamp:
 	# Add here commands to compile the package.
 	$(MAKE) RUBY=$(RUBY)
 	#/usr/bin/docbook-to-man debian/dpkg-ruby.sgml > dpkg-ruby.1
+	cd ext; ruby ./debian_version/extconf.rb; make
 	touch build-stamp
 
 clean:
@@ -28,7 +29,10 @@ clean:
 	# Add here commands to clean up after the build process.
 	-$(MAKE) clean RUBY=$(RUBY)
 	-rm -f debian/examples
+	-cd ext; make distclean
 	dh_clean
+
+DESTDIR=$(CURDIR)/debian/tmp
 
 install: build
 	dh_testdir
@@ -42,6 +46,7 @@ install: build
 	# dpkg.rb as example only
 	-rm -f $(CURDIR)/debian/tmp/usr/bin/dpkg.rb
 	-rm -f $(CURDIR)/debian/tmp/usr/share/man/man1/dpkg.rb.1*
+	cd ./ext/; make install DESTDIR=$(DESTDIR) sitelibdir=$(DESTDIR)$(shell ruby1.8 -rrbconfig -e 'puts Config::CONFIG["rubylibdir"]')
 	dh_install --sourcedir=$(CURDIR)/debian/tmp
 	ls -1d examples/* | grep -v CVS > debian/libdpkg-ruby1.8.examples
 	echo bin/dpkg.rb >> debian/libdpkg-ruby1.8.examples
