@@ -7,38 +7,24 @@
 
 RUBY := /usr/bin/ruby1.8
 
-configure: configure-stamp
-configure-stamp:
-	dh_testdir
-	# Add here commands to configure the package.
-	touch configure-stamp
+%:
+	dh $@
 
-build: configure-stamp build-stamp
-build-stamp:
-	dh_testdir
+override_dh_auto_build:
 	# Add here commands to compile the package.
 	$(MAKE) RUBY=$(RUBY)
 	#/usr/bin/docbook-to-man debian/dpkg-ruby.sgml > dpkg-ruby.1
-	cd ext; ruby ./debian_version/extconf.rb; make
-	touch build-stamp
+	$(RUBY) -C ext ./debian_version/extconf.rb
+	make -C ext
 
-clean:
-	dh_testdir
-	dh_testroot
-	rm -f build-stamp configure-stamp
-	# Add here commands to clean up after the build process.
+override_dh_auto_clean:
 	-$(MAKE) clean RUBY=$(RUBY)
 	-rm -f debian/examples
 	-cd ext; make distclean
-	dh_clean
 
 DESTDIR=$(CURDIR)/debian/tmp
 
-install: build
-	dh_testdir
-	dh_testroot
-	dh_clean -k
-	dh_installdirs
+override_dh_auto_install:
 	# mkdir -p `pwd`/debian/dpkg-ruby/`ruby -r mkmf -e 'puts $$libdir'`
 	# Add here commands to install the package into debian/dpkg-ruby.
 	$(MAKE) install DESTDIR=$(CURDIR)/debian/tmp RUBY=$(RUBY)
@@ -46,45 +32,12 @@ install: build
 	# dpkg.rb as example only
 	-rm -f $(CURDIR)/debian/tmp/usr/bin/dpkg.rb
 	-rm -f $(CURDIR)/debian/tmp/usr/share/man/man1/dpkg.rb.1*
-	cd ./ext/; make install DESTDIR=$(DESTDIR) sitelibdir=$(DESTDIR)$(shell ruby1.8 -rrbconfig -e 'puts Config::CONFIG["rubylibdir"]')
-	dh_install --sourcedir=$(CURDIR)/debian/tmp
+	make -C ext install DESTDIR=$(DESTDIR) sitelibdir=$(DESTDIR)$(shell ruby1.8 -rrbconfig -e 'puts Config::CONFIG["rubylibdir"]')
 	ls -1d examples/* | grep -v CVS > debian/libdpkg-ruby1.8.examples
 	echo bin/dpkg.rb >> debian/libdpkg-ruby1.8.examples
 
-# Build architecture-independent files here.
-binary-indep: build install
-	dh_testdir
-	dh_testroot
-#	dh_installdebconf
-	dh_installdocs
-	dh_installexamples
-#	dh_installmenu
-#	dh_installlogrotate
-#	dh_installemacsen
-#	dh_installpam
-#	dh_installmime
-#	dh_installinit
-#	dh_installcron
-	dh_installman
-#	dh_installinfo
-#	dh_undocumented
-	dh_installchangelogs 
-	dh_link
-	dh_strip
-	dh_compress
-	dh_fixperms
-#	dh_makeshlibs
-	dh_installdeb
-#	ruby ./debian/dh_ruby dpkg-ruby
-#	dh_perl
-#	dh_shlibdeps
-	dh_gencontrol
-	dh_md5sums
-	dh_builddeb
+override_dh_install:
+	dh_install --sourcedir=$(CURDIR)/debian/tmp
 
-# Build architecture-dependent files here.
-binary-arch: build install
-# We have nothing to do for arch-dependent
-
-binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install configure
+override_dh_auto_test:
+	@echo no tests during package build

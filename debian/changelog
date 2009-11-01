@@ -9,8 +9,10 @@ dpkg-ruby (0.3.3) UNRELEASED; urgency=low
     forking a dpkg process. this also makes the package arch:any.
     (closes: #390332, #432269)
   * fix README path and move it to libdpkg-ruby1.8 (Closes: 389273)
+  * set Standards-Version to 3.8.3
+  * clean up a bit, use dh7, etc
 
- -- Ryan Niebur <ryan@debian.org>  Sun, 01 Nov 2009 04:29:01 -0800
+ -- Ryan Niebur <ryan@debian.org>  Sun, 01 Nov 2009 14:07:55 -0800
 
 dpkg-ruby (0.3.2) unstable; urgency=low
 
