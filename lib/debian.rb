@@ -874,20 +874,14 @@ module Debian
     
     def [](package) @lists[package]; end
     def package(package) @lists[package]; end
-
-    def pkgs_re_escape(pkgs)
-      return pkgs.map{|p| Regexp.escape(p)}.join('|')
-    end
   end
 
   ################################################################
   class Sources < Archives
     def initialize(file = "", pkgs = [], fields = [])
-      unless pkgs.empty?
-	pkgre = Regexp.new("(Package|Source):\\s(#{pkgs_re_escape(pkgs)})\n")
-      end
       @lists = Archives.parseArchiveFile(file) {|info|
-	if !pkgre || pkgre =~ info
+        info =~ /(?:Package|Source):\s(.*)$/;
+	if pkgs.empty? || pkgs.include?($1)
 	  d = Dsc.new(info,fields)
 	  if block_given?
 	    yield d
@@ -901,13 +895,11 @@ module Debian
   ################################################################  
   class Packages < Archives
     def initialize(file = "", pkgs = [], fields = [])
-      unless pkgs.empty?
-	pkgre = Regexp.new("Package:\\s(#{pkgs_re_escape(pkgs)})\n")
-      end
       @provides = {}
       @file = [file]
       @lists = Archives.parseArchiveFile(file) {|info|
-	if !pkgre || pkgre =~ info
+        info =~ /Package:\s(.*)$/;
+	if pkgs.empty? || pkgs.include?($1)
 	  d = Deb.new(info,fields)
 	  add_provides(d)
 	  if block_given?
