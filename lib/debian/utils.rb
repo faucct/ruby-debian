@@ -29,14 +29,16 @@ module Debian
     def Utils.pipeline(io,progs)
       # wr0 -> rd0 [gunzip] wr -> rd
       rd,wr = IO.pipe
+      rde,wre = IO.pipe
       pid = fork
       if pid
 	# parent
 	wr.close
+	wre.close
 	if block_given?
-	  return yield(rd)
+	  return yield(rd, rde)
 	else
-	  return rd
+	  return rd, rde
 	end
       else
 	# child
@@ -47,7 +49,10 @@ module Debian
 	  # gunzip
 	  wr0.close
           STDOUT.reopen(wr)
+          STDERR.reopen(wre)
           STDIN.reopen(rd0)
+          ENV["LANG"] = "C"
+          ENV["LC_ALL"] = "C"
 	  exec(*progs)
           # XXX: waitpid(pid2?)
 	else
@@ -63,7 +68,7 @@ module Debian
     end
 
     def gunzip(io)
-      Utils.pipeline(io, [GUNZIP]) {|fp|
+      Utils.pipeline(io, [GUNZIP]) {|fp,fpe|
 	if block_given?
 	  return yield(fp)
 	else
@@ -76,7 +81,7 @@ module Debian
       if pat[0]
 	progs += ['--to-stdout', *pat]
       end
-      Utils.pipeline(io,progs) {|fp|
+      Utils.pipeline(io,progs) {|fp,fpe|
 	if block_given?
 	  return yield(fp)
 	else
