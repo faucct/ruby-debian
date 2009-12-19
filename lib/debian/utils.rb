@@ -26,7 +26,7 @@ module Debian
     TAR_EXTRACT = '-x'
     TAR_LIST = '-t'
     
-    def Utils.pipeline(io,progs)
+    def Utils.pipeline(io,progs,stderr = false)
       # wr0 -> rd0 [gunzip] wr -> rd
       rd,wr = IO.pipe
       rde,wre = IO.pipe
@@ -49,7 +49,7 @@ module Debian
 	  # gunzip
 	  wr0.close
           STDOUT.reopen(wr)
-          STDERR.reopen(wre)
+          STDERR.reopen(wre) if stderr
           STDIN.reopen(rd0)
           ENV["LANG"] = "C"
           ENV["LC_ALL"] = "C"
@@ -81,7 +81,20 @@ module Debian
       if pat[0]
 	progs += ['--to-stdout', *pat]
       end
-      Utils.pipeline(io,progs) {|fp,fpe|
+      Utils.pipeline(io,progs,op == "-t") {|fp,fpe|
+        if op == "-t"
+          pid = fork
+          if pid
+            # parent
+          else
+            while !fpe.eof? && str = fpe.readline
+              unless str.match(/^\/bin\/tar: Record size = [0-9]+ blocks$/)
+                STDERR.puts str
+              end
+            end
+            exit
+          end
+        end
 	if block_given?
 	  return yield(fp)
 	else
