@@ -1,4 +1,4 @@
-dpkg-ruby (0.3.3) UNRELEASED; urgency=low
+dpkg-ruby (0.3.3) unstable; urgency=low
 
   * adopt package (Closes: #532927)
   * add Vcs-* fields
@@ -15,7 +15,7 @@ dpkg-ruby (0.3.3) UNRELEASED; urgency=low
   * if running 'tar -t', filter stderr to remove 'Record size = foo
     blocks' lines
 
- -- Ryan Niebur <ryan@debian.org>  Sat, 19 Dec 2009 10:01:25 -0800
+ -- Ryan Niebur <ryan@debian.org>  Fri, 01 Jan 2010 21:11:48 -0800
 
 dpkg-ruby (0.3.2) unstable; urgency=low
 
