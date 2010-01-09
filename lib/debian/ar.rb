@@ -112,7 +112,11 @@ module Debian
       end
       @ofs = []
     end
-    
+
+    def close
+      @fp.close
+    end
+
     def list
       @fp.seek(SARMAG, IO::SEEK_SET)
       while ! @fp.eof?

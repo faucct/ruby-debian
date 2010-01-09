@@ -136,13 +136,17 @@ module Debian
 
     def load(debfile)
       info = ''
-      Debian::Ar.new(debfile).open('control.tar.gz') {|ctz|
+      ar = Debian::Ar.new(debfile)
+      ar.open('control.tar.gz') {|ctz|
 	Debian::Utils::gunzip(ctz) {|ct|
 	  Debian::Utils::tar(ct, Debian::Utils::TAR_EXTRACT, '*/control'){|fp|
 	    info = fp.readlines.join("")
+            fp.close
 	  }
+          ct.close
 	}
       }
+      ar.close
       deb = Deb.new(info)
       deb.filename = File.expand_path(debfile, Dir.getwd)
       deb.freeze

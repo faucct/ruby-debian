@@ -27,6 +27,7 @@ module Debian
     TAR_LIST = '-t'
     
     def Utils.pipeline(io,progs,stderr = false)
+      Signal.trap('CHLD', 'IGNORE')
       # wr0 -> rd0 [gunzip] wr -> rd
       rd,wr = IO.pipe
       rde,wre = IO.pipe
@@ -69,6 +70,7 @@ module Debian
 
     def gunzip(io)
       Utils.pipeline(io, [GUNZIP]) {|fp,fpe|
+        fpe.close
 	if block_given?
 	  return yield(fp)
 	else
@@ -95,6 +97,7 @@ module Debian
             exit
           end
         end
+        fpe.close
 	if block_given?
 	  return yield(fp)
 	else
