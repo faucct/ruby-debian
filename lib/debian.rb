@@ -519,8 +519,12 @@ module Debian
 	Debian::Utils.gunzip(ctz) {|ct|
 	  Debian::Utils.tar(ct, op, *pat) {|fp|
 	    if block_given?
-	      return yield(fp)
+              ct.close
+              retval = yield(fp)
+              fp.close
+	      return retval
 	    else
+              ct.close
 	      return fp
 	    end
 	  }
@@ -531,18 +535,18 @@ module Debian
     def control_fp(op, *pat)
       deb_fp("control.tar.gz", op, *pat) {|fp|
 	if block_given?
-	  return yield(fp)
+	  yield(fp)
 	else
-	  return fp
+	  fp
 	end
       }
     end
     def data_fp(op, *pat)
       deb_fp("data.tar.gz", op, *pat) {|fp|
 	if block_given?
-	  return yield(fp)
+	  yield(fp)
 	else
-	  return fp
+	  fp
 	end
       }
     end
@@ -575,14 +579,14 @@ module Debian
       end
       control_fp(Debian::Utils::TAR_EXTRACT, "*/#{cfile}") {|fp|
 	if block_given?
-	  return yield(fp)
+	  yield(fp)
 	else
-	  return fp
+	  fp
 	end
       }
     end
     def controlData(cfile = "control")
-      controlFile(cfile) {|fp| return fp.readlines.join("") }
+      controlFile(cfile) {|fp| fp.readlines.join("") }
     end
     def dataFile(fname)
       if /^\.\// =~ fname
@@ -593,14 +597,14 @@ module Debian
       end
       data_fp(Debian::Utils::TAR_EXTRACT, pat) {|fp|
 	if block_given?
-	  return yield(fp)
+	  yield(fp)
 	else
-	  return fp
+	  fp
 	end
       }
     end
     def dataData(fname)
-      dataFile(fname) {|fp| return fp.readlines.join("") }
+      dataFile(fname) {|fp| fp.readlines.join("") }
     end
     def sys_tarfile
       unless @filename || @artab
@@ -609,9 +613,9 @@ module Debian
       @artab.open("data.tar.gz") {|dtz|
 	Debian::Utils.gunzip(dtz) {|dt|
 	  if block_given?
-	    return yield(dt)
+	    yield(dt)
 	  else
-	    return dt
+	    dt
 	  end
 	}
       }
