@@ -11,7 +11,7 @@ EXAMPLES=debian/libdpkg-ruby1.8.examples
 %:
 	dh $@
 
-VERSION_1.9=1.9
+VERSION_1.9=1.9.1
 19VERSION=$(shell ruby$(VERSION_1.9) -rrbconfig -e 'puts Config::CONFIG["ruby_version"]')
 
 override_dh_auto_build:
@@ -27,7 +27,7 @@ override_dh_auto_build:
 override_dh_auto_clean:
 	$(MAKE) clean RUBY=$(RUBY)
 	rm -f $(EXAMPLES)
-	for i in install docs examples; do rm -f debian/libdpkg-ruby1.9.$$i; done
+	for i in install docs examples; do rm -f debian/libdpkg-ruby$(VERSION_1.9).$$i; done
 	[ ! -f ext/ruby1.8/Makefile ] || make -C ext/ruby1.8 distclean
 	[ ! -f ext/ruby1.9/Makefile ] || make -C ext/ruby1.9 distclean
 
@@ -48,7 +48,7 @@ override_dh_auto_install:
 	echo bin/dpkg.rb >> $(EXAMPLES)
 
 override_dh_install:
-	for i in install docs examples; do cp debian/libdpkg-ruby1.8.$$i debian/libdpkg-ruby1.9.$$i; sed -i s/1.8/$(19VERSION)/g debian/libdpkg-ruby1.9.$$i; done
+	for i in install docs examples; do cp debian/libdpkg-ruby1.8.$$i debian/libdpkg-ruby$(VERSION_1.9).$$i; sed -i s/1.8/$(19VERSION)/g debian/libdpkg-ruby$(VERSION_1.9).$$i; done
 	dh_install --sourcedir=$(CURDIR)/debian/tmp
 
 override_dh_auto_test:
