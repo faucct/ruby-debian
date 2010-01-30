@@ -1,8 +1,8 @@
-dpkg-ruby (0.3.6) UNRELEASED; urgency=low
+dpkg-ruby (0.3.6) unstable; urgency=low
 
   * switch to ruby 1.9.1 (Closes: #565848)
 
- -- Ryan Niebur <ryan@debian.org>  Fri, 29 Jan 2010 23:16:17 -0800
+ -- Ryan Niebur <ryan@debian.org>  Fri, 29 Jan 2010 23:22:11 -0800
 
 dpkg-ruby (0.3.5) unstable; urgency=low
 
