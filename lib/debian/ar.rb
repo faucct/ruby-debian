@@ -108,7 +108,7 @@ module Debian
       @fp = File.open(file)
       magic = @fp.gets
       unless magic == ARMAG
-	raise ArError, "archive broken"
+	raise ArError, "archive broken: #{file}"
       end
       @ofs = []
     end
