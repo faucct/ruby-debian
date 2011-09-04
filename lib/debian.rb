@@ -115,7 +115,10 @@ module Debian
 
     def deb?(debfile)
       begin
-	Debian::Ar.new(debfile).open("debian-binary").read == DEBFORMAT_VERSION
+        f = Debian::Ar.new(debfile)
+        res = (f.open("debian-binary").read == DEBFORMAT_VERSION)
+        f.close
+        return res
       rescue NameError, Debian::ArError
 	false
       end
@@ -568,6 +571,7 @@ module Debian
 	  @data.push(line.chomp)
 	}
       }
+      @artab.close
       freeze
     end
     def control= (c); @control = c; end

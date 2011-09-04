@@ -1,8 +1,12 @@
 dpkg-ruby (0.3.7) UNRELEASED; urgency=low
 
+  [ Francesco Poli (t1000) ]
   * add file name to broken archive exception (Closes: #590146)
 
- -- Francesco Poli (t1000) <frx@firenze.linux.it>  Sun, 25 Jul 2010 16:21:01 +0200
+  [ Ryan Niebur ]
+  * close files once they're parsed (Closes: #585448)
+
+ -- Ryan Niebur <ryan@debian.org>  Sun, 04 Sep 2011 11:41:29 -0700
 
 dpkg-ruby (0.3.6+nmu1) unstable; urgency=high
 
