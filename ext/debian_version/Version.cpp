@@ -6,8 +6,8 @@ using namespace std;
 extern "C" {
 
     static VALUE cmp_version(VALUE self, VALUE anObject, VALUE cmpType, VALUE anOtherObject) {
-        int res = debVS.CmpVersion(STR2CSTR(anObject),STR2CSTR(anOtherObject));
-        char * cmp = STR2CSTR(cmpType);
+        int res = debVS.CmpVersion(StringValuePtr(anObject),StringValuePtr(anOtherObject));
+        char * cmp = StringValuePtr(cmpType);
         if(!strcmp(cmp, "lt") || !strcmp(cmp, "<") || !strcmp(cmp, "<<")) {
             if(res < 0)
                 return Qtrue;

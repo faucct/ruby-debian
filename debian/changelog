@@ -1,3 +1,11 @@
+dpkg-ruby (0.3.6+nmu1) unstable; urgency=high
+
+  * Non-maintainer upload.
+  * Use StringValuePtr instead of the long-deprecated (and removed in ruby
+    1.9.1) STR2CSTR (closes: #593025).
+
+ -- Julien Cristau <jcristau@debian.org>  Thu, 26 Aug 2010 17:43:59 +0200
+
 dpkg-ruby (0.3.6) unstable; urgency=low
 
   * switch to ruby 1.9.1 (Closes: #565848)
