@@ -1,46 +1,48 @@
 Source: dpkg-ruby
-Section: devel
+Section: ruby
 Priority: optional
 Maintainer: Ryan Niebur <ryan@debian.org>
-Build-Depends: debhelper (>= 7.0.50~), ruby1.8, ruby1.8-dev, libapt-pkg-dev, ruby1.9.1, ruby1.9.1-dev, ruby
+Build-Depends: debhelper (>= 7.0.50~), gem2deb (>= 0.2.7~), libapt-pkg-dev
 Vcs-Git: git://git.debian.org/apt-listbugs/dpkg-ruby.git
 Vcs-Browser: http://git.debian.org/?p=apt-listbugs/dpkg-ruby.git;a=summary
-Standards-Version: 3.8.3
+Standards-Version: 3.9.2
+XS-Ruby-Versions: all
 
 Package: dpkg-ruby
-Architecture: all
-Depends: ruby1.8, libdpkg-ruby1.8, ${misc:Depends}
+Architecture: any
+XB-Ruby-Versions: ${ruby:Versions}
+Replaces: libdpkg-ruby (<< 0.3.7~), libdpkg-ruby1.8 (<< 0.3.7~), libdpkg-ruby1.9.1 (<< 0.3.7~)
+Breaks: libdpkg-ruby (<< 0.3.7~), libdpkg-ruby1.8 (<< 0.3.7~), libdpkg-ruby1.9.1 (<< 0.3.7~)
+Provides: libdpkg-ruby, libdpkg-ruby1.8, libdpkg-ruby1.9.1
+Depends: ${shlibs:Depends}, ${misc:Depends}, ruby | ruby-interpreter
 Description: ruby interface for dpkg
- It provides dpkg-ruby (a dpkg-awk clone) and dpkg-checkdeps
- (check utility of deb dependency problem).
-
-Package: libdpkg-ruby
-Section: ruby
-Architecture: all
-Depends: ${misc:Depends}, libdpkg-ruby1.8 (>= 0.3.3)
-Description: metapackage for libdpkg-ruby
  It provides Debian::Dpkg and Debian::DpkgDeb modules and
  Debian::Deb, Debian::Dsc, Debian::Archives, Debian::Sources,
  Debian::Packages and Debian::Status classes on ruby 1.8.
  .
- This package depends on the version of libdpkg-ruby built for the
- default version of ruby.
+ It provides dpkg-ruby (a dpkg-awk clone) and dpkg-checkdeps
+ (check utility of deb dependency problem).
+
+Package: libdpkg-ruby
+Section: oldlibs
+Architecture: all
+Depends: ${misc:Depends}, dpkg-ruby (>= 0.3.7)
+Description: Transitional package for dpkg-ruby
+ This is a transitional package to ease upgrades to the dpkg-ruby
+ package. It can safely be removed.
 
 Package: libdpkg-ruby1.8
-Section: ruby
-Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: modules/classes for dpkg on ruby 1.8
- It provides Debian::Dpkg and Debian::DpkgDeb modules and
- Debian::Deb, Debian::Dsc, Debian::Archives, Debian::Sources,
- Debian::Packages and Debian::Status classes on ruby 1.8.
+Section: oldlibs
+Architecture: all
+Depends: ${misc:Depends}, dpkg-ruby (>= 0.3.7)
+Description: Transitional package for dpkg-ruby
+ This is a transitional package to ease upgrades to the dpkg-ruby
+ package. It can safely be removed.
 
 Package: libdpkg-ruby1.9.1
-Section: ruby
-Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: modules/classes for dpkg on ruby 1.9
- It provides Debian::Dpkg and Debian::DpkgDeb modules and
- Debian::Deb, Debian::Dsc, Debian::Archives, Debian::Sources,
- Debian::Packages and Debian::Status classes on ruby 1.9.
-
+Section: oldlibs
+Architecture: all
+Depends: ${misc:Depends}, dpkg-ruby (>= 0.3.7)
+Description: Transitional package for dpkg-ruby
+ This is a transitional package to ease upgrades to the dpkg-ruby
+ package. It can safely be removed.
