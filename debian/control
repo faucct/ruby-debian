@@ -18,10 +18,10 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, ruby | ruby-interpreter
 Description: ruby interface for dpkg
  It provides Debian::Dpkg and Debian::DpkgDeb modules and
  Debian::Deb, Debian::Dsc, Debian::Archives, Debian::Sources,
- Debian::Packages and Debian::Status classes on ruby 1.8.
+ Debian::Packages and Debian::Status classes on ruby.
  .
  It provides dpkg-ruby (a dpkg-awk clone) and dpkg-checkdeps
- (check utility of deb dependency problem).
+ scripts (check utility of deb dependency problem).
 
 Package: libdpkg-ruby
 Section: oldlibs
