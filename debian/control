@@ -1,4 +1,4 @@
-Source: dpkg-ruby
+Source: ruby-debian
 Section: ruby
 Priority: optional
 Maintainer: Ryan Niebur <ryan@debian.org>
@@ -8,12 +8,12 @@ Vcs-Browser: http://git.debian.org/?p=apt-listbugs/dpkg-ruby.git;a=summary
 Standards-Version: 3.9.2
 XS-Ruby-Versions: all
 
-Package: dpkg-ruby
+Package: ruby-debian
 Architecture: any
 XB-Ruby-Versions: ${ruby:Versions}
-Replaces: libdpkg-ruby (<< 0.3.7~), libdpkg-ruby1.8 (<< 0.3.7~), libdpkg-ruby1.9.1 (<< 0.3.7~)
-Breaks: libdpkg-ruby (<< 0.3.7~), libdpkg-ruby1.8 (<< 0.3.7~), libdpkg-ruby1.9.1 (<< 0.3.7~)
-Provides: libdpkg-ruby, libdpkg-ruby1.8, libdpkg-ruby1.9.1
+Replaces: libdpkg-ruby (<< 0.3.7~), libdpkg-ruby1.8 (<< 0.3.7~), libdpkg-ruby1.9.1 (<< 0.3.7~), dpkg-ruby (<< 0.3.8~)
+Breaks: libdpkg-ruby (<< 0.3.7~), libdpkg-ruby1.8 (<< 0.3.7~), libdpkg-ruby1.9.1 (<< 0.3.7~), dpkg-ruby (<< 0.3.8~)
+Provides: libdpkg-ruby, libdpkg-ruby1.8, libdpkg-ruby1.9.1, dpkg-ruby
 Depends: ${shlibs:Depends}, ${misc:Depends}, ruby | ruby-interpreter
 Description: ruby interface for dpkg
  It provides Debian::Dpkg and Debian::DpkgDeb modules and
@@ -23,26 +23,34 @@ Description: ruby interface for dpkg
  It provides dpkg-ruby (a dpkg-awk clone) and dpkg-checkdeps
  scripts (check utility of deb dependency problem).
 
+Package: dpkg-ruby
+Architecture: all
+Section: oldlibs
+Depends: ${misc:Depends}, ruby-debian (>= 0.3.8)
+Description: Transitional package for ruby-debian
+ This is a transitional package to ease upgrades to the ruby-debian
+ package. It can safely be removed.
+
 Package: libdpkg-ruby
 Section: oldlibs
 Architecture: all
-Depends: ${misc:Depends}, dpkg-ruby (>= 0.3.7)
-Description: Transitional package for dpkg-ruby
- This is a transitional package to ease upgrades to the dpkg-ruby
+Depends: ${misc:Depends}, ruby-debian (>= 0.3.8)
+Description: Transitional package for ruby-debian
+ This is a transitional package to ease upgrades to the ruby-debian
  package. It can safely be removed.
 
 Package: libdpkg-ruby1.8
 Section: oldlibs
 Architecture: all
-Depends: ${misc:Depends}, dpkg-ruby (>= 0.3.7)
-Description: Transitional package for dpkg-ruby
- This is a transitional package to ease upgrades to the dpkg-ruby
+Depends: ${misc:Depends}, ruby-debian (>= 0.3.8)
+Description: Transitional package for ruby-debian
+ This is a transitional package to ease upgrades to the ruby-debian
  package. It can safely be removed.
 
 Package: libdpkg-ruby1.9.1
 Section: oldlibs
 Architecture: all
-Depends: ${misc:Depends}, dpkg-ruby (>= 0.3.7)
-Description: Transitional package for dpkg-ruby
- This is a transitional package to ease upgrades to the dpkg-ruby
+Depends: ${misc:Depends}, ruby-debian (>= 0.3.8)
+Description: Transitional package for ruby-debian
+ This is a transitional package to ease upgrades to the ruby-debian
  package. It can safely be removed.
