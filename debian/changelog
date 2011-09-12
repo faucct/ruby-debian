@@ -2,8 +2,9 @@ ruby-debian (0.3.8) UNRELEASED; urgency=low
 
   * rename package to ruby-debian for new Ruby library package
     naming standards
+  * rename git repository and move to collab-maint
 
- -- Ryan Niebur <ryan@debian.org>  Mon, 12 Sep 2011 00:05:06 -0700
+ -- Ryan Niebur <ryan@debian.org>  Mon, 12 Sep 2011 00:16:48 -0700
 
 dpkg-ruby (0.3.7) unstable; urgency=low
 

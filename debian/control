@@ -3,8 +3,8 @@ Section: ruby
 Priority: optional
 Maintainer: Ryan Niebur <ryan@debian.org>
 Build-Depends: debhelper (>= 7.0.50~), gem2deb (>= 0.2.7~), libapt-pkg-dev
-Vcs-Git: git://git.debian.org/apt-listbugs/dpkg-ruby.git
-Vcs-Browser: http://git.debian.org/?p=apt-listbugs/dpkg-ruby.git;a=summary
+Vcs-Git: git://git.debian.org/collab-maint/ruby-debian.git
+Vcs-Browser: http://git.debian.org/?p=collab-maint/ruby-debian.git;a=summary
 Standards-Version: 3.9.2
 XS-Ruby-Versions: all
 
