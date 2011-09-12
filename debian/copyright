@@ -1,23 +1,22 @@
-This is dpkg-ruby, written and maintained by Fumitoshi UKAI <ukai@debian.or.jp>
-on Thu, 19 Apr 2001 01:23:25 +0900.
+Format: http://anonscm.debian.org/viewvc/dep/web/deps/dep5.mdwn?revision=174&view=co
 
-The original source can always be found at:
-	ftp://ftp.debian.org/pool/main/d/dpkg-ruby/
+Files: *
+Copyright: Copyright (C) 2001  Fumitoshi UKAI <ukai@debian.or.jp>
+           Copyright (C) 2009, 2011  Ryan Niebur <ryan@debian.org>
+License: GPL
 
-Copyright (C) 2001  Fumitoshi UKAI <ukai@debian.or.jp>
-Copyright (C) 2009  Ryan Niebur <ryan@debian.org>
-
+License: GPL
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
   the Free Software Foundation; either version 2 of the License, or
   (at your option) any later version.
-
+  .
   This program is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
-
+  .
   You should have received a copy of the GNU General Public License with
   the Debian GNU/Linux distribution in file /usr/share/common-licenses/GPL;
-  if not, write to the Free Software Foundation, Inc., 51 Franklin St, 
+  if not, write to the Free Software Foundation, Inc., 51 Franklin St,
   Fifth Floor, Boston, MA  02110-1301  USA
