@@ -3,9 +3,9 @@ Format: http://anonscm.debian.org/viewvc/dep/web/deps/dep5.mdwn?revision=174&vie
 Files: *
 Copyright: Copyright (C) 2001  Fumitoshi UKAI <ukai@debian.or.jp>
            Copyright (C) 2009, 2011  Ryan Niebur <ryan@debian.org>
-License: GPL
+License: GPL-2+
 
-License: GPL
+License: GPL-2+
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
   the Free Software Foundation; either version 2 of the License, or
@@ -16,7 +16,11 @@ License: GPL
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
   .
-  You should have received a copy of the GNU General Public License with
-  the Debian GNU/Linux distribution in file /usr/share/common-licenses/GPL;
-  if not, write to the Free Software Foundation, Inc., 51 Franklin St,
-  Fifth Floor, Boston, MA  02110-1301  USA
+  You should have received a copy of the GNU General Public
+  License along with this package; if not, write to the Free
+  Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+  Boston, MA  02110-1301 USA
+  .
+  On Debian systems, the full text of the GNU General Public
+  License version 2 can be found in the file
+  `/usr/share/common-licenses/GPL-2'.

@@ -4,6 +4,8 @@ ruby-debian (0.3.8) UNRELEASED; urgency=low
     naming standards
   * rename git repository and move to collab-maint
   * convert debian/copyright to DEP5 format
+    - the license text says version 2 or any later version so point to
+      the GPL-2 file instead of the symlink
 
  -- Ryan Niebur <ryan@debian.org>  Mon, 12 Sep 2011 00:19:36 -0700
 
