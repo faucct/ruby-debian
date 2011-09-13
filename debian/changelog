@@ -6,8 +6,9 @@ ruby-debian (0.3.8) UNRELEASED; urgency=low
   * convert debian/copyright to DEP5 format
     - the license text says version 2 or any later version so point to
       the GPL-2 file instead of the symlink
+  * correct hyphens in man page
 
- -- Ryan Niebur <ryan@debian.org>  Mon, 12 Sep 2011 00:19:36 -0700
+ -- Ryan Niebur <ryan@debian.org>  Mon, 12 Sep 2011 19:14:35 -0700
 
 dpkg-ruby (0.3.7) unstable; urgency=low
 

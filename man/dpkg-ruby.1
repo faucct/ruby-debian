@@ -2,7 +2,7 @@
 .SH NAME
 dpkg-ruby \- Utility to read a dpkg style db file, dpkg-awk clone
 .SH SYNOPSIS
-\fBdpkg-ruby\fP [\fB(-f|--file) \fIfilename\fP] [\fB(-d|--debug) \fI##\fP] [\fB(-s|--sort) \fIlist\fP] [\fB(-n|--numeric) \fIlist\fP] [\fB(-rs|--rec_sep) \fI??\fP] '\fI<fieldname>:<regex>\fP' ... -- \fI<out_fieldname>\fP ..
+\fBdpkg-ruby\fP [\fB(\-f|\-\-file) \fIfilename\fP] [\fB(\-d|\-\-debug) \fI##\fP] [\fB(\-s|\-\-sort) \fIlist\fP] [\fB(\-n|\-\-numeric) \fIlist\fP] [\fB(\-rs|\-\-rec_sep) \fI??\fP] '\fI<fieldname>:<regex>\fP' ... \-\- \fI<out_fieldname>\fP ..
 .br
 .SH DESCRIPTION
 .I dpkg-ruby
@@ -15,38 +15,38 @@ matched fields.
 
 .TP
 .PD 0
-.BI -f " filename"
+.BI \-f " filename"
 .TP
-.BI --file " filename"
+.BI \-\-file " filename"
 .PD
 The file to parse.  The default is /var/lib/dpkg/status.
 .TP
 .PD 0
-.BI -d " [#]"
+.BI \-d " [#]"
 .TP
-.BI --debug " [#]"
+.BI \-\-debug " [#]"
 .PD
 Each time this is specified, it increased the debug level.
 .TP
 .PD 0
-.BI -s " field(s)"
+.BI \-s " field(s)"
 .TP
-.BI --sort " field(s)"
+.BI \-\-sort " field(s)"
 .PD
 A space or comma separated list of fields to sort on.
 .TP
 .PD 0
-.BI -n " field(s)"
+.BI \-n " field(s)"
 .TP
-.BI --numeric " field(s)"
+.BI \-\-numeric " field(s)"
 .PD
 A space or comma separated list of fields that should be
 interpreted as numeric in value.
 .TP
 .PD 0
-.BI -rs " ??"
+.BI \-rs " ??"
 .TP
-.BI --rec_sep " ??"
+.BI \-\-rec_sep " ??"
 .PD
 Output this string at the end of each output paragraph.
 .\" .TP
@@ -60,9 +60,9 @@ Output this string at the end of each output paragraph.
 .\" xml.
 .TP
 .PD 0
-.B -h
+.B \-h
 .TP
-.B --help
+.B \-\-help
 .PD
 Display some help.
 .TP
