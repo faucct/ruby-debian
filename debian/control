@@ -16,12 +16,12 @@ Breaks: libdpkg-ruby (<< 0.3.7~), libdpkg-ruby1.8 (<< 0.3.7~), libdpkg-ruby1.9.1
 Provides: libdpkg-ruby, libdpkg-ruby1.8, libdpkg-ruby1.9.1, dpkg-ruby
 Depends: ${shlibs:Depends}, ${misc:Depends}, ruby | ruby-interpreter
 Description: ruby interface for dpkg
- It provides Debian::Dpkg and Debian::DpkgDeb modules and
+ This package provides Debian::Dpkg and Debian::DpkgDeb modules and
  Debian::Deb, Debian::Dsc, Debian::Archives, Debian::Sources,
- Debian::Packages and Debian::Status classes on ruby.
+ Debian::Packages and Debian::Status classes for ruby.
  .
- It provides dpkg-ruby (a dpkg-awk clone) and dpkg-checkdeps
- scripts (check utility of deb dependency problem).
+ It also provides two scripts, dpkg-ruby (a dpkg-awk clone) and
+ dpkg-checkdeps (a utility to check for deb dependency problems).
 
 Package: dpkg-ruby
 Architecture: all
