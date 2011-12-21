@@ -1,8 +1,0 @@
-#!/usr/bin/ruby
-
-substvars="debian/#{ARGV[0]}.substvars"
-require 'rbconfig'
-CONFIG = Config::MAKEFILE_CONFIG
-File.open(substvars, "a+") {|f|
- f.puts "ruby:Depends=ruby (>= #{CONFIG['MAJOR']}.#{CONFIG['MINOR']}), ruby (<< #{CONFIG['MAJOR']}.#{CONFIG['MINOR'].to_i+1})"
-}
