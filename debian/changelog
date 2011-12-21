@@ -7,7 +7,7 @@ ruby-debian (0.3.8) UNRELEASED; urgency=low
     - the license text says version 2 or any later version so point to
       the GPL-2 file instead of the symlink
   * correct hyphens in man page
-  * remove unused debian/dh_ruby
+  * remove unused debian/dh_ruby and debian/fixshbang.sh
 
  -- Ryan Niebur <ryan@debian.org>  Tue, 20 Dec 2011 19:08:33 -0800
 
