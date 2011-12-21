@@ -1,4 +1,4 @@
-ruby-debian (0.3.8) UNRELEASED; urgency=low
+ruby-debian (0.3.8) unstable; urgency=low
 
   * rename package to ruby-debian for new Ruby library package
     naming standards
@@ -9,7 +9,7 @@ ruby-debian (0.3.8) UNRELEASED; urgency=low
   * correct hyphens in man page
   * remove unused debian/dh_ruby and debian/fixshbang.sh
 
- -- Ryan Niebur <ryan@debian.org>  Tue, 20 Dec 2011 19:08:33 -0800
+ -- Ryan Niebur <ryan@debian.org>  Tue, 20 Dec 2011 19:29:23 -0800
 
 dpkg-ruby (0.3.7) unstable; urgency=low
 
