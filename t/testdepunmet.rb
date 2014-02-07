@@ -4,9 +4,9 @@ class TestDebian__Dep__Unmet < MiniTest::Test
 
   def setup
     dep = Debian::Dep::Term.new('w3m')
-    assert_not_nil(dep)
+    assert_instance_of Debian::Dep::Term, dep
     deb = Debian::Deb.new(IO.readlines("d/w3m-ssl_0.2.1-1.f").join(""))
-    assert_not_nil(deb)
+    assert_instance_of Debian::Dep::Term, dep
     @unmet = Debian::Dep::Unmet.new(dep, deb)
   end
   def test_deb
@@ -52,16 +52,4 @@ class TestDebian__Dep__Unmet < MiniTest::Test
 #	???
 #  end
 
-end
-
-if $0 == __FILE__
-  if ARGV.size == 0
-    suite = TestDebian__Dep__Unmet.suite
-  else
-    suite = RUNIT::TestSuite.new
-    ARGV.each do |testmethod|
-      suite.add_test(TestDebian__Dep__Unmet.new(testmethod))
-    end
-  end
-  RUNIT::CUI::TestRunner.run(suite)
 end

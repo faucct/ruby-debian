@@ -76,7 +76,7 @@ class TestDebian__Dpkg < MiniTest::Test
       dpkg_l = dpkg_l_parse(f.readlines[0])
     }
     dpkg_tl = Debian::Dpkg.status(['dpkg'])
-    assert_not_nil(dpkg_tl['dpkg'])
+    assert_instance_of Debian::Deb, dpkg_tl['dpkg']
     assert_equal('dpkg', dpkg_tl['dpkg'].package)
     assert_equal(LIST_SELECTION[dpkg_l['selection']], 
 		  dpkg_tl['dpkg'].selection)
@@ -117,7 +117,7 @@ class TestDebian__Dpkg < MiniTest::Test
 	end
       }
       next if dupped
-      assert_not_nil(tp, "#{op}")
+      assert_instance_of Debian::Dep::Term, tp
       assert_equal(op, tp.package.slice(0,op.length),
 		    "#{op}/#{tp.package}")
       assert_equal(ol['package'], tp.package.slice(0,ol['package'].length),
