@@ -123,15 +123,3 @@ class TestDebian__Dep__Term < MiniTest::Test
 #  end
 
 end
-
-if $0 == __FILE__
-  if ARGV.size == 0
-    suite = TestDebian__Dep__Term.suite
-  else
-    suite = RUNIT::TestSuite.new
-    ARGV.each do |testmethod|
-      suite.add_test(TestDebian__Dep__Term.new(testmethod))
-    end
-  end
-  RUNIT::CUI::TestRunner.run(suite)
-end
