@@ -118,7 +118,7 @@ class TestDebian__Dpkg < MiniTest::Test
 	end
       }
       next if dupped
-      assert_instance_of Debian::Dep::Term, tp
+      assert_instance_of Debian::Deb, tp
       assert_equal(op, tp.package.slice(0,op.length),
 		    "#{op}/#{tp.package}")
       assert_equal(ol['package'], tp.package.slice(0,ol['package'].length),
