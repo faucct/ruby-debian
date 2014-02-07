@@ -4,8 +4,9 @@ class TestDebian__Sources < MiniTest::Test
   
 
   def setup
-    @ss = [Debian::Sources.new("d/sid_Sources"),
-           Debian::Sources.new("d/non-US_sid_Sources")]
+    data_dir = File.dirname(__FILE__) + '/../t/d'
+    @ss = [Debian::Sources.new("#{data_dir}/sid_Sources"),
+           Debian::Sources.new("#{data_dir}/non-US_sid_Sources")]
   end
 
   def test_s_new
