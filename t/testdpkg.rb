@@ -34,8 +34,8 @@ class TestDebian__Dpkg < MiniTest::Test
     end
     ruby.each {|deb|
       d = Debian::Dpkg.field(deb)
-      assert_equal("ruby", d.package)
-      assert_matches(d.version, /1.6/)
+      assert_equal('ruby2.0', d.package)
+      assert_matches(d.version, /2.0/)
       assert_equal("akira yamada <akira@debian.org>", d['maintainer'])
       assert_equal("interpreters", d['section'])
       assert_equal("optional", d['priority'])
