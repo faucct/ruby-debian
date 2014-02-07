@@ -1,10 +1,6 @@
-require 'runit/testcase'
-require 'runit/cui/testrunner'
+require_relative 'helper'
 
-$:.unshift("../lib")
-require '../lib/debian.rb'
-
-class TestDebian__Dep__Term < RUNIT::TestCase
+class TestDebian__Dep__Term < MiniTest::Test
 
   def setup
     @dep = [Debian::Dep::Term.new('w3m'),

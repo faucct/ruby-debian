@@ -1,10 +1,6 @@
-require 'runit/testcase'
-require 'runit/cui/testrunner'
+require_relative 'helper'
 
-$:.unshift("../lib")
-require '../lib/debian.rb'
-
-class TestDebian__Packages < RUNIT::TestCase
+class TestDebian__Packages < MiniTest::Test
 
   def setup
     @ps = [Debian::Packages.new("d/status"),
@@ -123,16 +119,4 @@ class TestDebian__Packages < RUNIT::TestCase
 #    assert_fail("untested")
 #  end
 
-end
-
-if $0 == __FILE__
-  if ARGV.size == 0
-    suite = TestDebian__Packages.suite
-  else
-    suite = RUNIT::TestSuite.new
-    ARGV.each do |testmethod|
-      suite.add_test(TestDebian__Packages.new(testmethod))
-    end
-  end
-  RUNIT::CUI::TestRunner.run(suite)
 end

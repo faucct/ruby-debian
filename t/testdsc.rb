@@ -1,10 +1,6 @@
-require 'runit/testcase'
-require 'runit/cui/testrunner'
+require_relative 'helper'
 
-$:.unshift("../lib")
-require '../lib/debian.rb'
-
-class TestDebian__Dsc < RUNIT::TestCase
+class TestDebian__Dsc < MiniTest::Test
 
   def setup
     @dsc = [Debian::Dsc.new(IO.readlines("d/w3m_0.2.1-1.dsc").join("")),

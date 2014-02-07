@@ -1,10 +1,6 @@
-require 'runit/testcase'
-require 'runit/cui/testrunner'
+require_relative 'helper'
 
-$:.unshift("../lib")
-require '../lib/debian.rb'
-
-class TestDebian__Deb < RUNIT::TestCase
+class TestDebian__Deb < MiniTest::Test
 
   def setup
     @deb = [Debian::Deb.new(IO.readlines("d/w3m_0.2.1-1.f").join("")),
@@ -224,16 +220,4 @@ class TestDebian__Deb < RUNIT::TestCase
 #    
 #  end
 
-end
-
-if $0 == __FILE__
-  if ARGV.size == 0
-    suite = TestDebian__Deb.suite
-  else
-    suite = RUNIT::TestSuite.new
-    ARGV.each do |testmethod|
-      suite.add_test(TestDebian__Deb.new(testmethod))
-    end
-  end
-  RUNIT::CUI::TestRunner.run(suite)
 end

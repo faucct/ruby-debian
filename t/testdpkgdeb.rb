@@ -1,10 +1,6 @@
-require 'runit/testcase'
-require 'runit/cui/testrunner'
+require_relative 'helper'
 
-$:.unshift("../lib")
-require '../lib/debian.rb'
-
-class TestDebian__DpkgDeb < RUNIT::TestCase
+class TestDebian__DpkgDeb < MiniTest::Test
 
   def setup
     @ruby = Dir["/var/cache/apt/archives/ruby_1.6*.deb"]
@@ -68,16 +64,4 @@ class TestDebian__DpkgDeb < RUNIT::TestCase
     }
   end
 
-end
-
-if $0 == __FILE__
-  if ARGV.size == 0
-    suite = TestDebian__DpkgDeb.suite
-  else
-    suite = RUNIT::TestSuite.new
-    ARGV.each do |testmethod|
-      suite.add_test(TestDebian__DpkgDeb.new(testmethod))
-    end
-  end
-  RUNIT::CUI::TestRunner.run(suite)
 end

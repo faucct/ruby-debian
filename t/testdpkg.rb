@@ -1,12 +1,8 @@
 # c2t.rb -na Debian::Dpkg ../lib/debian.rb > testdpkg.rb
 #
-require 'runit/testcase'
-require 'runit/cui/testrunner'
+require_relative 'helper'
 
-$:.unshift("../lib")
-require '../lib/debian.rb'
-
-class TestDebian__Dpkg < RUNIT::TestCase
+class TestDebian__Dpkg < MiniTest::Test
 
   def test_s_architecture
     arch = %x{dpkg --print-architecture}.chomp!
@@ -182,16 +178,4 @@ class TestDebian__Dpkg < RUNIT::TestCase
 #    # dpkg --audit
 #  end
 
-end
-
-if $0 == __FILE__
-  if ARGV.size == 0
-    suite = TestDebian__Dpkg.suite
-  else
-    suite = RUNIT::TestSuite.new
-    ARGV.each do |testmethod|
-      suite.add_test(TestDebian__Dpkg.new(testmethod))
-    end
-  end
-  RUNIT::CUI::TestRunner.run(suite)
 end

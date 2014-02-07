@@ -1,8 +1,4 @@
-require 'runit/testcase'
-require 'runit/cui/testrunner'
-
-$:.unshift("../lib")
-require '../lib/debian.rb'
+require_relative 'helper'
 
 class ClassDebianField
   include Debian::Field
@@ -11,7 +7,7 @@ class ClassDebianField
   end
 end
 
-class TestDebian__Field < RUNIT::TestCase
+class TestDebian__Field < MiniTest::Test
 
   def setup
     @ff = {}
@@ -140,16 +136,4 @@ class TestDebian__Field < RUNIT::TestCase
     assert_equals("w3m-ssl 0.2.1-2", @ff['w3m-ssl_0.2.1-2'].to_s)
   end
 
-end
-
-if $0 == __FILE__
-  if ARGV.size == 0
-    suite = TestDebian__Field.suite
-  else
-    suite = RUNIT::TestSuite.new
-    ARGV.each do |testmethod|
-      suite.add_test(TestDebian__Control.new(testmethod))
-    end
-  end
-  RUNIT::CUI::TestRunner.run(suite)
 end
