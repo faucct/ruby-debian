@@ -6,16 +6,16 @@ class TestDebian__Dpkg < MiniTest::Test
 
   def test_s_architecture
     arch = %x{dpkg --print-architecture}.chomp!
-    assert_equals(arch, Debian::Dpkg.architecture())
+    assert_equal(arch, Debian::Dpkg.architecture())
   end
   def test_s_gnu_build_architecture
     arch = %x{dpkg --print-gnu-build-architecture}.chomp!
-    assert_equals(arch, Debian::Dpkg.gnu_build_architecture())
+    assert_equal(arch, Debian::Dpkg.gnu_build_architecture())
   end
 
   def test_s_installation_architecture
     arch = %x{dpkg --print-installation-architecture}.chomp!
-    assert_equals(arch, Debian::Dpkg.installation_architecture())
+    assert_equal(arch, Debian::Dpkg.installation_architecture())
   end
 
   def test_s_compare_versions
@@ -34,18 +34,18 @@ class TestDebian__Dpkg < MiniTest::Test
     end
     ruby.each {|deb|
       d = Debian::Dpkg.field(deb)
-      assert_equals("ruby", d.package)
+      assert_equal("ruby", d.package)
       assert_matches(d.version, /1.6/)
-      assert_equals("akira yamada <akira@debian.org>", d['maintainer'])
-      assert_equals("interpreters", d['section'])
-      assert_equals("optional", d['priority'])
+      assert_equal("akira yamada <akira@debian.org>", d['maintainer'])
+      assert_equal("interpreters", d['section'])
+      assert_equal("optional", d['priority'])
       # request field only
-      assert_equals(["ruby"], Debian::Dpkg.field(deb, ["package"]))
-      assert_equals(["akira yamada <akira@debian.org>"], 
+      assert_equal(["ruby"], Debian::Dpkg.field(deb, ["package"]))
+      assert_equal(["akira yamada <akira@debian.org>"], 
 		    Debian::Dpkg.field(deb, ["maintainer"]))
-      assert_equals(["interpreters"], Debian::Dpkg.field(deb, ["section"]))
-      assert_equals(["optional"], Debian::Dpkg.field(deb, ["priority"]))
-      assert_equals(["ruby","interpreters","optional"],
+      assert_equal(["interpreters"], Debian::Dpkg.field(deb, ["section"]))
+      assert_equal(["optional"], Debian::Dpkg.field(deb, ["priority"]))
+      assert_equal(["ruby","interpreters","optional"],
 		    Debian::Dpkg.field(deb, ["package","section","priority"]))
     }
   end
@@ -77,14 +77,14 @@ class TestDebian__Dpkg < MiniTest::Test
     }
     dpkg_tl = Debian::Dpkg.status(['dpkg'])
     assert_not_nil(dpkg_tl['dpkg'])
-    assert_equals('dpkg', dpkg_tl['dpkg'].package)
-    assert_equals(LIST_SELECTION[dpkg_l['selection']], 
+    assert_equal('dpkg', dpkg_tl['dpkg'].package)
+    assert_equal(LIST_SELECTION[dpkg_l['selection']], 
 		  dpkg_tl['dpkg'].selection)
-    assert_equals(LIST_STATUS[dpkg_l['status']], 
+    assert_equal(LIST_STATUS[dpkg_l['status']], 
 		  dpkg_tl['dpkg'].status)
-    assert_equals(dpkg_l['version'], 
+    assert_equal(dpkg_l['version'], 
 		  dpkg_tl['dpkg'].version.slice(0,dpkg_l['version'].length))
-    assert_equals('Package maintenance system for Debian',
+    assert_equal('Package maintenance system for Debian',
 		  dpkg_tl['dpkg'].description.slice(0,'Package maintenance system for Debian'.length))
 
     ol = {}
@@ -118,14 +118,14 @@ class TestDebian__Dpkg < MiniTest::Test
       }
       next if dupped
       assert_not_nil(tp, "#{op}")
-      assert_equals(op, tp.package.slice(0,op.length),
+      assert_equal(op, tp.package.slice(0,op.length),
 		    "#{op}/#{tp.package}")
-      assert_equals(ol['package'], tp.package.slice(0,ol['package'].length),
+      assert_equal(ol['package'], tp.package.slice(0,ol['package'].length),
 		    "#{ol['pacakge']}/#{tp.package}")
-      assert_equals(LIST_SELECTION[ol['selection']], tp.selection, tp.package)
-      assert_equals(LIST_STATUS[ol['status']], tp.status, tp.package)
-      assert_equals(ol['version'], tp.version.gsub(/^\d+:/,"").slice(0,ol['version'].length), tp.package)
-      assert_equals(ol['description'], tp.description.slice(0,ol['description'].length), tp.package)
+      assert_equal(LIST_SELECTION[ol['selection']], tp.selection, tp.package)
+      assert_equal(LIST_STATUS[ol['status']], tp.status, tp.package)
+      assert_equal(ol['version'], tp.version.gsub(/^\d+:/,"").slice(0,ol['version'].length), tp.package)
+      assert_equal(ol['description'], tp.description.slice(0,ol['description'].length), tp.package)
     }
   end
 
@@ -140,7 +140,7 @@ class TestDebian__Dpkg < MiniTest::Test
     }
     tsl = Debian::Dpkg.selections
     sl.each {|p,sel|
-      assert_equals(sel, tsl[p].selection)
+      assert_equal(sel, tsl[p].selection)
     }
   end
 #  def test_s_selections=
@@ -152,7 +152,7 @@ class TestDebian__Dpkg < MiniTest::Test
       Debian::Deb.new(f.readlines.join(""))
     }
     ta = Debian::Dpkg.avail(['w3m'])
-    assert_equals(a, ta['w3m'])
+    assert_equal(a, ta['w3m'])
   end
   def test_s_listfiles
     # dpkg --listfiles ...
@@ -160,7 +160,7 @@ class TestDebian__Dpkg < MiniTest::Test
       l.split("\n")
     }
     tl = Debian::Dpkg.listfiles(['dpkg', 'gzip'])
-    assert_equals(l, tl)
+    assert_equal(l, tl)
   end
   def test_s_search
     # dpkg --search
@@ -172,7 +172,7 @@ class TestDebian__Dpkg < MiniTest::Test
     ts = Debian::Dpkg.search(['dpkg-deb']).sort {|a,b| 
       (a[0] + a[1]) <=> (b[0] + b[1])
     }
-    assert_equals(s, ts)
+    assert_equal(s, ts)
   end
 #  def test_s_audit
 #    # dpkg --audit

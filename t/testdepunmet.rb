@@ -11,11 +11,11 @@ class TestDebian__Dep__Unmet < MiniTest::Test
   end
   def test_deb
     deb = Debian::Deb.new(IO.readlines("d/w3m-ssl_0.2.1-1.f").join(""))
-    assert_equals(deb, @unmet.deb)
+    assert_equal(deb, @unmet.deb)
   end
 
   def test_dep
-    assert_equals(Debian::Dep::Term.new('w3m'), @unmet.dep)
+    assert_equal(Debian::Dep::Term.new('w3m'), @unmet.dep)
   end
 
   def test_package
@@ -24,7 +24,7 @@ class TestDebian__Dep__Unmet < MiniTest::Test
 
   def test_package=
     @unmet.package = 'w3m-el'
-    assert_equals('w3m-el', @unmet.package)
+    assert_equal('w3m-el', @unmet.package)
     assert_exception(Debian::DepError) { @unmet.package = 'w3m' }
   end
 
@@ -34,17 +34,17 @@ class TestDebian__Dep__Unmet < MiniTest::Test
   
   def test_relation=
     @unmet.relation = 'depends'
-    assert_equals('depends', @unmet.relation)
+    assert_equal('depends', @unmet.relation)
     assert_exception(Debian::DepError) { @unmet.relation = 'recommends' }
   end
 
   def test_to_s
-    assert_equals('w3m unmet w3m-ssl 0.2.1-1 (provides w3m)', @unmet.to_s)
+    assert_equal('w3m unmet w3m-ssl 0.2.1-1 (provides w3m)', @unmet.to_s)
     @unmet.package = 'w3m-ssl'
-    assert_equals('w3m-ssl w3m unmet w3m-ssl 0.2.1-1 (provides w3m)', 
+    assert_equal('w3m-ssl w3m unmet w3m-ssl 0.2.1-1 (provides w3m)', 
 		  @unmet.to_s)
     @unmet.relation = 'depends'
-    assert_equals('w3m-ssl depends w3m unmet w3m-ssl 0.2.1-1 (provides w3m)', 
+    assert_equal('w3m-ssl depends w3m unmet w3m-ssl 0.2.1-1 (provides w3m)', 
 		  @unmet.to_s)
   end
 

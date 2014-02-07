@@ -9,8 +9,8 @@ class TestDebian__Sources < MiniTest::Test
   end
 
   def test_s_new
-    @ss[0].each {|p,s|  assert_equals(Debian::Dsc, s.class) }
-    @ss[1].each {|p,s|  assert_equals(Debian::Dsc, s.class) }
+    @ss[0].each {|p,s|  assert_equal(Debian::Dsc, s.class) }
+    @ss[1].each {|p,s|  assert_equal(Debian::Dsc, s.class) }
   end
 
 #  def test_s_parse

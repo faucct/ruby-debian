@@ -33,19 +33,19 @@ class TestDebian__Dep < MiniTest::Test
   end
 
   def test_to_s
-    assert_equals("Depends w3m", @dep[0].to_s)
-    assert_equals("Depends w3m | w3m-ssl", @dep[1].to_s)
-    assert_equals("Recommends w3m (>= 0.2.1-2) | w3m-ssl (>= 0.2.1-2)",
+    assert_equal("Depends w3m", @dep[0].to_s)
+    assert_equal("Depends w3m | w3m-ssl", @dep[1].to_s)
+    assert_equal("Recommends w3m (>= 0.2.1-2) | w3m-ssl (>= 0.2.1-2)",
 		  @dep[2].to_s)
   end
 
   def test_unmet
     p = Debian::Packages.new("#{@data_dir}/w3m_met_list")
-    assert_equals([], @dep[0].unmet(p)) # w3m
-    assert_equals([], @dep[1].unmet(p)) # w3m | w3m-ssl
-    assert_equals([], @dep[2].unmet(p)) 
+    assert_equal([], @dep[0].unmet(p)) # w3m
+    assert_equal([], @dep[1].unmet(p)) # w3m | w3m-ssl
+    assert_equal([], @dep[2].unmet(p)) 
     			# w3m (>= 0.2.1-2) | w3m-ssl (>= 0.2.1-2)
-    assert_equals([], @dep[3].unmet(p)) # www-browser
+    assert_equal([], @dep[3].unmet(p)) # www-browser
   end
 
 #  def test_s_new

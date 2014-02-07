@@ -41,7 +41,7 @@ class TestDebian__DpkgDeb < MiniTest::Test
 	  end
 	}
       }
-      assert_equals(c.sort, Debian::DpkgDeb.control(deb).sort)
+      assert_equal(c.sort, Debian::DpkgDeb.control(deb).sort)
     }
   end
   def test_data
@@ -53,14 +53,14 @@ class TestDebian__DpkgDeb < MiniTest::Test
 	  d.push(line)
 	}
       }
-      assert_equals(d, Debian::DpkgDeb.data(deb))
+      assert_equal(d, Debian::DpkgDeb.data(deb))
     }
   end
 
   def test_load
     @ruby.each {|deb|
       de = Debian::DpkgDeb.load(deb)
-      assert_equals(deb, de.filename)
+      assert_equal(deb, de.filename)
     }
   end
 

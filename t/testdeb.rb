@@ -11,49 +11,49 @@ class TestDebian__Deb < MiniTest::Test
   end
 
   def test_package
-    assert_equals("w3m", @deb[0].package)
-    assert_equals("w3m", @deb[1].package)
-    assert_equals("w3m-ssl", @deb[2].package)
-    assert_equals("w3m-ssl", @deb[3].package)
+    assert_equal("w3m", @deb[0].package)
+    assert_equal("w3m", @deb[1].package)
+    assert_equal("w3m-ssl", @deb[2].package)
+    assert_equal("w3m-ssl", @deb[3].package)
   end
 
   def test_provides
-    assert_equals(['www-browser'], @deb[0].provides)
-    assert_equals(['www-browser'], @deb[1].provides)
-    assert_equals(['www-browser'], @deb[2].provides)
-    assert_equals(['www-browser'], @deb[3].provides)
+    assert_equal(['www-browser'], @deb[0].provides)
+    assert_equal(['www-browser'], @deb[1].provides)
+    assert_equal(['www-browser'], @deb[2].provides)
+    assert_equal(['www-browser'], @deb[3].provides)
   end
 
   def test_source
-    assert_equals("w3m", @deb[0].package)
-    assert_equals("w3m", @deb[1].package)
-    assert_equals("w3m-ssl", @deb[2].package)
-    assert_equals("w3m-ssl", @deb[3].package)
+    assert_equal("w3m", @deb[0].package)
+    assert_equal("w3m", @deb[1].package)
+    assert_equal("w3m-ssl", @deb[2].package)
+    assert_equal("w3m-ssl", @deb[3].package)
   end
 
   def test_unmet
     p = Debian::Packages.new("#{@data_dir}/w3m_met_list")
     puts @deb[0].unmet(p)
-    assert_equals([], @deb[0].unmet(p))
+    assert_equal([], @deb[0].unmet(p))
   end
 
   def test_version
-    assert_equals("0.2.1-1", @deb[0].version)
-    assert_equals("0.2.1-2", @deb[1].version)
-    assert_equals("0.2.1-1", @deb[2].version)
-    assert_equals("0.2.1-2", @deb[3].version)
+    assert_equal("0.2.1-1", @deb[0].version)
+    assert_equal("0.2.1-2", @deb[1].version)
+    assert_equal("0.2.1-1", @deb[2].version)
+    assert_equal("0.2.1-2", @deb[3].version)
   end
 
   def test_status
-    assert_equals("not-installed", @deb[0].status)
+    assert_equal("not-installed", @deb[0].status)
   end
 
   def test_selection
-    assert_equals("unknown", @deb[0].selection)
+    assert_equal("unknown", @deb[0].selection)
   end
 
   def test_description
-    assert_equals("WWW browsable pager with excellent tables/frames support",
+    assert_equal("WWW browsable pager with excellent tables/frames support",
 		  @deb[0].description)
   end
 
@@ -175,7 +175,7 @@ class TestDebian__Deb < MiniTest::Test
     @ruby.each {|df|
       d = Debian::Deb.new(IO.readlines("#{@data_dir}/w3m_0.2.1-1.f").join(""))
       d.filename = df
-      assert_equals(df, d.filename)
+      assert_equal(df, d.filename)
     }
   end
 
@@ -187,9 +187,9 @@ class TestDebian__Deb < MiniTest::Test
     @ruby.each {|df|
       deb = Debian::DpkgDeb.load(df)
       oc = IO.popen("dpkg -f #{df}") {|fp| fp.readlines.join("")}
-      assert_equals(oc, deb.controlData)
+      assert_equal(oc, deb.controlData)
       om = IO.popen("dpkg -I #{df} md5sums") {|fp| fp.readlines.join("") }
-      assert_equals(om, deb.controlData("md5sums"))
+      assert_equal(om, deb.controlData("md5sums"))
     }
   end
   def test_dataFile
@@ -202,7 +202,7 @@ class TestDebian__Deb < MiniTest::Test
       oc = IO.popen("dpkg --fsys-tarfile #{df}|tar xfO - '*/copyright'") {|fp|
 	fp.readlines.join("")
       }
-      assert_equals(oc, deb.dataData('copyright'))
+      assert_equal(oc, deb.dataData('copyright'))
     }
   end
   def test_sys_tarfile
@@ -213,7 +213,7 @@ class TestDebian__Deb < MiniTest::Test
 	fp.readlines.join("")
       }
       ts = deb.sys_tarfile {|fp| fp.readlines.join("") }
-      assert_equals(os, ts)
+      assert_equal(os, ts)
     }
   end
 

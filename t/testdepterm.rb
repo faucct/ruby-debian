@@ -14,22 +14,22 @@ class TestDebian__Dep__Term < MiniTest::Test
       	    Debian::Dep::Term.new('www-browser')]
   end
   def test_EQUAL # '=='
-    assert_equals(Debian::Dep::Term.new('w3m'), @dep[0])
-    assert_equals(Debian::Dep::Term.new('w3m', '<<', '0.2.1-2'), @dep[1])
+    assert_equal(Debian::Dep::Term.new('w3m'), @dep[0])
+    assert_equal(Debian::Dep::Term.new('w3m', '<<', '0.2.1-2'), @dep[1])
   end
 
   def test_op
-    assert_equals("", @dep[0].op)
-    assert_equals("<<", @dep[1].op)
-    assert_equals("<=", @dep[2].op)
-    assert_equals("=", @dep[3].op)
-    assert_equals(">=", @dep[4].op)
-    assert_equals(">>", @dep[5].op)
+    assert_equal("", @dep[0].op)
+    assert_equal("<<", @dep[1].op)
+    assert_equal("<=", @dep[2].op)
+    assert_equal("=", @dep[3].op)
+    assert_equal(">=", @dep[4].op)
+    assert_equal(">>", @dep[5].op)
   end
 
   def test_package
-    assert_equals("w3m", @dep[0].package)
-    assert_equals("w3m", @dep[1].package)
+    assert_equal("w3m", @dep[0].package)
+    assert_equal("w3m", @dep[1].package)
   end
 
   def test_satisfy?
@@ -87,35 +87,35 @@ class TestDebian__Dep__Term < MiniTest::Test
   end
 
   def test_to_s
-    assert_equals("w3m", @dep[0].to_s)
-    assert_equals("w3m (<< 0.2.1-2)", @dep[1].to_s)
-    assert_equals("w3m (<= 0.2.1-2)", @dep[2].to_s)
-    assert_equals("w3m (= 0.2.1-2)", @dep[3].to_s)
-    assert_equals("w3m (>= 0.2.1-2)", @dep[4].to_s)
-    assert_equals("w3m (>> 0.2.1-2)", @dep[5].to_s)
+    assert_equal("w3m", @dep[0].to_s)
+    assert_equal("w3m (<< 0.2.1-2)", @dep[1].to_s)
+    assert_equal("w3m (<= 0.2.1-2)", @dep[2].to_s)
+    assert_equal("w3m (= 0.2.1-2)", @dep[3].to_s)
+    assert_equal("w3m (>= 0.2.1-2)", @dep[4].to_s)
+    assert_equal("w3m (>> 0.2.1-2)", @dep[5].to_s)
   end
 
   def test_unmet
     p = Debian::Packages.new("#{@data_dir}/w3m_met_list")
-    assert_equals([], @dep[0].unmet(p)) # w3m
-    assert_equals([Debian::Dep::Unmet.new(@dep[1], p['w3m'])],
+    assert_equal([], @dep[0].unmet(p)) # w3m
+    assert_equal([Debian::Dep::Unmet.new(@dep[1], p['w3m'])],
 		  @dep[1].unmet(p)) # w3m << 0.2.1-2
-    assert_equals([], @dep[2].unmet(p)) # w3m <= 0.2.1-2
-    assert_equals([], @dep[3].unmet(p)) # w3m = 0.2.1-2
-    assert_equals([], @dep[4].unmet(p)) # w3m >= 0.2.1-2
-    assert_equals([Debian::Dep::Unmet.new(@dep[5], p['w3m'])], 
+    assert_equal([], @dep[2].unmet(p)) # w3m <= 0.2.1-2
+    assert_equal([], @dep[3].unmet(p)) # w3m = 0.2.1-2
+    assert_equal([], @dep[4].unmet(p)) # w3m >= 0.2.1-2
+    assert_equal([Debian::Dep::Unmet.new(@dep[5], p['w3m'])], 
 		  @dep[5].unmet(p)) # w3m >> 0.2.1-2
-    assert_equals([], @dep[7].unmet(p)) # www-browser
+    assert_equal([], @dep[7].unmet(p)) # www-browser
   end
 
   def test_version
-    assert_equals("", @dep[0].version)
-    assert_equals("0.2.1-2", @dep[1].version)
-    assert_equals("0.2.1-2", @dep[2].version)
-    assert_equals("0.2.1-2", @dep[3].version)
-    assert_equals("0.2.1-2", @dep[4].version)
-    assert_equals("0.2.1-2", @dep[5].version)
-    assert_equals("0.2.1-2", @dep[6].version)
+    assert_equal("", @dep[0].version)
+    assert_equal("0.2.1-2", @dep[1].version)
+    assert_equal("0.2.1-2", @dep[2].version)
+    assert_equal("0.2.1-2", @dep[3].version)
+    assert_equal("0.2.1-2", @dep[4].version)
+    assert_equal("0.2.1-2", @dep[5].version)
+    assert_equal("0.2.1-2", @dep[6].version)
   end
 
 #  def test_s_new

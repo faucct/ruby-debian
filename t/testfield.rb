@@ -19,9 +19,9 @@ class TestDebian__Field < MiniTest::Test
   end
 
   def test_AREF # '[]'
-    assert_equals("w3m", @ff['w3m_0.2.1-1']['package'])
-    assert_equals("w3m-ssl", @ff['w3m-ssl_0.2.1-1']['package'])
-    assert_equals("0.2.1-1", @ff['w3m_0.2.1-1']['version'])
+    assert_equal("w3m", @ff['w3m_0.2.1-1']['package'])
+    assert_equal("w3m-ssl", @ff['w3m-ssl_0.2.1-1']['package'])
+    assert_equal("0.2.1-1", @ff['w3m_0.2.1-1']['version'])
   end
 
   def test_EQUAL # '=='
@@ -77,18 +77,18 @@ class TestDebian__Field < MiniTest::Test
 
   def test_info_s
     c = IO.readlines("#{@data_dir}/w3m_0.2.1-1.f").join("")
-    assert_equals(c, @ff['w3m_0.2.1-1'].info_s)
+    assert_equal(c, @ff['w3m_0.2.1-1'].info_s)
   end
 
   def test_fields
-    assert_equals(['Package', 'Version', 'Section', 'Priority',
+    assert_equal(['Package', 'Version', 'Section', 'Priority',
 		    'Architecture', 'Depends', 'Suggests',
 		    'Provides', 'Installed-size', 'Maintainer',
 		    'Description'], @ff['w3m_0.2.1-1'].fields)
   end
 
   def test_info
-    assert_equals({'Package' => 'w3m',
+    assert_equal({'Package' => 'w3m',
 		    'Version' => '0.2.1-1',
 		    'Section' => 'text',
 		    'Priority' => 'optional',
@@ -113,17 +113,17 @@ class TestDebian__Field < MiniTest::Test
   end
 
   def test_package
-    assert_equals('w3m', @ff['w3m_0.2.1-1'].package)
-    assert_equals('w3m-ssl', @ff['w3m-ssl_0.2.1-2'].package)
+    assert_equal('w3m', @ff['w3m_0.2.1-1'].package)
+    assert_equal('w3m-ssl', @ff['w3m-ssl_0.2.1-2'].package)
   end
 
   def test_version
-    assert_equals('0.2.1-1', @ff['w3m_0.2.1-1'].version)
-    assert_equals('0.2.1-2', @ff['w3m-ssl_0.2.1-2'].version)
+    assert_equal('0.2.1-1', @ff['w3m_0.2.1-1'].version)
+    assert_equal('0.2.1-2', @ff['w3m-ssl_0.2.1-2'].version)
   end
 
   def test_maintainer
-    assert_equals('Fumitoshi UKAI <ukai@debian.or.jp>', @ff['w3m_0.2.1-1'].maintainer)
+    assert_equal('Fumitoshi UKAI <ukai@debian.or.jp>', @ff['w3m_0.2.1-1'].maintainer)
   end
 
 #  def test_parseFields
@@ -131,10 +131,10 @@ class TestDebian__Field < MiniTest::Test
 #  end
 
   def test_to_s
-    assert_equals("w3m 0.2.1-1", @ff['w3m_0.2.1-1'].to_s)
-    assert_equals("w3m 0.2.1-2", @ff['w3m_0.2.1-2'].to_s)
-    assert_equals("w3m-ssl 0.2.1-1", @ff['w3m-ssl_0.2.1-1'].to_s)
-    assert_equals("w3m-ssl 0.2.1-2", @ff['w3m-ssl_0.2.1-2'].to_s)
+    assert_equal("w3m 0.2.1-1", @ff['w3m_0.2.1-1'].to_s)
+    assert_equal("w3m 0.2.1-2", @ff['w3m_0.2.1-2'].to_s)
+    assert_equal("w3m-ssl 0.2.1-1", @ff['w3m-ssl_0.2.1-1'].to_s)
+    assert_equal("w3m-ssl 0.2.1-2", @ff['w3m-ssl_0.2.1-2'].to_s)
   end
 
 end
