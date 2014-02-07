@@ -35,17 +35,18 @@ class TestDebian__Dpkg < MiniTest::Test
     ruby.each {|deb|
       d = Debian::Dpkg.field(deb)
       assert_equal('ruby2.0', d.package)
-      assert_matches(d.version, /2.0/)
-      assert_equal("akira yamada <akira@debian.org>", d['maintainer'])
-      assert_equal("interpreters", d['section'])
-      assert_equal("optional", d['priority'])
+      assert_match(/2.0/, d.version)
+      maint = "Antonio Terceiro <terceiro@debian.org>"
+      assert_equal(maint, d['maintainer'])
+      assert_equal("ruby", d['section'])
+      assert_equal("extra", d['priority'])
       # request field only
-      assert_equal(["ruby"], Debian::Dpkg.field(deb, ["package"]))
-      assert_equal(["akira yamada <akira@debian.org>"], 
+      assert_equal(["ruby2.0"], Debian::Dpkg.field(deb, ["package"]))
+      assert_equal([maint],
 		    Debian::Dpkg.field(deb, ["maintainer"]))
-      assert_equal(["interpreters"], Debian::Dpkg.field(deb, ["section"]))
-      assert_equal(["optional"], Debian::Dpkg.field(deb, ["priority"]))
-      assert_equal(["ruby","interpreters","optional"],
+      assert_equal(["ruby"], Debian::Dpkg.field(deb, ["section"]))
+      assert_equal(["extra"], Debian::Dpkg.field(deb, ["priority"]))
+      assert_equal(["ruby2.0", "ruby", "extra"],
 		    Debian::Dpkg.field(deb, ["package","section","priority"]))
     }
   end
