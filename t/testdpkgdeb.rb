@@ -7,9 +7,9 @@ class TestDebian__DpkgDeb < MiniTest::Test
     if @ruby.empty?
       flunk("no ruby package in /var/cache/apt/archives")
     end
-    @libs = Dir["/usr/lib/libc.*"]
+    @libs = Dir["/usr/lib/libruby*"]
     if @libs.empty?
-      flunk("no libc in /usr/lib")
+      flunk("no libruby in /usr/lib")
     end
   end
   def test_deb?
@@ -22,7 +22,7 @@ class TestDebian__DpkgDeb < MiniTest::Test
   end
   def test_assert_deb?
     @ruby.each {|deb|
-      assert_no_raises(Debian::Error) {Debian::DpkgDeb.assert_deb?(deb)}
+      assert !Debian::DpkgDeb.assert_deb?(deb)
     }
     @libs.each {|lib|
       assert_raises(Debian::Error) {! Debian::DpkgDeb.assert_deb?(lib)}
