@@ -11,7 +11,8 @@ class TestDebian__Field < MiniTest::Test
 
   def setup
     @ff = {}
-    Dir["d/*.f"].each {|ff|
+    @data_dir = File.dirname(__FILE__) + '/../t/d'
+    Dir["#{@data_dir}/*.f"].each {|ff|
       dc = ClassDebianField.new(IO.readlines(ff).join(""), [])
       @ff["#{dc['package']}_#{dc['version']}"] = dc
     }
@@ -24,7 +25,7 @@ class TestDebian__Field < MiniTest::Test
   end
 
   def test_EQUAL # '=='
-    dc2 = ClassDebianField.new(IO.readlines("d/w3m_0.2.1-1.f").join(""), [])
+    dc2 = ClassDebianField.new(IO.readlines("#{@data_dir}/w3m_0.2.1-1.f").join(""), [])
     assert(dc2 == @ff['w3m_0.2.1-1'])
     assert(!(dc2 == @ff['w3m_0.2.1-2']))
     assert(!(dc2 == @ff['w3m-ssl_0.2.1-1']))
@@ -75,7 +76,7 @@ class TestDebian__Field < MiniTest::Test
   end
 
   def test_info_s
-    c = IO.readlines("d/w3m_0.2.1-1.f").join("")
+    c = IO.readlines("#{@data_dir}/w3m_0.2.1-1.f").join("")
     assert_equals(c, @ff['w3m_0.2.1-1'].info_s)
   end
 

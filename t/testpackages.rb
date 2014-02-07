@@ -3,10 +3,11 @@ require_relative 'helper'
 class TestDebian__Packages < MiniTest::Test
 
   def setup
-    @ps = [Debian::Packages.new("d/status"),
-      Debian::Packages.new("d/available"),
-      Debian::Packages.new("d/sid_i386_Packages"),
-      Debian::Packages.new("d/non-US_sid_i386_Packages")]
+    @data_dir = File.dirname(__FILE__) + '/../t/d'
+    @ps = [Debian::Packages.new("#{@data_dir}/status"),
+      Debian::Packages.new("#{@data_dir}/available"),
+      Debian::Packages.new("#{@data_dir}/sid_i386_Packages"),
+      Debian::Packages.new("#{@data_dir}/non-US_sid_i386_Packages")]
   end
   def test_AND # '&'
     ps = @ps[0] & @ps[3]
@@ -18,7 +19,7 @@ class TestDebian__Packages < MiniTest::Test
   end
 
   def test_ASET # '[]='
-    deb = Debian::Deb.new(IO.readlines("d/w3m_0.2.1-2.f").join(""))
+    deb = Debian::Deb.new(IO.readlines("#{@data_dir}/w3m_0.2.1-2.f").join(""))
     pr = @ps[3].provides('www-browser').collect {|d| d.package }
     @ps[3]['w3m'] = deb
     assert_equals(deb, @ps[3]['w3m'])
@@ -27,7 +28,7 @@ class TestDebian__Packages < MiniTest::Test
   end
 
   def test_LSHIFT # '<<'
-    deb = Debian::Deb.new(IO.readlines("d/w3m_0.2.1-2.f").join(""))
+    deb = Debian::Deb.new(IO.readlines("#{@data_dir}/w3m_0.2.1-2.f").join(""))
     pr = @ps[3].provides('www-browser').collect {|d| d.package }
     assert_nil(@ps[3]['w3m'])
     ps = @ps[3] << nil
@@ -57,7 +58,7 @@ class TestDebian__Packages < MiniTest::Test
   end
 
   def test_RSHIFT # '>>'
-    deb = Debian::Deb.new(IO.readlines("d/w3m_0.2.1-2.f").join(""))
+    deb = Debian::Deb.new(IO.readlines("#{@data_dir}/w3m_0.2.1-2.f").join(""))
     pr = @ps[0].provides('www-browser').collect {|d| d.package }
     assert_equals('w3m', @ps[0]['w3m'].package)
     ps = @ps[0] >> nil

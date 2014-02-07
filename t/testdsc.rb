@@ -3,9 +3,10 @@ require_relative 'helper'
 class TestDebian__Dsc < MiniTest::Test
 
   def setup
-    @dsc = [Debian::Dsc.new(IO.readlines("d/w3m_0.2.1-1.dsc").join("")),
-            Debian::Dsc.new(IO.readlines("d/w3m_0.2.1-2.dsc").join("")),
-            Debian::Dsc.new(IO.readlines("d/w3m-ssl_0.2.1-2.dsc").join(""))]
+    @data_dir = File.dirname(__FILE__) + '/../t/d'
+    @dsc = [Debian::Dsc.new(IO.readlines("#{@data_dir}/w3m_0.2.1-1.dsc").join("")),
+            Debian::Dsc.new(IO.readlines("#{@data_dir}/w3m_0.2.1-2.dsc").join("")),
+            Debian::Dsc.new(IO.readlines("#{@data_dir}/w3m-ssl_0.2.1-2.dsc").join(""))]
   end
 
   def test_binary

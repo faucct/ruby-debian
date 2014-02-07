@@ -3,6 +3,7 @@ require_relative 'helper'
 class TestDebian__Dep__Term < MiniTest::Test
 
   def setup
+    @data_dir = File.dirname(__FILE__) + '/../t/d'
     @dep = [Debian::Dep::Term.new('w3m'),
   	    Debian::Dep::Term.new('w3m', '<<', '0.2.1-2'),
   	    Debian::Dep::Term.new('w3m', '<=', '0.2.1-2'),
@@ -32,10 +33,10 @@ class TestDebian__Dep__Term < MiniTest::Test
   end
 
   def test_satisfy?
-    @deb = [Debian::Deb.new(IO.readlines("d/w3m_0.2.1-1.f").join("")),
-      	    Debian::Deb.new(IO.readlines("d/w3m_0.2.1-2.f").join("")),
-      	    Debian::Deb.new(IO.readlines("d/w3m-ssl_0.2.1-1.f").join("")),
-      	    Debian::Deb.new(IO.readlines("d/w3m-ssl_0.2.1-2.f").join(""))]
+    @deb = [Debian::Deb.new(IO.readlines("#{@data_dir}/w3m_0.2.1-1.f").join("")),
+      	    Debian::Deb.new(IO.readlines("#{@data_dir}/w3m_0.2.1-2.f").join("")),
+      	    Debian::Deb.new(IO.readlines("#{@data_dir}/w3m-ssl_0.2.1-1.f").join("")),
+      	    Debian::Deb.new(IO.readlines("#{@data_dir}/w3m-ssl_0.2.1-2.f").join(""))]
     # w3m
     assert(@dep[0].satisfy?(@deb[0]))
     assert(@dep[0].satisfy?(@deb[1]))
@@ -95,7 +96,7 @@ class TestDebian__Dep__Term < MiniTest::Test
   end
 
   def test_unmet
-    p = Debian::Packages.new("d/w3m_met_list")
+    p = Debian::Packages.new("#{@data_dir}/w3m_met_list")
     assert_equals([], @dep[0].unmet(p)) # w3m
     assert_equals([Debian::Dep::Unmet.new(@dep[1], p['w3m'])],
 		  @dep[1].unmet(p)) # w3m << 0.2.1-2

@@ -3,10 +3,11 @@ require_relative 'helper'
 class TestDebian__Deb < MiniTest::Test
 
   def setup
-    @deb = [Debian::Deb.new(IO.readlines("d/w3m_0.2.1-1.f").join("")),
-            Debian::Deb.new(IO.readlines("d/w3m_0.2.1-2.f").join("")),
-            Debian::Deb.new(IO.readlines("d/w3m-ssl_0.2.1-1.f").join("")),
-            Debian::Deb.new(IO.readlines("d/w3m-ssl_0.2.1-2.f").join(""))]
+    @data_dir = File.dirname(__FILE__) + '/../t/d'
+    @deb = [Debian::Deb.new(IO.readlines("#{@data_dir}/w3m_0.2.1-1.f").join("")),
+            Debian::Deb.new(IO.readlines("#{@data_dir}/w3m_0.2.1-2.f").join("")),
+            Debian::Deb.new(IO.readlines("#{@data_dir}/w3m-ssl_0.2.1-1.f").join("")),
+            Debian::Deb.new(IO.readlines("#{@data_dir}/w3m-ssl_0.2.1-2.f").join(""))]
   end
 
   def test_package
@@ -31,7 +32,7 @@ class TestDebian__Deb < MiniTest::Test
   end
 
   def test_unmet
-    p = Debian::Packages.new("d/w3m_met_list")
+    p = Debian::Packages.new("#{@data_dir}/w3m_met_list")
     puts @deb[0].unmet(p)
     assert_equals([], @deb[0].unmet(p))
   end
@@ -58,103 +59,103 @@ class TestDebian__Deb < MiniTest::Test
 
   def test_unknown?
     assert(@deb[0].unknown?)
-    d = Debian::Deb.new([IO.readlines("d/w3m_0.2.1-1.f"),
+    d = Debian::Deb.new([IO.readlines("#{@data_dir}/w3m_0.2.1-1.f"),
 			  "Status: unknown ok not-installed\n"].join(""))
     assert(d.unknown?)
   end
   def test_install?
     assert(! @deb[0].installed?)
-    d = Debian::Deb.new([IO.readlines("d/w3m_0.2.1-1.f"),
+    d = Debian::Deb.new([IO.readlines("#{@data_dir}/w3m_0.2.1-1.f"),
 			  "Status: install ok installed\n"].join(""))
     assert(d.install?)
   end
   def test_hold?
     assert(! @deb[0].hold?)
-    d = Debian::Deb.new([IO.readlines("d/w3m_0.2.1-1.f"),
+    d = Debian::Deb.new([IO.readlines("#{@data_dir}/w3m_0.2.1-1.f"),
 			  "Status: hold ok installed\n"].join(""))
     assert(d.hold?)
   end
   def test_deinstall?
     assert(! @deb[0].deinstall?)
-    d = Debian::Deb.new([IO.readlines("d/w3m_0.2.1-1.f"),
+    d = Debian::Deb.new([IO.readlines("#{@data_dir}/w3m_0.2.1-1.f"),
 			  "Status: deinstall ok not-installed\n"].join(""))
     assert(d.deinstall?)
   end
   def test_remove?
     assert(! @deb[0].remove?)
-    d = Debian::Deb.new([IO.readlines("d/w3m_0.2.1-1.f"),
+    d = Debian::Deb.new([IO.readlines("#{@data_dir}/w3m_0.2.1-1.f"),
 			  "Status: deinstall ok not-installed\n"].join(""))
     assert(d.remove?)
   end
   def test_purge?
     assert(! @deb[0].purge?)
-    d = Debian::Deb.new([IO.readlines("d/w3m_0.2.1-1.f"),
+    d = Debian::Deb.new([IO.readlines("#{@data_dir}/w3m_0.2.1-1.f"),
 			  "Status: purge ok not-installed\n"].join(""))
     assert(d.purge?)
   end
   def test_not_installed?
     assert(@deb[0].not_installed?)
-    d = Debian::Deb.new([IO.readlines("d/w3m_0.2.1-1.f"),
+    d = Debian::Deb.new([IO.readlines("#{@data_dir}/w3m_0.2.1-1.f"),
 			  "Status: unknown ok not-installed\n"].join(""))
     assert(d.not_installed?)
   end
   def test_purged?
     assert(@deb[0].purged?)
-    d = Debian::Deb.new([IO.readlines("d/w3m_0.2.1-1.f"),
+    d = Debian::Deb.new([IO.readlines("#{@data_dir}/w3m_0.2.1-1.f"),
 			  "Status: unknown ok not-installed\n"].join(""))
     assert(d.purged?)
   end
   def test_unpacked?
     assert(! @deb[0].unpacked?)
-    d = Debian::Deb.new([IO.readlines("d/w3m_0.2.1-1.f"),
+    d = Debian::Deb.new([IO.readlines("#{@data_dir}/w3m_0.2.1-1.f"),
 			  "Status: install ok unpacked\n"].join(""))
     assert(d.unpacked?)
   end
   def test_half_configured?
     assert(! @deb[0].half_configured?)
-    d = Debian::Deb.new([IO.readlines("d/w3m_0.2.1-1.f"),
+    d = Debian::Deb.new([IO.readlines("#{@data_dir}/w3m_0.2.1-1.f"),
 			  "Status: install reinstreq half-configured\n"].join(""))
     assert(d.half_configured?)
   end
   def test_intalled?
     assert(! @deb[0].installed?)
-    d = Debian::Deb.new([IO.readlines("d/w3m_0.2.1-1.f"),
+    d = Debian::Deb.new([IO.readlines("#{@data_dir}/w3m_0.2.1-1.f"),
 			  "Status: install ok installed\n"].join(""))
     assert(d.installed?)
   end
   def test_half_installed?
     assert(! @deb[0].half_installed?)
-    d = Debian::Deb.new([IO.readlines("d/w3m_0.2.1-1.f"),
+    d = Debian::Deb.new([IO.readlines("#{@data_dir}/w3m_0.2.1-1.f"),
 			  "Status: install reinstreq half-installed\n"].join(""))
     assert(d.half_installed?)
   end
   def test_config_files?
     assert(! @deb[0].config_files?)
-    d = Debian::Deb.new([IO.readlines("d/w3m_0.2.1-1.f"),
+    d = Debian::Deb.new([IO.readlines("#{@data_dir}/w3m_0.2.1-1.f"),
 			  "Status: install ok config-files\n"].join(""))
     assert(d.config_files?)
   end
   def test_config_only?
     assert(! @deb[0].config_only?)
-    d = Debian::Deb.new([IO.readlines("d/w3m_0.2.1-1.f"),
+    d = Debian::Deb.new([IO.readlines("#{@data_dir}/w3m_0.2.1-1.f"),
 			  "Status: install ok config-files\n"].join(""))
     assert(d.config_only?)
   end
   def test_removed?
     assert(@deb[0].removed?)
-    d = Debian::Deb.new([IO.readlines("d/w3m_0.2.1-1.f"),
+    d = Debian::Deb.new([IO.readlines("#{@data_dir}/w3m_0.2.1-1.f"),
 			  "Status: install ok config-files\n"].join(""))
     assert(d.removed?)
   end
   def test_need_fix?
     assert(! @deb[0].need_fix?)
-    d = Debian::Deb.new([IO.readlines("d/w3m_0.2.1-1.f"),
+    d = Debian::Deb.new([IO.readlines("#{@data_dir}/w3m_0.2.1-1.f"),
 			  "Status: install reinstreq half-installed\n"].join(""))
     assert(d.need_fix?)
   end
   def test_need_action?
     assert(! @deb[0].need_action?)
-    d = Debian::Deb.new([IO.readlines("d/w3m_0.2.1-1.f"),
+    d = Debian::Deb.new([IO.readlines("#{@data_dir}/w3m_0.2.1-1.f"),
 			  "Status: install ok not-installed\n"].join(""))
     assert(d.need_action?)
   end
@@ -172,7 +173,7 @@ class TestDebian__Deb < MiniTest::Test
   def test_filename=()
     check_apt_cache
     @ruby.each {|df|
-      d = Debian::Deb.new(IO.readlines("d/w3m_0.2.1-1.f").join(""))
+      d = Debian::Deb.new(IO.readlines("#{@data_dir}/w3m_0.2.1-1.f").join(""))
       d.filename = df
       assert_equals(df, d.filename)
     }
