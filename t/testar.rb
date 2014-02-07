@@ -1,6 +1,4 @@
-require 'minitest/autorun'
-
-require_relative '../lib/debian/ar'
+require_relative 'helper'
 
 class TestDebian__Ar < MiniTest::Test
 
