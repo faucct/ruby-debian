@@ -142,7 +142,8 @@ class TestDebian__Dpkg < MiniTest::Test
     }
     tsl = Debian::Dpkg.selections
     sl.each {|p,sel|
-      assert_equal(sel, tsl[p].selection)
+      pkg = p.split(':').first # case bluez-alsa:amd64
+      assert_equal(sel, tsl[pkg].selection)
     }
   end
 #  def test_s_selections=
