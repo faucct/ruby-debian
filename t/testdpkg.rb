@@ -159,11 +159,11 @@ class TestDebian__Dpkg < MiniTest::Test
   end
   def test_s_listfiles
     # dpkg --listfiles ...
-    IO.popen("dpkg --listfiles dpkg gzip").readlines("\n\n").collect {|l|
+    lf = IO.popen("dpkg --listfiles dpkg gzip").readlines("\n\n").collect {|l|
       l.split("\n")
     }
     tl = Debian::Dpkg.listfiles(['dpkg', 'gzip'])
-    assert_equal(l.size, tl.size)
+    assert_equal(lf.size, tl.size)
   end
   def test_s_search
     # dpkg --search
