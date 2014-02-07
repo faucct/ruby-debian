@@ -74,10 +74,10 @@ class TestDebian__Dep__Term < MiniTest::Test
     assert(!(@dep[5].satisfy?(@deb[3])))
 
     # w3m == 0.2.1-2
-    assert_exception(Debian::DepError) { @dep[6].satisfy?(@deb[0])}
-    assert_exception(Debian::DepError) { @dep[6].satisfy?(@deb[1])}
-    assert_exception(Debian::DepError) { @dep[6].satisfy?(@deb[2])}
-    assert_exception(Debian::DepError) { @dep[6].satisfy?(@deb[3])}
+    assert_raises(Debian::DepError) { @dep[6].satisfy?(@deb[0])}
+    assert_raises(Debian::DepError) { @dep[6].satisfy?(@deb[1])}
+    assert_raises(Debian::DepError) { @dep[6].satisfy?(@deb[2])}
+    assert_raises(Debian::DepError) { @dep[6].satisfy?(@deb[3])}
 
     # www-browser (provides test)
     assert(@dep[7].satisfy?(@deb[0]))

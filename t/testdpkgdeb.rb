@@ -22,10 +22,10 @@ class TestDebian__DpkgDeb < MiniTest::Test
   end
   def test_assert_deb?
     @ruby.each {|deb|
-      assert_no_exception(Debian::Error) {Debian::DpkgDeb.assert_deb?(deb)}
+      assert_no_raises(Debian::Error) {Debian::DpkgDeb.assert_deb?(deb)}
     }
     @libs.each {|lib|
-      assert_exception(Debian::Error) {! Debian::DpkgDeb.assert_deb?(lib)}
+      assert_raises(Debian::Error) {! Debian::DpkgDeb.assert_deb?(lib)}
     }
   end
 

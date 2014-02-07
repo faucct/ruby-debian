@@ -26,7 +26,7 @@ class TestDebian__Dep__Unmet < MiniTest::Test
   def test_package=
     @unmet.package = 'w3m-el'
     assert_equal('w3m-el', @unmet.package)
-    assert_exception(Debian::DepError) { @unmet.package = 'w3m' }
+    assert_raises(Debian::DepError) { @unmet.package = 'w3m' }
   end
 
   def test_relation
@@ -36,7 +36,7 @@ class TestDebian__Dep__Unmet < MiniTest::Test
   def test_relation=
     @unmet.relation = 'depends'
     assert_equal('depends', @unmet.relation)
-    assert_exception(Debian::DepError) { @unmet.relation = 'recommends' }
+    assert_raises(Debian::DepError) { @unmet.relation = 'recommends' }
   end
 
   def test_to_s
