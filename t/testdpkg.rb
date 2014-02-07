@@ -84,8 +84,9 @@ class TestDebian__Dpkg < MiniTest::Test
 		  dpkg_tl['dpkg'].status)
     assert_equal(dpkg_l['version'], 
 		  dpkg_tl['dpkg'].version.slice(0,dpkg_l['version'].length))
-    assert_equal('Package maintenance system for Debian',
-		  dpkg_tl['dpkg'].description.slice(0,'Package maintenance system for Debian'.length))
+    desc = 'Debian package management system'
+    assert_equal(desc,
+		  dpkg_tl['dpkg']. description.slice(0, desc.length))
 
     ol = {}
     IO.popen("dpkg --list") {|f|
