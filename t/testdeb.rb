@@ -164,7 +164,7 @@ class TestDebian__Deb < MiniTest::Test
   end
 
   def check_apt_cache
-    @ruby = Dir["/var/cache/apt/archives/ruby_1.6*.deb"]
+    @ruby = Dir["/var/cache/apt/archives/ruby2.0_*.deb"]
     if @ruby.empty?
       flunk("no ruby package in /var/cache/apt/archives")
     end
