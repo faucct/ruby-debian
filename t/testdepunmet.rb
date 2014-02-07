@@ -3,14 +3,15 @@ require_relative 'helper'
 class TestDebian__Dep__Unmet < MiniTest::Test
 
   def setup
+    @data_dir = File.dirname(__FILE__) + '/../t/d'
     dep = Debian::Dep::Term.new('w3m')
     assert_instance_of Debian::Dep::Term, dep
-    deb = Debian::Deb.new(IO.readlines("d/w3m-ssl_0.2.1-1.f").join(""))
+    deb = Debian::Deb.new(IO.readlines("#{@data_dir}/w3m-ssl_0.2.1-1.f").join(""))
     assert_instance_of Debian::Dep::Term, dep
     @unmet = Debian::Dep::Unmet.new(dep, deb)
   end
   def test_deb
-    deb = Debian::Deb.new(IO.readlines("d/w3m-ssl_0.2.1-1.f").join(""))
+    deb = Debian::Deb.new(IO.readlines("#{@data_dir}/w3m-ssl_0.2.1-1.f").join(""))
     assert_equal(deb, @unmet.deb)
   end
 
