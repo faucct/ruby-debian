@@ -30,7 +30,7 @@ class TestDebian__Dpkg < MiniTest::Test
   def test_s_field
     ruby = Dir["/var/cache/apt/archives/ruby_1.6*.deb"]
     if ruby.empty?
-      assert_fail("no ruby package in /var/cache/apt/archives")
+      flunk("no ruby package in /var/cache/apt/archives")
     end
     ruby.each {|deb|
       d = Debian::Dpkg.field(deb)
@@ -63,7 +63,7 @@ class TestDebian__Dpkg < MiniTest::Test
 	'description' => $6
       }
     else
-      assert_fail("parse failed dpkg -l #{line}")
+      flunk("parse failed dpkg -l #{line}")
     end
   end
   def test_s_status

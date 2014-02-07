@@ -5,11 +5,11 @@ class TestDebian__DpkgDeb < MiniTest::Test
   def setup
     @ruby = Dir["/var/cache/apt/archives/ruby_1.6*.deb"]
     if @ruby.empty?
-      assert_fail("no ruby package in /var/cache/apt/archives")
+      flunk("no ruby package in /var/cache/apt/archives")
     end
     @libs = Dir["/usr/lib/libc.*"]
     if @libs.empty?
-      assert_fail("no libc in /usr/lib")
+      flunk("no libc in /usr/lib")
     end
   end
   def test_deb?
