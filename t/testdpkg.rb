@@ -55,13 +55,14 @@ class TestDebian__Dpkg < MiniTest::Test
   LIST_STATUS = Debian::Deb::STATUS_ID.invert
   
   def dpkg_l_parse(line)
-    if /^(.)(.)(.)\s+(\S+)\s+(\S+)\s+(.*)/ =~ line
+    if /^(.)(.)(.)\s+(\S+)\s+(\S+)\s+(\S+)\s+(.*)/ =~ line
       {'selection' => $1,
-	'status' => $2,
-	'err?' => $3,
-	'package' => $4,
-	'version' => $5,
-	'description' => $6
+       'status' => $2,
+       'err?' => $3,
+       'package' => $4.split(':').first, # case bluez-alsa:amd64
+       'version' => $5.split(':').last,
+       'architecture' => $6,
+       'description' => $7
       }
     else
       flunk("parse failed dpkg -l #{line}")
