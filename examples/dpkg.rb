@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-# 
+#
 # dpkg.rb - ruby script dpkg compatible interfaces
 # Copyright (c) 2001 Fumitoshi UKAI <ukai@debian.or.jp>
 #
@@ -25,70 +25,71 @@ require 'getoptlong'
 include Debian
 
 opts = GetoptLong.new(
-		      ["--list", "-l", GetoptLong::NO_ARGUMENT],
-		      ["--status", "-s", GetoptLong::NO_ARGUMENT],
-		      ["--get-selections", GetoptLong::NO_ARGUMENT],
-		      ["--print-avail", GetoptLong::NO_ARGUMENT],
-		      ["--listfiles", "-L", GetoptLong::NO_ARGUMENT],
-		      ["--search", "-S", GetoptLong::NO_ARGUMENT],
-		      ["--help", "-h", GetoptLong::NO_ARGUMENT])
+  ['--list', '-l', GetoptLong::NO_ARGUMENT],
+  ['--status', '-s', GetoptLong::NO_ARGUMENT],
+  ['--get-selections', GetoptLong::NO_ARGUMENT],
+  ['--print-avail', GetoptLong::NO_ARGUMENT],
+  ['--listfiles', '-L', GetoptLong::NO_ARGUMENT],
+  ['--search', '-S', GetoptLong::NO_ARGUMENT],
+  ['--help', '-h', GetoptLong::NO_ARGUMENT]
+)
 opts.ordering = GetoptLong::REQUIRE_ORDER
 
 def usage
-  puts "Usage:"
-  puts "  #{$0} --list [<package> ...]"
-  puts "  #{$0} --status [<package> ...]"
-  puts "  #{$0} --get-selections [<pattern> ...]"
-  puts "  #{$0} --print-avail [<package> ...]"
-  puts "  #{$0} --listfiles [<package> ...]"
-  puts "  #{$0} --search [<pattern> ...]"
-  puts "  #{$0} --help"
+  puts 'Usage:'
+  puts "  #{$PROGRAM_NAME} --list [<package> ...]"
+  puts "  #{$PROGRAM_NAME} --status [<package> ...]"
+  puts "  #{$PROGRAM_NAME} --get-selections [<pattern> ...]"
+  puts "  #{$PROGRAM_NAME} --print-avail [<package> ...]"
+  puts "  #{$PROGRAM_NAME} --listfiles [<package> ...]"
+  puts "  #{$PROGRAM_NAME} --search [<pattern> ...]"
+  puts "  #{$PROGRAM_NAME} --help"
 end
 
-func = Proc.new {|args| $stderr.puts "#{$0}: need an action option"} 
+func = proc { |_args| $stderr.puts "#{$PROGRAM_NAME}: need an action option" }
 begin
-  opts.each {|opt, arg|
+  opts.each do |opt, _arg|
     case opt
-    when "--list" then func = Proc.new {|args| 
-	Dpkg.status(args).each_package {|deb|
-	  puts [Deb::SELECTION_ID[deb.selection] +
-	    Deb::STATUS_ID[deb.status] +
-	    Deb::EFLAG_ID[deb.ok],
-	    deb.package,
-	    deb.version,
-	    deb.description].join(" ")
-	}
-      }
-    when "--status" then func = Proc.new {|args|
-	Dpkg.status(args).each_package {|deb|
-	  puts deb.info_s
-	}
-      }
-    when "--get-selections" then func = Proc.new {|args|
-	Dpkg.selections(args).each_package {|deb|
-	  puts [deb.package, deb.selection].join("\t")
-	}
-      }
-    when "--print-avail" then func = Proc.new {|args|
-	Dpkg.avail(args).each_package {|deb|
-	  puts deb.info_s
-	}
-      }
-    when "--listfiles" then func = Proc.new {|args|
-	Dpkg.listfiles(args).each {|dlist|
-	  puts dlist
-	  puts
-	}
-      }
-    when "--search" then func = Proc.new {|args|
-	Dpkg.search(args).each {|m|
-	  puts "#{m[0]}: #{m[1]}"
-	}
-      }
-    when "--help" then usage; exit 0
-    else raise GetoptLong::InvalidOption      
+    when '--list' then func = proc do |args|
+                         Dpkg.status(args).each_package do |deb|
+                           puts [Deb::SELECTION_ID[deb.selection] +
+                                 Deb::STATUS_ID[deb.status] +
+                                 Deb::EFLAG_ID[deb.ok],
+                                 deb.package,
+                                 deb.version,
+                                 deb.description].join(' ')
+                         end
+                       end
+    when '--status' then func = proc do |args|
+                           Dpkg.status(args).each_package do |deb|
+                             puts deb.info_s
+                           end
+                         end
+    when '--get-selections' then func = proc do |args|
+                                   Dpkg.selections(args).each_package do |deb|
+                                     puts [deb.package, deb.selection].join("\t")
+                                   end
+                                 end
+    when '--print-avail' then func = proc do |args|
+                                Dpkg.avail(args).each_package do |deb|
+                                  puts deb.info_s
+                                end
+                              end
+    when '--listfiles' then func = proc do |args|
+                              Dpkg.listfiles(args).each do |dlist|
+                                puts dlist
+                                puts
+                              end
+                            end
+    when '--search' then func = proc do |args|
+                           Dpkg.search(args).each do |m|
+                             puts "#{m[0]}: #{m[1]}"
+                           end
+                         end
+    when '--help' then usage; exit 0
+    else raise GetoptLong::InvalidOption
     end
-  }
+  end
 rescue GetoptLong::InvalidOption
   usage; exit 1
 end

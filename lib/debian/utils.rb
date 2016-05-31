@@ -21,76 +21,73 @@
 
 module Debian
   module Utils
-    GUNZIP = '/bin/gunzip'
-    TAR = '/bin/tar'
-    TAR_EXTRACT = '-x'
-    TAR_LIST = '-t'
-    
-    def Utils.pipeline(io,progs,stderr = false)
+    GUNZIP = '/bin/gunzip'.freeze
+    TAR = '/bin/tar'.freeze
+    TAR_EXTRACT = '-x'.freeze
+    TAR_LIST = '-t'.freeze
+
+    def self.pipeline(io, progs, stderr = false)
       Signal.trap('CHLD', 'IGNORE')
       # wr0 -> rd0 [gunzip] wr -> rd
-      rd,wr = IO.pipe
-      rde,wre = IO.pipe
+      rd, wr = IO.pipe
+      rde, wre = IO.pipe
       pid = fork
       if pid
-	# parent
-	wr.close
-	wre.close
-	if block_given?
-	  return yield(rd, rde)
-	else
-	  return rd, rde
-	end
+        # parent
+        wr.close
+        wre.close
+        if block_given?
+          return yield(rd, rde)
+        else
+          return rd, rde
+        end
       else
-	# child
-	rd.close
-	rd0, wr0 = IO.pipe
+        # child
+        rd.close
+        rd0, wr0 = IO.pipe
         pid2 = fork
-	if pid2
-	  # gunzip
-	  wr0.close
+        if pid2
+          # gunzip
+          wr0.close
           STDOUT.reopen(wr)
           STDERR.reopen(wre) if stderr
           STDIN.reopen(rd0)
-          ENV["LANG"] = "C"
-          ENV["LC_ALL"] = "C"
-	  exec(*progs)
-          # XXX: waitpid(pid2?)
-	else
-	  rd0.close
-	  while ! io.eof?
-	    wr0.write(io.read(4096))
-	  end
-	  exit 0
-	end
+          ENV['LANG'] = 'C'
+          ENV['LC_ALL'] = 'C'
+          exec(*progs)
+        # XXX: waitpid(pid2?)
+        else
+          rd0.close
+          wr0.write(io.read(4096)) until io.eof?
+          exit 0
+        end
       end
       Process.waitpid(pid, 0)
       Process.wait
     end
 
     def gunzip(io)
-      Utils.pipeline(io, [GUNZIP]) {|fp,fpe|
+      Utils.pipeline(io, [GUNZIP]) do |fp, fpe|
         fpe.close
-	if block_given?
-	  return yield(fp)
-	else
-	  return fp
-	end
-      }
-    end
-    def tar(io,op,*pat)
-      progs = [TAR, op, '--wildcards', '-f', '-']
-      if pat[0]
-	progs += ['--to-stdout', *pat]
+        if block_given?
+          return yield(fp)
+        else
+          return fp
+        end
       end
-      Utils.pipeline(io,progs,op == "-t") {|fp,fpe|
-        if op == "-t"
+    end
+
+    def tar(io, op, *pat)
+      progs = [TAR, op, '--wildcards', '-f', '-']
+      progs += ['--to-stdout', *pat] if pat[0]
+      Utils.pipeline(io, progs, op == '-t') do |fp, fpe|
+        if op == '-t'
           pid = fork
           if pid
             # parent
           else
             while !fpe.eof? && str = fpe.readline
-              unless str.match(/^\/bin\/tar: Record size = [0-9]+ blocks$/)
+              unless str =~ /^\/bin\/tar: Record size = [0-9]+ blocks$/
                 STDERR.puts str
               end
             end
@@ -98,12 +95,12 @@ module Debian
           end
         end
         fpe.close
-	if block_given?
-	  return yield(fp)
-	else
-	  return fp
-	end
-      }
+        if block_given?
+          return yield(fp)
+        else
+          return fp
+        end
+      end
     end
 
     module_function :gunzip, :tar

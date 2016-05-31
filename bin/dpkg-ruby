@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-# 
+#
 # dpkg-ruby - ruby script to parse status,available and Packages,Sources
 #             dpkg-awk clone
 # Copyright (c) 2001 Fumitoshi UKAI <ukai@debian.or.jp>
@@ -28,46 +28,47 @@ filename = Debian::Dpkg::STATUS_FILE
 $debug = 0
 sortfield = []
 numfield = []
-$rec_sep = ""
+$rec_sep = ''
 
 def usage
-  $stderr.puts "#{$0} [opts] 'field:regexp' .. -- 'output_field' .."
-  $stderr.puts " opts: [-f file] [-d nn] [-s sf] [-n nf] [-rs rs]"
+  $stderr.puts "#{$PROGRAM_NAME} [opts] 'field:regexp' .. -- 'output_field' .."
+  $stderr.puts ' opts: [-f file] [-d nn] [-s sf] [-n nf] [-rs rs]'
 end
 
 opts = GetoptLong.new(
-		      ["--file", "-f",  GetoptLong::REQUIRED_ARGUMENT],
-		      ["--debug", "-d", GetoptLong::OPTIONAL_ARGUMENT],
-		      ["--sort", "-s",  GetoptLong::REQUIRED_ARGUMENT],
-		      ["--numeric_field", "-n", GetoptLong::REQUIRED_ARGUMENT],
-		      ["--rec_sep", "--rs", GetoptLong::REQUIRED_ARGUMENT],
-		      ["--help", "-h",  GetoptLong::NO_ARGUMENT])
+  ['--file', '-f', GetoptLong::REQUIRED_ARGUMENT],
+  ['--debug', '-d', GetoptLong::OPTIONAL_ARGUMENT],
+  ['--sort', '-s',  GetoptLong::REQUIRED_ARGUMENT],
+  ['--numeric_field', '-n', GetoptLong::REQUIRED_ARGUMENT],
+  ['--rec_sep', '--rs', GetoptLong::REQUIRED_ARGUMENT],
+  ['--help', '-h', GetoptLong::NO_ARGUMENT]
+)
 opts.ordering = GetoptLong::REQUIRE_ORDER
 
 begin
-  opts.each {|opt, arg|
+  opts.each do |opt, arg|
     case opt
-    when "--file" then filename = arg
-    when "--debug" then 
+    when '--file' then filename = arg
+    when '--debug' then
       if arg
-	$debug = arg
+        $debug = arg
       else
-	$debug += 1
+        $debug += 1
       end
-    when "--sort" then 
-      sortfield += arg.split(" ").collect{|a| a.split(",")}
+    when '--sort' then
+      sortfield += arg.split(' ').collect { |a| a.split(',') }
       sortfield.flatten!
-    when "--numeric_field" then
-      numfield += arg.split(" ").collect{|a| a.split(",")}
+    when '--numeric_field' then
+      numfield += arg.split(' ').collect { |a| a.split(',') }
       numfield.flatten!
-    when "--rec_sep" then
+    when '--rec_sep' then
       $rec_sep = arg
-    when "--help" then 
+    when '--help' then
       usage; exit 0
     else
       opts.terminate
     end
-  }
+  end
 rescue GetoptLong::InvalidOption
   usage; exit 1
 end
@@ -75,12 +76,12 @@ end
 field = {}
 $outputfield = []
 while arg = ARGV.shift
-  break if arg == "--"
+  break if arg == '--'
   unless /^([^:]+):(.*)/ =~ arg
     $stderr.puts "E: invalid argument #{arg}"
     exit 1
   end
-  field[$1] = Regexp.new($2)
+  field[Regexp.last_match(1)] = Regexp.new(Regexp.last_match(2))
 end
 $outputfield = ARGV
 
@@ -88,61 +89,55 @@ da = Debian::Archives.load(filename)
 
 def output(deb)
   if $outputfield.empty?
-    deb.fields {|f|
+    deb.fields do |f|
       puts "#{f.capitalize}: #{deb[f]}"
-    }
+    end
     puts $rec_sep
   elsif $outputfield[0] == '^'
-    deb.fields {|f|
-      unless $outputfield.find {|of| of.capitalize == f.capitalize }
-	puts "#{f.capitalize}: #{deb[f]}"
+    deb.fields do |f|
+      unless $outputfield.find { |of| of.capitalize == f.capitalize }
+        puts "#{f.capitalize}: #{deb[f]}"
       end
-    }
+    end
     puts $rec_sep
   else
-    $outputfield.each {|f| 
+    $outputfield.each do |f|
       puts "#{f.capitalize}: #{deb[f]}"
-    }
-    if $rec_sep != "" || $outputfield.length > 1
-      puts $rec_sep
     end
+    puts $rec_sep if $rec_sep != '' || $outputfield.length > 1
   end
 end
 
 mp = []
-da.each_package {|d|
+da.each_package do |d|
   match = true
-  field.each {|f,re|
+  field.each do |f, re|
     unless re =~ d[f]
       match = false
       break
     end
-  }
-  if match
-    if sortfield.empty?
-      output(d)
-    else
-      mp.push(d)
-    end
   end
-} 
-
-unless sortfield.empty?
-  mp.sort{|a,b|
-    d = 0
-    sortfield.each{|sf|
-      if numfield.include?(sf)
-	d = a[sf].to_i <=> b[sf].to_i
-      else
-	d = a[sf] <=> b[sf]
-      end
-      if d != 0
-	break
-      end
-    }
-    d
-  }.each {|d|
+  next unless match
+  if sortfield.empty?
     output(d)
-  }
+  else
+    mp.push(d)
+  end
 end
 
+unless sortfield.empty?
+  mp.sort do |a, b|
+    d = 0
+    sortfield.each do |sf|
+      d = if numfield.include?(sf)
+            a[sf].to_i <=> b[sf].to_i
+          else
+            a[sf] <=> b[sf]
+          end
+      break if d != 0
+    end
+    d
+  end.each do |d|
+    output(d)
+  end
+end

@@ -24,84 +24,83 @@ require 'debian/utils'
 require 'debian_version'
 
 # ruby1.6 does not have Hash.values_at, but ruby1.8 prefers it
-unless Hash.new.respond_to? :values_at
+unless {}.respond_to? :values_at
   class Hash
-   alias_method :values_at, :indexes
+    alias values_at indexes
   end
 end
 
 module Debian
   class Error < StandardError; end
-  COMPONENT = ['main', 'contrib', 'non-free']
-  
+  COMPONENT = %w(main contrib non-free).freeze
+
   ################################################################
   module Dpkg
-    DPKG = '/usr/bin/dpkg'
-    AVAILABLE_FILE = '/var/lib/dpkg/available'
-    STATUS_FILE = '/var/lib/dpkg/status'
-    PACKAGE_INFO_DIR = '/var/lib/dpkg/info'
+    DPKG = '/usr/bin/dpkg'.freeze
+    AVAILABLE_FILE = '/var/lib/dpkg/available'.freeze
+    STATUS_FILE = '/var/lib/dpkg/status'.freeze
+    PACKAGE_INFO_DIR = '/var/lib/dpkg/info'.freeze
 
-    def status(pkgs=[])
-      status = Packages.new(STATUS_FILE,pkgs)
-      status += Packages.new(AVAILABLE_FILE,pkgs,
-			     ['package','priority','section'])
-      return status
+    def status(pkgs = [])
+      Packages.new(STATUS_FILE, pkgs) + Packages.new(AVAILABLE_FILE, pkgs, %w(package priority section))
     end
 
-    def selections(pkgs=[])
-      Packages.new(STATUS_FILE,pkgs)
+    def selections(pkgs = [])
+      Packages.new(STATUS_FILE, pkgs)
     end
 
-    def avail(pkgs=[])
-      Packages.new(AVAILABLE_FILE,pkgs)
+    def avail(pkgs = [])
+      Packages.new(AVAILABLE_FILE, pkgs)
     end
 
-    def listfiles(pkgs=[])
-      Status.new(pkgs).values.collect {|pkg| pkg.data }
+    def listfiles(pkgs = [])
+      Status.new(pkgs).values.collect(&:data)
     end
 
-    def search(pats=[])
-      pat = Regexp.new("(" + pats.join("|") + ")")
+    def search(pats = [])
+      pat = Regexp.new('(' + pats.join('|') + ')')
       r = []
-      Dir[File.join(PACKAGE_INFO_DIR, "*.list")].each {|fn|
-	pkg = File.basename(fn).gsub(/.list$/,"")
-	File.open(fn) {|f|
-	  f.readlines.grep(pat).collect {|l| 
-	    r.push([pkg, l.chomp])
-	  }
-	}
-      }
+      Dir[File.join(PACKAGE_INFO_DIR, '*.list')].each do |fn|
+        pkg = File.basename(fn).gsub(/.list$/, '')
+        File.open(fn) do |f|
+          f.readlines.grep(pat).collect do |l|
+            r.push([pkg, l.chomp])
+          end
+        end
+      end
       r
     end
 
     def compare_versions(a, rel, b)
-      return Debian::Version.cmp_version(a, rel, b)
+      Debian::Version.cmp_version(a, rel, b)
     end
 
-    def field(debfile, fld=[])
+    def field(debfile, fld = [])
       deb = DpkgDeb.load(debfile)
       if !fld.empty?
-	flv = []
-	fld.each {|fl|
-	  flv.push(deb[fl])
-	}
-	flv
+        flv = []
+        fld.each do |fl|
+          flv.push(deb[fl])
+        end
+        flv
       else
-	return deb
+        deb
       end
     end
-    
-    def architecture() 
+
+    def architecture
       # gcc --print-libgcc-file-name => archtable
-      %x{#{DPKG} --print-architecture}.chomp!
+      `#{DPKG} --print-architecture`.chomp!
     end
-    def gnu_build_architecture()
+
+    def gnu_build_architecture
       # gcc --print-libgcc-file-name => archtable
-      %x{#{DPKG} --print-gnu-build-architecture}.chomp!
+      `#{DPKG} --print-gnu-build-architecture`.chomp!
     end
-    def installation_architecture() 
+
+    def installation_architecture
       # dpkg build time configuration?
-      %x{#{DPKG} --print-installation-architecture}.chomp!
+      `#{DPKG} --print-installation-architecture`.chomp!
     end
     module_function :status, :selections, :avail
     module_function :listfiles, :search
@@ -111,21 +110,20 @@ module Debian
   end
 
   module DpkgDeb
-    DEBFORMAT_VERSION = "2.0\n"
+    DEBFORMAT_VERSION = "2.0\n".freeze
 
     def deb?(debfile)
-      begin
-        f = Debian::Ar.new(debfile)
-        res = (f.open("debian-binary").read == DEBFORMAT_VERSION)
-        f.close
-        return res
-      rescue NameError, Debian::ArError
-	false
-      end
+      f = Debian::Ar.new(debfile)
+      res = (f.open('debian-binary').read == DEBFORMAT_VERSION)
+      f.close
+      return res
+    rescue NameError, Debian::ArError
+      false
     end
+
     def assert_deb?(debfile)
       unless deb?(debfile)
-	raise Debian::Error, "`#{debfile}' is not a debian format archive"
+        raise Debian::Error, "`#{debfile}' is not a debian format archive"
       end
     end
 
@@ -140,20 +138,20 @@ module Debian
     def load(debfile)
       info = ''
       ar = Debian::Ar.new(debfile)
-      ar.open('control.tar.gz') {|ctz|
-	Debian::Utils::gunzip(ctz) {|ct|
-	  Debian::Utils::tar(ct, Debian::Utils::TAR_EXTRACT, '*/control'){|fp|
-	    info = fp.readlines.join("")
+      ar.open('control.tar.gz') do |ctz|
+        Debian::Utils.gunzip(ctz) do |ct|
+          Debian::Utils.tar(ct, Debian::Utils::TAR_EXTRACT, '*/control') do |fp|
+            info = fp.readlines.join('')
             fp.close
-	  }
+          end
           ct.close
-	}
-      }
+        end
+      end
       ar.close
       deb = Deb.new(info)
       deb.filename = File.expand_path(debfile, Dir.getwd)
       deb.freeze
-      return deb
+      deb
     end
 
     module_function :deb?, :assert_deb?
@@ -161,298 +159,293 @@ module Debian
     module_function :load
   end
 
-
   ################################################################
   class FieldError < Error; end
   module Field
-    def parseFields(c, rf=[], wf=[])
+    def parse_fields(c, rf = [], wf = [])
       @info_s = c
       @info = {}
       @fields = []
       cs = c.split("\n")
       field = ''
-      unless wf.empty?
-	wf += rf
+      wf += rf unless wf.empty?
+      while (line = cs.shift)
+        line.chomp!
+        if /^\s/ =~ line
+          if field == ''
+            raise Debian::FieldError,
+                  "E: invalid format #{line} in #{line}"
+          end
+          if wf.empty? || wf.find { |f| f.capitalize == field }
+            @info[field] += "\n" + line
+          end
+        elsif /(^\S+):\s*(.*)/ =~ line
+          (field = Regexp.last_match(1)).capitalize!
+          if wf.empty? || wf.find { |f| f.capitalize == field }
+            @fields.push(field)
+            if @info[field]
+              raise Debian::FieldError,
+                    "E: duplicate control info #{field} in #{line}"
+            end
+            @info[field] = Regexp.last_match(2).strip
+          end
+        end
       end
-      while line = cs.shift
-	line.chomp!
-	if /^\s/ =~ line
-	  if field == ''
-	    raise Debian::FieldError, 
-	      "E: invalid format #{line} in #{line}"
-	  end
-	  if wf.empty? || wf.find {|f| f.capitalize == field }
-	    @info[field] += "\n" + line
-	  end
-	elsif /(^\S+):\s*(.*)/ =~ line
-	  (field = $1).capitalize!
-	  if wf.empty? || wf.find {|f| f.capitalize == field }
-	    @fields.push(field)
-	    if @info[field]
-	      raise Debian::FieldError, 
-		"E: duplicate control info #{field} in #{line}"
-	    end
-	    @info[field] = $2.strip
-	  end
-	end
+      rf.each do |f|
+        unless @info[f.capitalize]
+          raise Debian::FieldError,
+                "E: required field #{f} not found in #{c}"
+        end
       end
-      rf.each {|f|
-	unless @info[f.capitalize]
-	  raise Debian::FieldError, 
-	    "E: required field #{f} not found in #{c}"
-	end
-      }
       @package = @info['Package']
-      @version = @info['Version'] || ""
-      @maintainer = @info['Maintainer'] || ""
-      return @info
+      @version = @info['Version'] || ''
+      @maintainer = @info['Maintainer'] || ''
+      @info
     end
 
     def fields
       if block_given?
-	@fields.each {|f|
-	  yield f
-	}
+        @fields.each do |f|
+          yield f
+        end
       else
-	@fields
+        @fields
       end
     end
-    def [](field) return @info[field.capitalize]; end
-    def to_s() return "#{@package} #{@version}"; end
-    
-    def === (deb) deb and self.package == deb.package; end
-    def < (deb)
-      self === deb and	Dpkg.compare_versions(self.version, '<<', deb.version)
+
+    def [](field)
+      @info[field.capitalize]
     end
-    def <= (deb)
-      self === deb and Dpkg.compare_versions(self.version, '<=', deb.version)
+
+    def to_s
+      "#{@package} #{@version}"
     end
-    def == (deb)
-      self === deb and Dpkg.compare_versions(self.version, '=', deb.version)
+
+    def ===(deb)
+      deb && package == deb.package
     end
-    def >= (deb)
-      self === deb and Dpkg.compare_versions(self.version, '>=', deb.version)
+
+    def <(deb)
+      self === deb &&	Dpkg.compare_versions(version, '<<', deb.version)
     end
-    def > (deb)
-      self === deb and Dpkg.compare_versions(self.version, '>>', deb.version)
+
+    def <=(deb)
+      self === deb && Dpkg.compare_versions(version, '<=', deb.version)
+    end
+
+    def ==(deb)
+      self === deb && Dpkg.compare_versions(version, '=', deb.version)
+    end
+
+    def >=(deb)
+      self === deb && Dpkg.compare_versions(version, '>=', deb.version)
+    end
+
+    def >(deb)
+      self === deb && Dpkg.compare_versions(version, '>>', deb.version)
     end
     attr_reader :info_s, :info, :package, :version, :maintainer
   end
-  
+
   ################################################################
   class DepError < Error; end
   class Dep
     # Dependency: <term> [| <term>]*
-    DEP_OPS = ['<<', '<=', '=', '>=', '>>']
-    DEP_OPS_RE = Regexp.new("([-a-z0-9.+]+)\\s*\\(\\s*(" + DEP_OPS.join("|") + ")\\s*([^)]+)\\)")
+    DEP_OPS = ['<<', '<=', '=', '>=', '>>'].freeze
+    DEP_OPS_RE = Regexp.new('([-a-z0-9.+]+)\\s*\\(\\s*(' + DEP_OPS.join('|') + ')\\s*([^)]+)\\)')
 
     class Unmet
       def initialize(dep, deb)
-	# `deb' doesnt satisfy `dep' dependency
-	# deb == nil, then such package not found
-	@package = nil
-	@relation = nil
-	@dep = dep
-	@deb = deb
+        # `deb' doesnt satisfy `dep' dependency
+        # deb == nil, then such package not found
+        @package = nil
+        @relation = nil
+        @dep = dep
+        @deb = deb
       end
       attr_reader :dep, :deb
-      def package() @package; end
-      def package=(p) 
-	if @package
-	  raise DepError, "E: trying package override"
-	end
-	@package = p
+      attr_reader :package
+
+      def package=(p)
+        raise DepError, 'E: trying package override' if @package
+        @package = p
       end
-      def relation() @relation; end
-      def relation=(r) 
-	if @relation
-	  raise DepError, "E: trying relation override"
-	end
-	@relation = r
+
+      attr_reader :relation
+
+      def relation=(r)
+        raise DepError, 'E: trying relation override' if @relation
+        @relation = r
       end
+
       def to_s
-	s = ""
-	if @package
-	  s += "#{@package} "
-	end
-	if @relation
-	  s += "#{@relation} "
-	end
-	s += "#{dep} unmet "
-	if @deb
-	  s += "#{@deb}"
-	  if @deb.package != dep.package 
-	    s += " (provides #{dep.package})"
-	  end
-	else
-	  s += "#{dep.package} not found"
-	end
-	return s
+        s = ''
+        s += "#{@package} " if @package
+        s += "#{@relation} " if @relation
+        s += "#{dep} unmet "
+        if @deb
+          s += @deb.to_s
+          s += " (provides #{dep.package})" if @deb.package != dep.package
+        else
+          s += "#{dep.package} not found"
+        end
+        s
       end
+
       def ==(unmet)
-	@package == unmet.package &&
-	  @relation == unmet.relation &&
-	  @dep == unmet.dep &&
-	  @deb == unmet.deb
+        @package == unmet.package &&
+          @relation == unmet.relation &&
+          @dep == unmet.dep &&
+          @deb == unmet.deb
       end
     end
 
     class Term
       # Dependency term: <package> [(<op> <version>)]
-      def initialize(package, op = "", version = "")
-	@package = package
-	@op = op
-	@version = version
+      def initialize(package, op = '', version = '')
+        @package = package
+        @op = op
+        @version = version
       end
       attr_reader :package, :op, :version
-      def to_s() 
-	s = @package
-	if @op != "" && @version != ""
-	  s += " (#{@op} #{@version})"
-	end
-	s
-      end
-      
-      def satisfy?(deb)
-	case @op
-	when "<<" then return deb < self
-	when "<=" then return deb <= self
-	when "=" then return deb == self
-	when ">=" then return deb >= self
-	when ">>" then return deb > self
-	when "" then 
-	  return true if deb === self
-	  deb.provides.each {|pp| return true if pp == @package }
-	  return false
-	else
-	  raise Debian::DepError, "E: unknown operation #{@op}"
-	end
-      end
-      
-      def unmet(packages)
-	us = []
-	p = packages.provides(@package)
-	if !p || p.empty?
-	  return [Unmet.new(self, nil)]
-	end
-	p.each {|deb|
-	  if satisfy?(deb)
-	    return []
-	  end
-	  u = Unmet.new(self, deb)
-	  us.push(u)
-	}
-	return us.flatten.compact
+      def to_s
+        s = @package
+        s += " (#{@op} #{@version})" if @op != '' && @version != ''
+        s
       end
 
-      def == (t)
-	@package == t.package &&
-	  @op == t.op &&
-	  @version == t.version
+      def satisfy?(deb)
+        case @op
+        when '<<' then return deb < self
+        when '<=' then return deb <= self
+        when '=' then return deb == self
+        when '>=' then return deb >= self
+        when '>>' then return deb > self
+        when '' then
+          return true if deb === self
+          deb.provides.each { |pp| return true if pp == @package }
+          return false
+        else
+          raise Debian::DepError, "E: unknown operation #{@op}"
+        end
+      end
+
+      def unmet(packages)
+        us = []
+        p = packages.provides(@package)
+        return [Unmet.new(self, nil)] if !p || p.empty?
+        p.each do |deb|
+          return [] if satisfy?(deb)
+          u = Unmet.new(self, deb)
+          us.push(u)
+        end
+        us.flatten.compact
+      end
+
+      def ==(t)
+        @package == t.package &&
+          @op == t.op &&
+          @version == t.version
       end
     end ## Dep::Term
-    
+
     def initialize(deps, rel)
       @deps = []
       @rel = rel
-      deps.split("|").each {|dep|
-	dep.strip!
-	# puts DEP_OPS_RE.source
-	if DEP_OPS_RE =~ dep
-	  # puts "P:#{$1} R:#{$2} V:#{$3}"
-	  @deps.push(Term.new($1,$2,$3))
-	else
-	  # puts "P:#{dep}"
-	  @deps.push(Term.new(dep))
-	end
-      }
+      deps.split('|').each do |dep|
+        dep.strip!
+        # puts DEP_OPS_RE.source
+        if DEP_OPS_RE =~ dep
+          # puts "P:#{$1} R:#{$2} V:#{$3}"
+          @deps.push(Term.new(Regexp.last_match(1), Regexp.last_match(2), Regexp.last_match(3)))
+        else
+          # puts "P:#{dep}"
+          @deps.push(Term.new(dep))
+        end
+      end
     end
-    
-    def to_s() "#{@rel} " + @deps.join(" | "); end
-   
+
+    def to_s
+      "#{@rel} " + @deps.join(' | ')
+    end
+
     def unmet(packages)
       us = []
-      @deps.each {|dep|
-	u = dep.unmet(packages)
-	# if one of dep is satisfied, it's ok. OR relations
-	if u.empty?
-	  return []
-	end
-	us.push(u)
-      }
-      return us
+      @deps.each do |dep|
+        u = dep.unmet(packages)
+        # if one of dep is satisfied, it's ok. OR relations
+        return [] if u.empty?
+        us.push(u)
+      end
+      us
     end
-    
+
     def satisfy?(deb)
-      @deps.each {|dep|
-	if dep.satisfy?(deb)
-	  return true
-	end
-      }
-      return false
+      @deps.each do |dep|
+        return true if dep.satisfy?(deb)
+      end
+      false
     end
 
     def include?(deb)
-      @deps.each {|dep|
-	if deb === dep
-	  return true
-	end
-      }
-      return false
+      @deps.each do |dep|
+        return true if deb === dep
+      end
+      false
     end
   end
 
   ################################################################
   class Deb
     include Field
-    @@reqfields = ['package'].collect {|f| f.capitalize }
+    @@reqfields = ['package'].collect(&:capitalize)
     # 'version', 'maintainer', 'description': -- not used in status if remove
     # 'section','priority': not used in status in some case
     # 'architecture': not used in status
     @@dependency = ['depends', 'recommends', 'suggests', 'pre-depends',
-      'enhances', 'conflicts', 'replaces'].collect {|f| f.capitalize }
+                    'enhances', 'conflicts', 'replaces'].collect(&:capitalize)
 
     # dpkg/lib/parsehelp.c, dpkg/main/enquiry
     SELECTION_ID = {
-      "unknown" => "u",
-      "install" => "i",
-      "hold" => "h",
-      "deinstall" => "r",
-      "purge" => "p",
-    }
+      'unknown' => 'u',
+      'install' => 'i',
+      'hold' => 'h',
+      'deinstall' => 'r',
+      'purge' => 'p'
+    }.freeze
     EFLAG_ID = {
-      "ok" => " ",
-      "reinstreq" => "R",
-      "hold" => "?",
-      "hold-reinstreq" => "#"
-    }
+      'ok' => ' ',
+      'reinstreq' => 'R',
+      'hold' => '?',
+      'hold-reinstreq' => '#'
+    }.freeze
     STATUS_ID = {
-      "not-installed" => "n",
-      "unpacked" => "U",
-      "half-configured" => "F",
-      "installed" => "i",
-      "half-installed" => "H",
-      "config-files" => "c",
-#      "postinst-failed" backward compat?
-#      "removal-failed"  backward compat?
-    }
+      'not-installed' => 'n',
+      'unpacked' => 'U',
+      'half-configured' => 'F',
+      'installed' => 'i',
+      'half-installed' => 'H',
+      'config-files' => 'c',
+      #      "postinst-failed" backward compat?
+      #      "removal-failed"  backward compat?
+    }.freeze
 
     # XXX: files in maintainer scripts from *.deb
-    def initialize(info_s, fields=[])
-      parseFields(info_s, @@reqfields, fields)
+    def initialize(info_s, fields = [])
+      parse_fields(info_s, @@reqfields, fields)
       @source = @info['Source'] || @package
       @provides = []
       if @info['Provides']
-	@provides = @info['Provides'].split(",").each {|p| p.strip! }
+        @provides = @info['Provides'].split(',').each(&:strip!)
       end
       @deps = {}
       # puts "P: #{@package}"
-      @selection,@ok,@status = 'unknown','ok','not-installed'
-      if @info['Status']
-	@selection,@ok,@status = @info['Status'].split
-      end
+      @selection = 'unknown'
+      @ok = 'ok'
+      @status = 'not-installed'
+      @selection, @ok, @status = @info['Status'].split if @info['Status']
       if @description = @info['Description']
-	@description = @description.sub(/\n.*/m,"")
+        @description = @description.sub(/\n.*/m, '')
       end
       @filename = nil
       @artab = nil
@@ -463,18 +456,17 @@ module Debian
     attr_reader :status, :ok, :selection, :description
     attr_reader :filename, :control, :data
     def update_deps
-      @@dependency.each {|rel|
-	# puts "D: #{rel} => #{@info[rel]}"
-	next if @deps[rel]
-	if @info[rel]
-	  @deps[rel] = []
-	  @info[rel].split(",").each {|deps|
-	    deps.strip!
-	    # puts "DD: #{deps}"
-	    @deps[rel].push(Dep.new(deps, rel))
-	  }
-	end
-      }
+      @@dependency.each do |rel|
+        # puts "D: #{rel} => #{@info[rel]}"
+        next if @deps[rel]
+        next unless @info[rel]
+        @deps[rel] = []
+        @info[rel].split(',').each do |deps|
+          deps.strip!
+          # puts "DD: #{deps}"
+          @deps[rel].push(Dep.new(deps, rel))
+        end
+      end
     end
     private :update_deps
 
@@ -484,145 +476,194 @@ module Debian
     end
 
     # selections
-    def unknown?() @selection == 'unknown'; end
-    def install?() @selection == 'install'; end
-    def hold?() @selection == 'hold'; end
-    def deinstall?() @selection == 'deinstall'; end
-    def remove?() deinstall?; end
-    def purge?() @selection == 'purge'; end
-    # ok?
-    def ok?() @ok == 'ok'; end
-
-    # status
-    def not_installed?() @status == 'not-installed'; end
-    def purged?() not_installed?; end
-    def unpacked?() @status == 'unpacked'; end
-    def half_configured?() @status == 'half-configured'; end
-    def installed?() @status == 'installed'; end
-    def half_installed?() @status == 'half-installed'; end
-    def config_files?() @status == 'config-files'; end
-    def config_only?() config_files?; end
-    def removed?() config_files? || not_installed?; end
-
-    def need_fix?() !ok? || !(not_installed?||installed?||config_files?); end
-    def need_action?() 
-      !((unknown? && not_installed?) ||
-	(install? && installed?) || 
-	hold? ||
-	(remove? && removed?) ||
-	(purge? && purged?))
+    def unknown?
+      @selection == 'unknown'
     end
 
+    def install?
+      @selection == 'install'
+    end
+
+    def hold?
+      @selection == 'hold'
+    end
+
+    def deinstall?
+      @selection == 'deinstall'
+    end
+
+    def remove?
+      deinstall?
+    end
+
+    def purge?
+      @selection == 'purge'
+    end
+
+    # ok?
+    def ok?
+      @ok == 'ok'
+    end
+
+    # status
+    def not_installed?
+      @status == 'not-installed'
+    end
+
+    def purged?
+      not_installed?
+    end
+
+    def unpacked?
+      @status == 'unpacked'
+    end
+
+    def half_configured?
+      @status == 'half-configured'
+    end
+
+    def installed?
+      @status == 'installed'
+    end
+
+    def half_installed?
+      @status == 'half-installed'
+    end
+
+    def config_files?
+      @status == 'config-files'
+    end
+
+    def config_only?
+      config_files?
+    end
+
+    def removed?
+      config_files? || not_installed?
+    end
+
+    def need_fix?
+      !ok? || !(not_installed? || installed? || config_files?)
+    end
+
+    def need_action?
+      !((unknown? && not_installed?) ||
+  (install? && installed?) ||
+  hold? ||
+  (remove? && removed?) ||
+  (purge? && purged?))
+    end
 
     def deb_fp(type, op, *pat)
-      unless @filename || @artab
-	raise Debian::Error, "no filename associated"
-      end
-      @artab.open(type) {|ctz|
-	Debian::Utils.gunzip(ctz) {|ct|
-	  Debian::Utils.tar(ct, op, *pat) {|fp|
-	    if block_given?
+      raise Debian::Error, 'no filename associated' unless @filename || @artab
+      @artab.open(type) do |ctz|
+        Debian::Utils.gunzip(ctz) do |ct|
+          Debian::Utils.tar(ct, op, *pat) do |fp|
+            if block_given?
               ct.close
               retval = yield(fp)
               fp.close
-	      return retval
-	    else
+              return retval
+            else
               ct.close
-	      return fp
-	    end
-	  }
-	}
-      }
+              return fp
+            end
+          end
+        end
+      end
     end
 
     def control_fp(op, *pat)
-      deb_fp("control.tar.gz", op, *pat) {|fp|
-	if block_given?
-	  yield(fp)
-	else
-	  fp
-	end
-      }
-    end
-    def data_fp(op, *pat)
-      deb_fp("data.tar.gz", op, *pat) {|fp|
-	if block_given?
-	  yield(fp)
-	else
-	  fp
-	end
-      }
+      deb_fp('control.tar.gz', op, *pat) do |fp|
+        if block_given?
+          yield(fp)
+        else
+          fp
+        end
+      end
     end
 
-    def filename= (fn)
-      @filename = fn;
+    def data_fp(op, *pat)
+      deb_fp('data.tar.gz', op, *pat) do |fp|
+        if block_given?
+          yield(fp)
+        else
+          fp
+        end
+      end
+    end
+
+    def filename=(fn)
+      @filename = fn
       @artab = Debian::Ar.new(fn)
-      control_fp(Debian::Utils::TAR_LIST) {|fp|
-	fp.each {|line|
-	  line.chomp!
-	  line.gsub!(/^\.\//, "")
-	  unless line.empty?
-	    @control.push(line)
-	  end
-	}
-      }
-      data_fp(Debian::Utils::TAR_LIST) {|fp|
-	fp.each {|line|
-	  @data.push(line.chomp)
-	}
-      }
+      control_fp(Debian::Utils::TAR_LIST) do |fp|
+        fp.each do |line|
+          line.chomp!
+          line.gsub!(/^\.\//, '')
+          @control.push(line) unless line.empty?
+        end
+      end
+      data_fp(Debian::Utils::TAR_LIST) do |fp|
+        fp.each do |line|
+          @data.push(line.chomp)
+        end
+      end
       @artab.close
       freeze
     end
-    def control= (c); @control = c; end
-    def data= (d); @data = d; end
 
-    def controlFile(cfile = "control")
-      unless @control.find {|c| c == cfile}
-	raise Debian::Error, "no such cfile #{cfile}"
+    attr_writer :control
+
+    attr_writer :data
+
+    def controlFile(cfile = 'control')
+      unless @control.find { |c| c == cfile }
+        raise Debian::Error, "no such cfile #{cfile}"
       end
-      control_fp(Debian::Utils::TAR_EXTRACT, "*/#{cfile}") {|fp|
-	if block_given?
-	  yield(fp)
-	else
-	  fp
-	end
-      }
+      control_fp(Debian::Utils::TAR_EXTRACT, "*/#{cfile}") do |fp|
+        if block_given?
+          yield(fp)
+        else
+          fp
+        end
+      end
     end
-    def controlData(cfile = "control")
-      controlFile(cfile) {|fp| fp.readlines.join("") }
+
+    def controlData(cfile = 'control')
+      controlFile(cfile) { |fp| fp.readlines.join('') }
     end
+
     def dataFile(fname)
       if /^\.\// =~ fname
-	pat = fname
+        pat = fname
       else
-	fname.gsub!(/^\//, "")
-	pat = "*/#{fname}"
+        fname.gsub!(/^\//, '')
+        pat = "*/#{fname}"
       end
-      data_fp(Debian::Utils::TAR_EXTRACT, pat) {|fp|
-	if block_given?
-	  yield(fp)
-	else
-	  fp
-	end
-      }
+      data_fp(Debian::Utils::TAR_EXTRACT, pat) do |fp|
+        if block_given?
+          yield(fp)
+        else
+          fp
+        end
+      end
     end
+
     def dataData(fname)
-      dataFile(fname) {|fp| fp.readlines.join("") }
+      dataFile(fname) { |fp| fp.readlines.join('') }
     end
+
     def sys_tarfile
-      unless @filename || @artab
-	raise Debian::Error, "no filename associated"
+      raise Debian::Error, 'no filename associated' unless @filename || @artab
+      @artab.open('data.tar.gz') do |dtz|
+        Debian::Utils.gunzip(dtz) do |dt|
+          if block_given?
+            yield(dt)
+          else
+            dt
+          end
+        end
       end
-      @artab.open("data.tar.gz") {|dtz|
-	Debian::Utils.gunzip(dtz) {|dt|
-	  if block_given?
-	    yield(dt)
-	  else
-	    dt
-	  end
-	}
-      }
     end
 
     def unmet(packages, rels = [])
@@ -630,69 +671,67 @@ module Debian
       update_deps
       # puts "N: #{self} unmet d:#{@deps['Depends']} r:#{@deps['Recommends']} s:#{@deps['Suggests']}"
       if rels.empty?
-	rels = ['Pre-depends','Depends','Recommends','Suggests','Enhances']
+        rels = ['Pre-depends', 'Depends', 'Recommends', 'Suggests', 'Enhances']
       end
-      rels.each {|rel|
-	rel.capitalize!
-	@deps[rel] && @deps[rel].each {|dep|
-	  # puts "N: #{self} unmet? #{dep}"
-	  us += dep.unmet(packages).collect {|ua|
-	    ua.each {|u|
-	      u.package = self
-	      u.relation = rel
-	    }
-	  }
-	}
-      }
-      return us
+      rels.each do |rel|
+        rel.capitalize!
+        @deps[rel] && @deps[rel].each do |dep|
+          # puts "N: #{self} unmet? #{dep}"
+          us += dep.unmet(packages).collect do |ua|
+            ua.each do |u|
+              u.package = self
+              u.relation = rel
+            end
+          end
+        end
+      end
+      us
     end
   end
-  
+
   ################################################################
   class Dsc
     include Field
-    @@reqfields = ['binary',
-      'version', 'maintainer',
-      'architecture', 'files'
-    ].collect {|f| f.capitalize }
+    @@reqfields = %w(binary
+                     version maintainer
+                     architecture files).collect(&:capitalize)
     @@dependency = ['build-depends', 'build-depends-indep',
-      'build-conflicts', 'build-conflicts-indep'].collect {|f| f.capitalize }
-    
+                    'build-conflicts', 'build-conflicts-indep'].collect(&:capitalize)
+
     # XXX: build-dependecy as Deb dependency
     # Files infomation
-    def initialize(info_s, fields=[])
-      parseFields(info_s, @@reqfields, fields)
+    def initialize(info_s, fields = [])
+      parse_fields(info_s, @@reqfields, fields)
       # in Sources file, Package: is used
       # in *.dsc file, Source: is used
       if @info['Package']
-	@package = @info['Package']
-	@source = @info['Package']
+        @package = @info['Package']
+        @source = @info['Package']
       end
       if @info['Source']
-	@package = @info['Source'] 
-	@source = @info['Source']
+        @package = @info['Source']
+        @source = @info['Source']
       end
-      @binary = @info['Binary'].split(",").each {|b| b.strip! }
+      @binary = @info['Binary'].split(',').each(&:strip!)
       @deps = {}
     end
     attr_reader :package, :source, :binary, :version
     def update_deps
-      @@dependency.each {|depf|
-	if @info[depf]
-	  @deps[depf] = {}
-	  @info[depf].split(",") {|deps|
-	    @deps[depf].push(Dep.new(deps))
-	  }
-	end
-      }
+      @@dependency.each do |depf|
+        next unless @info[depf]
+        @deps[depf] = {}
+        @info[depf].split(',') do |deps|
+          @deps[depf].push(Dep.new(deps))
+        end
+      end
     end
     private :update_deps
   end
 
-  ################################################################  
+  ################################################################
   class ArchivesError < Error; end
   class Archives
-    def Archives.parseAptLine(src)
+    def self.parseAptLine(_src)
       # XXX: support apt line?
       # deb file://<path> <distro> [<component> ...]
       # =>  <path>/dists/<distro>/<component>/binary-${ARCH}/Packages
@@ -701,77 +740,80 @@ module Debian
       raise NotImplementedError
     end
 
-    def Archives.load(filename,*arg)
+    def self.load(filename, *arg)
       case File.basename(filename)
-      when /Source(.gz)?/ then Sources.new(filename,*arg)
-      else Packages.new(filename,*arg)
+      when /Source(.gz)?/ then Sources.new(filename, *arg)
+      else Packages.new(filename, *arg)
       end
     end
 
-    def Archives.parseArchiveFile(file,&block)
-      if file == ""
-	return {}
-      end
-      if /\.gz$/ =~ file
-	f = IO.popen("gunzip < #{file}")
-      else
-	f = File.open(file)
-      end
-      l = Archives.parse(f,&block)
+    def self.parseArchiveFile(file, &block)
+      return {} if file == ''
+      f = if /\.gz$/ =~ file
+            IO.popen("gunzip < #{file}")
+          else
+            File.open(file)
+          end
+      l = Archives.parse(f, &block)
       f.close
       l
     end
-    def Archives.parse(f,&block)
+
+    def self.parse(f)
       l = {}
-      f.each("\n\n") {|info|
-	d = yield info
-	next unless d
-	if l[d.package] && d < l[d.package]
-	  next
-	end
-	l[d.package] = d
-      }
+      f.each("\n\n") do |info|
+        d = yield info
+        next unless d
+        next if l[d.package] && d < l[d.package]
+        l[d.package] = d
+      end
       l
     end
-    def initialized()
+
+    def initialized
       @file = []
       @lists = {}
     end
     attr_reader :file, :lists
-    def to_s() @file.join("+"); end
-    
-    def add (da)
+    def to_s
+      @file.join('+')
+    end
+
+    def add(da)
       # XXX: self destructive!
       return unless da
       @file += da.file
       @file.compact!
-      da.each {|pkg, d1|
-	self[pkg] = d1
-      }
-      return self
+      da.each do |pkg, d1|
+        self[pkg] = d1
+      end
+      self
     end
-    def + (da)
+
+    def +(da)
       if self.class != da.class
-	raise Debian::ArchiveError, 
-	  "E: `+' type mismatch #{self.class} != #{da.class}"
+        raise Debian::ArchiveError,
+              "E: `+' type mismatch #{self.class} != #{da.class}"
       end
       nda = self.class.new
       nda.add(self)
       nda.add(da)
       nda
     end
-    def sub (da)
+
+    def sub(da)
       # XXX: self destructive!
       return unless da
       @file -= da.file
-      da.each_key {|package|
-	@lists.delete(package)
-      }
-      return self
+      da.each_key do |package|
+        @lists.delete(package)
+      end
+      self
     end
-    def - (da)
+
+    def -(da)
       if self.class != da.class
-	raise Debian::ArchiveError,
+        raise Debian::ArchiveError,
               "E: `-' type mismatch #{self.class} != #{da.class}"
       end
       nda = self.class.new
@@ -785,21 +827,19 @@ module Debian
       return unless da2
       @file += ["#{da1.file}&#{da2.file}"]
       @file.compact!
-      da1.each_key {|package|
-	if (da2[package])
-	  d = da1[package]
-	  if (da1[package] < da2[package])
-	    d = da2[package]
-	  end
-	  @lists[package] = d
-	end
-      }
-      return self
+      da1.each_key do |package|
+        next unless da2[package]
+        d = da1[package]
+        d = da2[package] if da1[package] < da2[package]
+        @lists[package] = d
+      end
+      self
     end
-    def & (da)
+
+    def &(da)
       if self.class != da.class
-	raise Debian::ArchiveError,
-	  "E: `-' type mismatch #{self.class} != #{da.class}"
+        raise Debian::ArchiveError,
+              "E: `-' type mismatch #{self.class} != #{da.class}"
       end
       nda = self.class.new
       nda.intersect(self, da)
@@ -813,148 +853,193 @@ module Debian
       nda[deb.package] = deb
       nda
     end
-    def []=(package,deb)
+
+    def []=(package, deb)
       # XXX: self destructive!
-      unless d0 = @lists[package]
-	@lists[package] = deb	# not found, add new one
+      if d0 = @lists[package]
+        if d0 < deb
+          @lists[package] = deb	# update new one
+        else
+          d0	# original is the latest version
+        end
       else
-	if d0 < deb
-	  @lists[package] = deb	# update new one
-	else
-	  d0			# original is the latest version
-	end
+        @lists[package] = deb	# not found, add new one
       end
     end
-    def store(package,deb) self[package] = deb; end
+
+    def store(package, deb)
+      self[package] = deb
+    end
+
     def >>(deb)
       nda = self.class.new
       nda.add(self)
       return nda unless deb
-      nda.delete_if {|pkg, d| d == deb }
+      nda.delete_if { |_pkg, d| d == deb }
       nda
     end
-    def delete(package) @lists.delete(package); end
+
+    def delete(package)
+      @lists.delete(package)
+    end
+
     def delete_if(&block)
       @lists.delete_if(&block)
     end
-    
-    def each(&block)
-      @lists.each {|package, deb|
-	yield(package, deb)
-      }
-    end
-    def each_key(&block)
-      @lists.each_key {|package|
-	yield(package)
-      }
-    end
-    def each_value(&block)
-      @lists.each_value {|deb|
-	yield(deb)
-      }
-    end
-    def packages
-      if block_given?
-	each_value {|p|
-	  yield p
-	}
-      else
-	@lists.values
-      end
-    end
-    def pkgnames() 
-      if block_given?
-	each_key {|p|
-	  yield p
-	}
-      else
-	@lists.keys 
+
+    def each
+      @lists.each do |package, deb|
+        yield(package, deb)
       end
     end
 
-    def each_package(&block) each_value(&block); end
-    def empty?() @lists.empty?; end
-    def has_key?(pkg) @lists.has_key?(pkg); end
-    def has_value?(deb) @lists.has_value?(deb); end
-    def include?(key) has_key?(key); end
-    def indexes(*arg) @lists.values_at(*arg); end
-    def indices(*arg) @lists.indices(*arg); end
-    def key?(pkg) has_key?(pkg); end
-    def keys() @lists.keys; end
-    def value?(deb) has_value?(deb); end
-    def values() @lists.values; end
-    def length() @lists.length; end
-    
-    def [](package) @lists[package]; end
-    def package(package) @lists[package]; end
+    def each_key
+      @lists.each_key do |package|
+        yield(package)
+      end
+    end
+
+    def each_value
+      @lists.each_value do |deb|
+        yield(deb)
+      end
+    end
+
+    def packages
+      if block_given?
+        each_value do |p|
+          yield p
+        end
+      else
+        @lists.values
+      end
+    end
+
+    def pkgnames
+      if block_given?
+        each_key do |p|
+          yield p
+        end
+      else
+        @lists.keys
+      end
+    end
+
+    def each_package(&block)
+      each_value(&block)
+    end
+
+    def empty?
+      @lists.empty?
+    end
+
+    def has_key?(pkg)
+      @lists.key?(pkg)
+    end
+
+    def has_value?(deb)
+      @lists.value?(deb)
+    end
+
+    def include?(key)
+      key?(key)
+    end
+
+    def indexes(*arg)
+      @lists.values_at(*arg)
+    end
+
+    def indices(*arg)
+      @lists.indices(*arg)
+    end
+
+    def key?(pkg)
+      key?(pkg)
+    end
+
+    def keys
+      @lists.keys
+    end
+
+    def value?(deb)
+      value?(deb)
+    end
+
+    def values
+      @lists.values
+    end
+
+    def length
+      @lists.length
+    end
+
+    def [](package)
+      @lists[package]
+    end
+
+    def package(package)
+      @lists[package]
+    end
   end
 
   ################################################################
   class Sources < Archives
-    def initialize(file = "", pkgs = [], fields = [])
-      @lists = Archives.parseArchiveFile(file) {|info|
-        info =~ /(?:Package|Source):\s(.*)$/;
-	if pkgs.empty? || pkgs.include?($1)
-	  d = Dsc.new(info,fields)
-	  if block_given?
-	    yield d
-	  end
-	  d.freeze
-	end
-      }
+    def initialize(file = '', pkgs = [], fields = [])
+      @lists = Archives.parseArchiveFile(file) do |info|
+        info =~ /(?:Package|Source):\s(.*)$/
+        if pkgs.empty? || pkgs.include?(Regexp.last_match(1))
+          d = Dsc.new(info, fields)
+          yield d if block_given?
+          d.freeze
+        end
+      end
     end
   end
 
-  ################################################################  
+  ################################################################
   class Packages < Archives
-    def initialize(file = "", pkgs = [], fields = [])
+    def initialize(file = '', pkgs = [], fields = [])
       @provides = {}
       @file = [file]
-      @lists = Archives.parseArchiveFile(file) {|info|
-        info =~ /Package:\s(.*)$/;
-	if pkgs.empty? || pkgs.include?($1)
-	  d = Deb.new(info,fields)
-	  add_provides(d)
-	  if block_given?
-	    yield d
-	  end
-	  d.freeze
-	end
-      }
+      @lists = Archives.parseArchiveFile(file) do |info|
+        info =~ /Package:\s(.*)$/
+        if pkgs.empty? || pkgs.include?(Regexp.last_match(1))
+          d = Deb.new(info, fields)
+          add_provides(d)
+          yield d if block_given?
+          d.freeze
+        end
+      end
     end
+
     def add_provides(deb)
-      unless @provides[deb.package]
-	@provides[deb.package] = []
-      end
+      @provides[deb.package] = [] unless @provides[deb.package]
       unless @provides[deb.package].include?(deb)
-	@provides[deb.package].push(deb)
+        @provides[deb.package].push(deb)
       end
-	
+
       if deb.provides
-	deb.provides.each {|p|
-	  unless @provides[p]
-	    @provides[p] = []
-	  end
-	  unless @provides[p].include?(deb)
-	    @provides[p].push(deb)
-	  end
-	}
+        deb.provides.each do |p|
+          @provides[p] = [] unless @provides[p]
+          @provides[p].push(deb) unless @provides[p].include?(deb)
+        end
       end
       deb
     end
+
     def del_provides(deb)
       return unless deb
-      deb.provides.each {|p|
-	@provides[p].delete(deb)
-      }
+      deb.provides.each do |p|
+        @provides[p].delete(deb)
+      end
     end
     private :add_provides, :del_provides
-   
-    def provides(pkg="")
-      if pkg != ""
-	return @provides[pkg] 
+
+    def provides(pkg = '')
+      if pkg != ''
+        return @provides[pkg]
       else
-	return @provides
+        return @provides
       end
     end
 
@@ -962,46 +1047,47 @@ module Debian
     def add(p)
       # XXX: self destructive!
       super(p)
-      p.provides.each {|pkg, debs|
-	unless @provides[pkg]
-	  @provides[pkg] = []
-	end
-	@provides[pkg] += debs
-	@provides[pkg].uniq!
-      }
+      p.provides.each do |pkg, debs|
+        @provides[pkg] = [] unless @provides[pkg]
+        @provides[pkg] += debs
+        @provides[pkg].uniq!
+      end
       self
     end
+
     def +(p)
       np = self.class.new
       np.add(self)
       np.add(p)
       np
     end
+
     def sub(p)
       # XXX: self destructive!
       super(p)
-      p.provides.each {|pkg, debs|
-	if @provides[pkg]
-	  @provides[pkg] -= debs
-	end
-      }
+      p.provides.each do |pkg, debs|
+        @provides[pkg] -= debs if @provides[pkg]
+      end
       self
     end
+
     def -(p)
       np = self.class.new
       np.add(self)
       np.sub(p)
       np
     end
-    def intersect(p1,p2)
+
+    def intersect(p1, p2)
       # XXX: self destructive!
-      super(p1,p2)
-      @lists.each_value {|deb|
-	add_provides(deb)
-      }
+      super(p1, p2)
+      @lists.each_value do |deb|
+        add_provides(deb)
+      end
       self
     end
-    def & (p)
+
+    def &(p)
       np = self.class.new
       np.intersect(self, p)
       np
@@ -1010,25 +1096,24 @@ module Debian
     def <<(deb)
       np = self.class.new
       np.add(self)
-      if deb
-	np[deb.package] = deb
-      end
+      np[deb.package] = deb if deb
       np
     end
-    def []=(package,deb)
+
+    def []=(package, deb)
       # XXX: self destructive!
-      d = super(package,deb)
+      d = super(package, deb)
       add_provides(d)
       d
     end
+
     def >>(deb)
       np = self.class.new
       np.add(self)
-      if np.has_value?(deb)
-	np.delete(deb.package)
-      end
+      np.delete(deb.package) if np.value?(deb)
       np
     end
+
     def delete(package)
       deb = super(package)
       del_provides(deb)
@@ -1038,26 +1123,24 @@ module Debian
   ################################################################
   class Status < Packages
     def initialize(pkgs = [], fields = [])
-      super(Dpkg::STATUS_FILE, pkgs, fields) { |d|
-	if d.status == 'installed'
-	  c = ['control']
-	  re = Regexp.new(Regexp.escape(File.join(Dpkg::PACKAGE_INFO_DIR, 
-						  "#{d.package}.")))
-	  Dir[File.join(Dpkg::PACKAGE_INFO_DIR, "#{d.package}.*")].each {|fn|
-	    case File.basename(fn)
-	    when "#{d.package}.list" then
-	      d.data = IO.readlines(fn).collect {|line| line.chomp }
-	    else
-	      c.push(fn.gsub(re, ""))
-	    end
-	  }
-	  d.control = c
-	end
-	if block_given?
-	  yield d
-	end
-	d
-      }
+      super(Dpkg::STATUS_FILE, pkgs, fields) do |d|
+        if d.status == 'installed'
+          c = ['control']
+          re = Regexp.new(Regexp.escape(File.join(Dpkg::PACKAGE_INFO_DIR,
+                                                  "#{d.package}.")))
+          Dir[File.join(Dpkg::PACKAGE_INFO_DIR, "#{d.package}.*")].each do |fn|
+            case File.basename(fn)
+            when "#{d.package}.list" then
+              d.data = IO.readlines(fn).collect(&:chomp)
+            else
+              c.push(fn.gsub(re, ''))
+            end
+          end
+          d.control = c
+        end
+        yield d if block_given?
+        d
+      end
     end
   end
 end
